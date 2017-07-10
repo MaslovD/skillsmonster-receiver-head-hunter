@@ -1,3 +1,5 @@
+--CREATE DATABASE skillsmonster;
+
 CREATE TABLE skill (id SERIAL NOT NULL CONSTRAINT skill_id_pk PRIMARY KEY,name VARCHAR(200),code VARCHAR(50),key_skill BOOLEAN,collection_id INTEGER);
 CREATE UNIQUE INDEX skill_id_uindex ON skill (id);
 CREATE TABLE vacancy (raw_data JSONB,search_request_id INTEGER,id VARCHAR(100) NOT NULL CONSTRAINT vacancies_list_id_pk UNIQUE);
@@ -23,7 +25,6 @@ CREATE TABLE industry(id SERIAL NOT NULL CONSTRAINT industry_pkey PRIMARY KEY,co
 CREATE UNIQUE INDEX industry_id_uindex ON industry (id);
 CREATE UNIQUE INDEX industry_code_uindex ON industry (code);
 ALTER TABLE search_request ADD CONSTRAINT search_request_industry_code_fk FOREIGN KEY (industry) REFERENCES industry (code);
-CREATE TABLE all_vacancies_tab(id TEXT,name TEXT,created_at TIMESTAMP,emp_name JSONB,emp_city JSONB,salary_to JSONB);
 CREATE FUNCTION is_vacancy_loaded(vac_id CHARACTER VARYING) RETURNS BOOLEAN LANGUAGE SQL AS $$SELECT exists(SELECT 1 FROM vacancy WHERE id = vac_id)$$;
 CREATE VIEW vacancy_to_load AS SELECT i.id,i.name,i.created_at,(i.employer -> 'name' :: TEXT) AS emp_name,(i.address -> 'city' :: TEXT) AS emp_city,(i.salary -> 'to' :: TEXT) AS salary_to FROM (search_result sr CROSS JOIN LATERAL jsonb_to_recordset((sr.raw_response #> '{items}' :: TEXT [])) i(id TEXT,name TEXT,url TEXT,created_at TIMESTAMP WITHOUT TIME ZONE,employer JSONB,address JSONB,salary JSONB)) WHERE (is_vacancy_loaded((i.id) :: CHARACTER VARYING) IS FALSE);
 CREATE VIEW all_vacancies AS SELECT i.id,i.name,i.created_at,(i.employer -> 'name' :: TEXT) AS emp_name,(i.address -> 'city' :: TEXT) AS emp_city,(i.salary -> 'to' :: TEXT) AS salary_to FROM (search_result sr CROSS JOIN LATERAL jsonb_to_recordset((sr.raw_response #> '{items}' :: TEXT [])) i(id TEXT,name TEXT,url TEXT,created_at TIMESTAMP WITHOUT TIME ZONE,employer JSONB,address JSONB,salary JSONB));

@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.masdmtr.skillsmonster.entity.Vacancy" table="vacancy" schema="public" catalog="skillsmonster">
+        <property name="rawData">
+            <column name="raw_data" sql-type="jsonb" not-null="true"/>
+        </property>
+        <property name="searchRequestId">
+            <column name="search_request_id" sql-type="integer" not-null="true"/>
+        </property>
+        <property name="id">
+            <column name="id" sql-type="varchar(100)" length="100"/>
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.masdmtr.skillsmonster.entity.Country" table="country" schema="public" catalog="skillsmonster">
+        <id name="alpha3">
+            <column name="alpha_3" sql-type="varchar(3)" length="3"/>
+        </id>
+        <property name="alpha2">
+            <column name="alpha_2" sql-type="varchar(2)" length="2" not-null="true"/>
+        </property>
+        <property name="shortName">
+            <column name="short_name" sql-type="varchar(200)" length="200" not-null="true"/>
+        </property>
+        <property name="fullName">
+            <column name="full_name" sql-type="varchar(500)" length="500" not-null="true"/>
+        </property>
+        <property name="numCode">
+            <column name="num_code" sql-type="integer" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

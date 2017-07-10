@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.masdmtr.skillsmonster.entity.SearchResult" table="search_result" schema="public"
+           catalog="skillsmonster">
+        <id name="id">
+            <column name="id" sql-type="integer"/>
+        </id>
+        <property name="searchReauestId">
+            <column name="search_reauest_id" sql-type="integer" not-null="true"/>
+        </property>
+        <property name="rawResponse">
+            <column name="raw_response" sql-type="jsonb" not-null="true"/>
+        </property>
+        <property name="page">
+            <column name="page" sql-type="integer" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

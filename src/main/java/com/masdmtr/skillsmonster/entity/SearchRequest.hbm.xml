@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.masdmtr.skillsmonster.entity.SearchRequest" table="search_request" schema="public"
+           catalog="skillsmonster">
+        <id name="id">
+            <column name="id" sql-type="integer"/>
+        </id>
+        <property name="periodFrom">
+            <column name="period_from" sql-type="timestamp" not-null="true"/>
+        </property>
+        <property name="industry">
+            <column name="industry" sql-type="varchar(100)" length="100" not-null="true"/>
+        </property>
+        <property name="sourceSiteId">
+            <column name="source_site_id" sql-type="integer" not-null="true"/>
+        </property>
+        <property name="area">
+            <column name="area" sql-type="integer" not-null="true"/>
+        </property>
+        <property name="perPage">
+            <column name="per_page" sql-type="integer" not-null="true"/>
+        </property>
+        <property name="found">
+            <column name="found" sql-type="integer" not-null="true"/>
+        </property>
+        <property name="rawRequest">
+            <column name="raw_request" sql-type="varchar(500)" length="500" not-null="true"/>
+        </property>
+        <property name="periodTo">
+            <column name="period_to" sql-type="timestamp" not-null="true"/>
+        </property>
+        <property name="dateTime">
+            <column name="date_time" sql-type="timestamp" not-null="true"/>
+        </property>
+        <property name="pages">
+            <column name="pages" sql-type="integer" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>
