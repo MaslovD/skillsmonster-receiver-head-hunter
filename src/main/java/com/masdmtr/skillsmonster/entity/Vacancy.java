@@ -1,18 +1,17 @@
 package com.masdmtr.skillsmonster.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * Created by dmaslov on 11/07/17.
+ * Created by dmaslov on 13/07/17.
  */
 @Entity
 public class Vacancy {
     private Serializable rawData;
     private Integer searchRequestId;
     private String id;
+    private SearchRequest searchRequestBySearchRequestId;
 
     @Basic
     @Column(name = "raw_data", nullable = true)
@@ -25,7 +24,7 @@ public class Vacancy {
     }
 
     @Basic
-    @Column(name = "search_request_id", nullable = true)
+    @Column(name = "search_request_id", insertable = false, updatable = false, nullable = true)
     public Integer getSearchRequestId() {
         return searchRequestId;
     }
@@ -34,7 +33,7 @@ public class Vacancy {
         this.searchRequestId = searchRequestId;
     }
 
-    @Basic
+    @Id
     @Column(name = "id", nullable = false, length = 100)
     public String getId() {
         return id;
@@ -65,5 +64,15 @@ public class Vacancy {
         result = 31 * result + (searchRequestId != null ? searchRequestId.hashCode() : 0);
         result = 31 * result + (id != null ? id.hashCode() : 0);
         return result;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "search_request_id", referencedColumnName = "id")
+    public SearchRequest getSearchRequestBySearchRequestId() {
+        return searchRequestBySearchRequestId;
+    }
+
+    public void setSearchRequestBySearchRequestId(SearchRequest searchRequestBySearchRequestId) {
+        this.searchRequestBySearchRequestId = searchRequestBySearchRequestId;
     }
 }

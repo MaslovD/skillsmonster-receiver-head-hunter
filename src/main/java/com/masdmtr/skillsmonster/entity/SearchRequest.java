@@ -2,24 +2,29 @@ package com.masdmtr.skillsmonster.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Collection;
 
 /**
- * Created by dmaslov on 11/07/17.
+ * Created by dmaslov on 13/07/17.
  */
 @Entity
 @Table(name = "search_request", schema = "public", catalog = "skillsmonster")
 public class SearchRequest {
     private Integer id;
     private Timestamp periodFrom;
-    private String industry;
+    private String industryId;
     private Integer sourceSiteId;
-    private Integer area;
+    private Integer areaId;
     private Integer perPage;
     private Integer found;
     private String rawRequest;
     private Timestamp periodTo;
     private Timestamp dateTime;
     private Integer pages;
+    private SourceSite sourceSiteBySourceSiteId;
+    private Area areaByAreaId;
+    private Collection<SearchResult> searchResultsById;
+    private Collection<Vacancy> vacanciesById;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -42,17 +47,17 @@ public class SearchRequest {
     }
 
     @Basic
-    @Column(name = "industry", nullable = true, length = 100)
-    public String getIndustry() {
-        return industry;
+    @Column(name = "industry_id", nullable = true, length = 100)
+    public String getIndustryId() {
+        return industryId;
     }
 
-    public void setIndustry(String industry) {
-        this.industry = industry;
+    public void setIndustryId(String industryId) {
+        this.industryId = industryId;
     }
 
     @Basic
-    @Column(name = "source_site_id", nullable = true)
+    @Column(name = "source_site_id", nullable = true, insertable = false, updatable = false)
     public Integer getSourceSiteId() {
         return sourceSiteId;
     }
@@ -62,13 +67,13 @@ public class SearchRequest {
     }
 
     @Basic
-    @Column(name = "area", nullable = true)
-    public Integer getArea() {
-        return area;
+    @Column(name = "area_id", nullable = true, insertable = false, updatable = false)
+    public Integer getAreaId() {
+        return areaId;
     }
 
-    public void setArea(Integer area) {
-        this.area = area;
+    public void setAreaId(Integer areaId) {
+        this.areaId = areaId;
     }
 
     @Basic
@@ -140,9 +145,9 @@ public class SearchRequest {
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (periodFrom != null ? !periodFrom.equals(that.periodFrom) : that.periodFrom != null) return false;
-        if (industry != null ? !industry.equals(that.industry) : that.industry != null) return false;
+        if (industryId != null ? !industryId.equals(that.industryId) : that.industryId != null) return false;
         if (sourceSiteId != null ? !sourceSiteId.equals(that.sourceSiteId) : that.sourceSiteId != null) return false;
-        if (area != null ? !area.equals(that.area) : that.area != null) return false;
+        if (areaId != null ? !areaId.equals(that.areaId) : that.areaId != null) return false;
         if (perPage != null ? !perPage.equals(that.perPage) : that.perPage != null) return false;
         if (found != null ? !found.equals(that.found) : that.found != null) return false;
         if (rawRequest != null ? !rawRequest.equals(that.rawRequest) : that.rawRequest != null) return false;
@@ -157,9 +162,9 @@ public class SearchRequest {
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (periodFrom != null ? periodFrom.hashCode() : 0);
-        result = 31 * result + (industry != null ? industry.hashCode() : 0);
+        result = 31 * result + (industryId != null ? industryId.hashCode() : 0);
         result = 31 * result + (sourceSiteId != null ? sourceSiteId.hashCode() : 0);
-        result = 31 * result + (area != null ? area.hashCode() : 0);
+        result = 31 * result + (areaId != null ? areaId.hashCode() : 0);
         result = 31 * result + (perPage != null ? perPage.hashCode() : 0);
         result = 31 * result + (found != null ? found.hashCode() : 0);
         result = 31 * result + (rawRequest != null ? rawRequest.hashCode() : 0);
@@ -167,5 +172,43 @@ public class SearchRequest {
         result = 31 * result + (dateTime != null ? dateTime.hashCode() : 0);
         result = 31 * result + (pages != null ? pages.hashCode() : 0);
         return result;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "source_site_id", referencedColumnName = "id")
+    public SourceSite getSourceSiteBySourceSiteId() {
+        return sourceSiteBySourceSiteId;
+    }
+
+    public void setSourceSiteBySourceSiteId(SourceSite sourceSiteBySourceSiteId) {
+        this.sourceSiteBySourceSiteId = sourceSiteBySourceSiteId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "area_id", referencedColumnName = "id")
+    public Area getAreaByAreaId() {
+        return areaByAreaId;
+    }
+
+    public void setAreaByAreaId(Area areaByAreaId) {
+        this.areaByAreaId = areaByAreaId;
+    }
+
+    @OneToMany(mappedBy = "searchRequestBySearchReauestId")
+    public Collection<SearchResult> getSearchResultsById() {
+        return searchResultsById;
+    }
+
+    public void setSearchResultsById(Collection<SearchResult> searchResultsById) {
+        this.searchResultsById = searchResultsById;
+    }
+
+    @OneToMany(mappedBy = "searchRequestBySearchRequestId")
+    public Collection<Vacancy> getVacanciesById() {
+        return vacanciesById;
+    }
+
+    public void setVacanciesById(Collection<Vacancy> vacanciesById) {
+        this.vacanciesById = vacanciesById;
     }
 }

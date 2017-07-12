@@ -1,9 +1,10 @@
 package com.masdmtr.skillsmonster.entity;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 /**
- * Created by dmaslov on 11/07/17.
+ * Created by dmaslov on 13/07/17.
  */
 @Entity
 @Table(name = "source_site", schema = "public", catalog = "skillsmonster")
@@ -12,6 +13,7 @@ public class SourceSite {
     private String name;
     private String url;
     private String apiUrl;
+    private Collection<SearchRequest> searchRequestsById;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -75,5 +77,14 @@ public class SourceSite {
         result = 31 * result + (url != null ? url.hashCode() : 0);
         result = 31 * result + (apiUrl != null ? apiUrl.hashCode() : 0);
         return result;
+    }
+
+    @OneToMany(mappedBy = "sourceSiteBySourceSiteId")
+    public Collection<SearchRequest> getSearchRequestsById() {
+        return searchRequestsById;
+    }
+
+    public void setSearchRequestsById(Collection<SearchRequest> searchRequestsById) {
+        this.searchRequestsById = searchRequestsById;
     }
 }

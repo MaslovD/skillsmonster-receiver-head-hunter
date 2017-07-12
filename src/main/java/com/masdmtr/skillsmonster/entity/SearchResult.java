@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * Created by dmaslov on 11/07/17.
+ * Created by dmaslov on 13/07/17.
  */
 @Entity
 @Table(name = "search_result", schema = "public", catalog = "skillsmonster")
@@ -13,6 +13,7 @@ public class SearchResult {
     private Integer searchReauestId;
     private Serializable rawResponse;
     private Integer page;
+    private SearchRequest searchRequestBySearchReauestId;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -25,7 +26,7 @@ public class SearchResult {
     }
 
     @Basic
-    @Column(name = "search_reauest_id", nullable = true)
+    @Column(name = "search_request_id",insertable = false, updatable = false, nullable = true)
     public Integer getSearchReauestId() {
         return searchReauestId;
     }
@@ -77,5 +78,15 @@ public class SearchResult {
         result = 31 * result + (rawResponse != null ? rawResponse.hashCode() : 0);
         result = 31 * result + (page != null ? page.hashCode() : 0);
         return result;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "search_request_id", referencedColumnName = "id")
+    public SearchRequest getSearchRequestBySearchReauestId() {
+        return searchRequestBySearchReauestId;
+    }
+
+    public void setSearchRequestBySearchReauestId(SearchRequest searchRequestBySearchReauestId) {
+        this.searchRequestBySearchReauestId = searchRequestBySearchReauestId;
     }
 }

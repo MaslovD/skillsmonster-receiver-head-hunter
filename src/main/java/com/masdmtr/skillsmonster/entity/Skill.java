@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 /**
- * Created by dmaslov on 11/07/17.
+ * Created by dmaslov on 13/07/17.
  */
 @Entity
 public class Skill {

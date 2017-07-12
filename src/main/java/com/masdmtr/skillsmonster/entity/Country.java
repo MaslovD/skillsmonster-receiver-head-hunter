@@ -1,12 +1,10 @@
 package com.masdmtr.skillsmonster.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Collection;
 
 /**
- * Created by dmaslov on 11/07/17.
+ * Created by dmaslov on 13/07/17.
  */
 @Entity
 public class Country {
@@ -15,6 +13,7 @@ public class Country {
     private String fullName;
     private String alpha3;
     private Integer numCode;
+    private Collection<Area> areasByAlpha3;
 
     @Basic
     @Column(name = "alpha_2", nullable = true, length = 2)
@@ -90,5 +89,14 @@ public class Country {
         result = 31 * result + (alpha3 != null ? alpha3.hashCode() : 0);
         result = 31 * result + (numCode != null ? numCode.hashCode() : 0);
         return result;
+    }
+
+    @OneToMany(mappedBy = "countryByCountryCode")
+    public Collection<Area> getAreasByAlpha3() {
+        return areasByAlpha3;
+    }
+
+    public void setAreasByAlpha3(Collection<Area> areasByAlpha3) {
+        this.areasByAlpha3 = areasByAlpha3;
     }
 }

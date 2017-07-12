@@ -1,17 +1,15 @@
 package com.masdmtr.skillsmonster.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
- * Created by dmaslov on 11/07/17.
+ * Created by dmaslov on 13/07/17.
  */
 @Entity
 public class Industry {
     private Integer id;
     private String code;
+    private SearchRequest searchRequestByCode;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -24,7 +22,7 @@ public class Industry {
     }
 
     @Basic
-    @Column(name = "code", nullable = false, length = 100)
+    @Column(name = "code", nullable = false,  insertable = false, updatable = false, length = 100)
     public String getCode() {
         return code;
     }
@@ -51,5 +49,15 @@ public class Industry {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (code != null ? code.hashCode() : 0);
         return result;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "code", referencedColumnName = "industry_id", nullable = false)
+    public SearchRequest getSearchRequestByCode() {
+        return searchRequestByCode;
+    }
+
+    public void setSearchRequestByCode(SearchRequest searchRequestByCode) {
+        this.searchRequestByCode = searchRequestByCode;
     }
 }

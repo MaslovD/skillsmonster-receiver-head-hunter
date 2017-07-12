@@ -1,22 +1,22 @@
 package com.masdmtr.skillsmonster.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Collection;
 
 /**
- * Created by dmaslov on 11/07/17.
+ * Created by dmaslov on 13/07/17.
  */
 @Entity
 public class Area {
     private Integer id;
-    private String country;
+    private String countryCode;
     private String name;
     private String type;
     private String code;
     private String zip;
     private String extCode;
+    private Country countryByCountryCode;
+    private Collection<SearchRequest> searchRequestsById;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -29,13 +29,13 @@ public class Area {
     }
 
     @Basic
-    @Column(name = "country", nullable = true, length = 3)
-    public String getCountry() {
-        return country;
+    @Column(name = "country_code", nullable = true,  insertable = false, updatable = false, length = 3)
+    public String getCountryCode() {
+        return countryCode;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
     }
 
     @Basic
@@ -96,7 +96,7 @@ public class Area {
         Area area = (Area) o;
 
         if (id != null ? !id.equals(area.id) : area.id != null) return false;
-        if (country != null ? !country.equals(area.country) : area.country != null) return false;
+        if (countryCode != null ? !countryCode.equals(area.countryCode) : area.countryCode != null) return false;
         if (name != null ? !name.equals(area.name) : area.name != null) return false;
         if (type != null ? !type.equals(area.type) : area.type != null) return false;
         if (code != null ? !code.equals(area.code) : area.code != null) return false;
@@ -109,12 +109,31 @@ public class Area {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (country != null ? country.hashCode() : 0);
+        result = 31 * result + (countryCode != null ? countryCode.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + (code != null ? code.hashCode() : 0);
         result = 31 * result + (zip != null ? zip.hashCode() : 0);
         result = 31 * result + (extCode != null ? extCode.hashCode() : 0);
         return result;
+    }
+
+    @ManyToOne(fetch=FetchType.LAZY,optional=false)
+    @JoinColumn(name = "country_code", referencedColumnName = "alpha_3")
+    public Country getCountryByCountryCode() {
+        return countryByCountryCode;
+    }
+
+    public void setCountryByCountryCode(Country countryByCountryCode) {
+        this.countryByCountryCode = countryByCountryCode;
+    }
+
+    @OneToMany(mappedBy = "areaByAreaId")
+    public Collection<SearchRequest> getSearchRequestsById() {
+        return searchRequestsById;
+    }
+
+    public void setSearchRequestsById(Collection<SearchRequest> searchRequestsById) {
+        this.searchRequestsById = searchRequestsById;
     }
 }
