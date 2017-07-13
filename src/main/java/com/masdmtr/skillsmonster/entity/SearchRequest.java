@@ -1,6 +1,7 @@
 package com.masdmtr.skillsmonster.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
 
@@ -194,16 +195,16 @@ public class SearchRequest {
         this.areaByAreaId = areaByAreaId;
     }
 
-    @OneToMany(mappedBy = "searchRequestBySearchReauestId")
+    /*@OneToMany(mappedBy = "searchRequestBySearchReauestId")
     public Collection<SearchResult> getSearchResultsById() {
         return searchResultsById;
     }
 
     public void setSearchResultsById(Collection<SearchResult> searchResultsById) {
         this.searchResultsById = searchResultsById;
-    }
+    }*/
 
-    @OneToMany(mappedBy = "searchRequestBySearchRequestId")
+   /* @OneToMany(mappedBy = "searchRequestBySearchRequestId")
     public Collection<Vacancy> getVacanciesById() {
         return vacanciesById;
     }
@@ -211,4 +212,5 @@ public class SearchRequest {
     public void setVacanciesById(Collection<Vacancy> vacanciesById) {
         this.vacanciesById = vacanciesById;
     }
+    */
 }

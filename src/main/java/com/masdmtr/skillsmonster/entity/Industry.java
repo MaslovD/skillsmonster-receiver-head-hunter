@@ -6,6 +6,8 @@ import javax.persistence.*;
  * Created by dmaslov on 13/07/17.
  */
 @Entity
+@Table(name="industry")
+
 public class Industry {
     private Integer id;
     private String code;

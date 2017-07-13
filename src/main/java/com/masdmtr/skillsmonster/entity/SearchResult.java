@@ -1,19 +1,24 @@
 package com.masdmtr.skillsmonster.entity;
 
+import com.masdmtr.skillsmonster.json.JsonDataUserType;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+
 import javax.persistence.*;
-import java.io.Serializable;
 
 /**
  * Created by dmaslov on 13/07/17.
  */
 @Entity
 @Table(name = "search_result", schema = "public", catalog = "skillsmonster")
+@TypeDef(name = "JsonDataUserType", typeClass = JsonDataUserType.class)
+
 public class SearchResult {
     private Integer id;
     private Integer searchReauestId;
-    private Serializable rawResponse;
+    private String rawResponse;
     private Integer page;
-    private SearchRequest searchRequestBySearchReauestId;
+   // private SearchRequest searchRequestBySearchReauestId;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -36,12 +41,13 @@ public class SearchResult {
     }
 
     @Basic
+    @Type(type = "JsonDataUserType")
     @Column(name = "raw_response", nullable = true)
-    public Serializable getRawResponse() {
+    public String getRawResponse() {
         return rawResponse;
     }
 
-    public void setRawResponse(Serializable rawResponse) {
+    public void setRawResponse(String rawResponse) {
         this.rawResponse = rawResponse;
     }
 
@@ -80,7 +86,7 @@ public class SearchResult {
         return result;
     }
 
-    @ManyToOne
+   /* @ManyToOne
     @JoinColumn(name = "search_request_id", referencedColumnName = "id")
     public SearchRequest getSearchRequestBySearchReauestId() {
         return searchRequestBySearchReauestId;
@@ -88,5 +94,5 @@ public class SearchResult {
 
     public void setSearchRequestBySearchReauestId(SearchRequest searchRequestBySearchReauestId) {
         this.searchRequestBySearchReauestId = searchRequestBySearchReauestId;
-    }
+    }*/
 }

@@ -7,6 +7,8 @@ import java.util.List;
 /**
  * Created by dmaslov on 09/07/17.
  */
-public interface Dao {
+public interface SkillsMonsterDao {
     public List<Country> getCountryList();
+
+    void addCountry(Country country);
 }

@@ -7,6 +7,7 @@ import java.util.Collection;
  * Created by dmaslov on 13/07/17.
  */
 @Entity
+@Table(name="area")
 public class Area {
     private Integer id;
     private String countryCode;
@@ -128,12 +129,12 @@ public class Area {
         this.countryByCountryCode = countryByCountryCode;
     }
 
-    @OneToMany(mappedBy = "areaByAreaId")
+  /*  @OneToMany(mappedBy = "areaByAreaId")
     public Collection<SearchRequest> getSearchRequestsById() {
         return searchRequestsById;
     }
 
     public void setSearchRequestsById(Collection<SearchRequest> searchRequestsById) {
         this.searchRequestsById = searchRequestsById;
-    }
+    }*/
 }

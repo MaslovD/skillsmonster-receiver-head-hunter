@@ -1,5 +1,9 @@
 package com.masdmtr.skillsmonster.entity;
 
+import com.masdmtr.skillsmonster.json.JsonDataUserType;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -7,6 +11,8 @@ import java.io.Serializable;
  * Created by dmaslov on 13/07/17.
  */
 @Entity
+@Table(name = "vacancy", schema = "public", catalog = "skillsmonster")
+@TypeDef(name = "JsonDataUserType", typeClass = JsonDataUserType.class)
 public class Vacancy {
     private Serializable rawData;
     private Integer searchRequestId;
@@ -14,6 +20,7 @@ public class Vacancy {
     private SearchRequest searchRequestBySearchRequestId;
 
     @Basic
+    @Type(type = "JsonDataUserType")
     @Column(name = "raw_data", nullable = true)
     public Serializable getRawData() {
         return rawData;
@@ -66,7 +73,7 @@ public class Vacancy {
         return result;
     }
 
-    @ManyToOne
+/*    @ManyToOne
     @JoinColumn(name = "search_request_id", referencedColumnName = "id")
     public SearchRequest getSearchRequestBySearchRequestId() {
         return searchRequestBySearchRequestId;
@@ -74,5 +81,5 @@ public class Vacancy {
 
     public void setSearchRequestBySearchRequestId(SearchRequest searchRequestBySearchRequestId) {
         this.searchRequestBySearchRequestId = searchRequestBySearchRequestId;
-    }
+    }*/
 }

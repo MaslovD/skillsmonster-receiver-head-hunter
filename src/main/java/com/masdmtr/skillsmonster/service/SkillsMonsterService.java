@@ -9,4 +9,5 @@ import java.util.List;
  */
 public interface SkillsMonsterService {
     List<Country> getCountryList();
+    void addCountry(Country country);
 }

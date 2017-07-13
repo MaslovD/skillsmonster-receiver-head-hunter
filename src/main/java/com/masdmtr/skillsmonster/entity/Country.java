@@ -7,13 +7,14 @@ import java.util.Collection;
  * Created by dmaslov on 13/07/17.
  */
 @Entity
+@Table(name="country")
 public class Country {
     private String alpha2;
     private String shortName;
     private String fullName;
     private String alpha3;
     private Integer numCode;
-    private Collection<Area> areasByAlpha3;
+    //private Collection<Area> areasByAlpha3;
 
     @Basic
     @Column(name = "alpha_2", nullable = true, length = 2)
@@ -91,12 +92,12 @@ public class Country {
         return result;
     }
 
-    @OneToMany(mappedBy = "countryByCountryCode")
+  /*  @OneToMany(mappedBy = "countryByCountryCode")
     public Collection<Area> getAreasByAlpha3() {
         return areasByAlpha3;
-    }
+    }*/
 
-    public void setAreasByAlpha3(Collection<Area> areasByAlpha3) {
+  /*  public void setAreasByAlpha3(Collection<Area> areasByAlpha3) {
         this.areasByAlpha3 = areasByAlpha3;
-    }
+    }*/
 }

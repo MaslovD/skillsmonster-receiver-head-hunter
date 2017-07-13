@@ -79,12 +79,12 @@ public class SourceSite {
         return result;
     }
 
-    @OneToMany(mappedBy = "sourceSiteBySourceSiteId")
+ /*   @OneToMany(mappedBy = "sourceSiteBySourceSiteId")
     public Collection<SearchRequest> getSearchRequestsById() {
         return searchRequestsById;
     }
 
     public void setSearchRequestsById(Collection<SearchRequest> searchRequestsById) {
         this.searchRequestsById = searchRequestsById;
-    }
+    }*/
 }
