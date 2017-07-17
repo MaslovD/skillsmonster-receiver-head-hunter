@@ -1,0 +1,2 @@
+INSERT INTO public.country (alpha_2, short_name, full_name, alpha_3, num_code) VALUES ('US', 'United States', 'Unites States of America', 'USA', 840);
+INSERT INTO public.country (alpha_2, short_name, full_name, alpha_3, num_code) VALUES ('RU', 'Russia', 'Russian Federation', 'RUS', 640);
