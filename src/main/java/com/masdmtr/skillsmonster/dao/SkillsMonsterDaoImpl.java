@@ -4,6 +4,7 @@ import com.masdmtr.skillsmonster.entity.Country;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -39,7 +40,15 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
 
 
         Session session = sessionFactory.openSession();
-        session.save(country);
+
+        Transaction tx1 = session.beginTransaction();
+
+        //session.save(country);
+        String str = (String) session.save(country);
+
+        tx1.commit();
+
+        session.flush();
         session.close();
     }
 }

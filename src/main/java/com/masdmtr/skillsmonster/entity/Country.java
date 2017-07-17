@@ -1,19 +1,23 @@
 package com.masdmtr.skillsmonster.entity;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.Map;
 
 /**
  * Created by dmaslov on 13/07/17.
  */
 @Entity
-@Table(name="country")
+@Table(name = "country")
 public class Country {
     private String alpha2;
     private String shortName;
     private String fullName;
     private String alpha3;
     private Integer numCode;
+    private Map<String, String> rawJson;
+
     //private Collection<Area> areasByAlpha3;
 
     @Basic
@@ -64,6 +68,18 @@ public class Country {
 
     public void setNumCode(Integer numCode) {
         this.numCode = numCode;
+    }
+
+
+    @Basic
+    @Type(type = "JsonDataUserType")
+    @Column(name = "raw_json", nullable = true)
+    public Map<String, String> getRawJson() {
+        return rawJson;
+    }
+
+    public void setRawJson(Map<String, String> rawJson) {
+        this.rawJson = rawJson;
     }
 
     @Override
