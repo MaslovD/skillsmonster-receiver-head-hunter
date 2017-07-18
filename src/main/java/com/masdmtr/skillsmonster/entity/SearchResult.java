@@ -5,10 +5,12 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
+import java.util.Map;
 
 /**
  * Created by dmaslov on 13/07/17.
  */
+
 @Entity
 @Table(name = "search_result", schema = "public", catalog = "skillsmonster")
 @TypeDef(name = "JsonDataUserType", typeClass = JsonDataUserType.class)
@@ -16,9 +18,9 @@ import javax.persistence.*;
 public class SearchResult {
     private Integer id;
     private Integer searchReauestId;
-    private String rawResponse;
+    private Map<String, String> rawResponse;
     private Integer page;
-   // private SearchRequest searchRequestBySearchReauestId;
+    // private SearchRequest searchRequestBySearchReauestId;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -31,7 +33,7 @@ public class SearchResult {
     }
 
     @Basic
-    @Column(name = "search_request_id",insertable = false, updatable = false, nullable = true)
+    @Column(name = "search_request_id", insertable = false, updatable = false, nullable = true)
     public Integer getSearchReauestId() {
         return searchReauestId;
     }
@@ -43,11 +45,11 @@ public class SearchResult {
     @Basic
     @Type(type = "JsonDataUserType")
     @Column(name = "raw_response", nullable = true)
-    public String getRawResponse() {
+    public Map<String, String> getRawResponse() {
         return rawResponse;
     }
 
-    public void setRawResponse(String rawResponse) {
+    public void setRawResponse(Map<String, String> rawResponse) {
         this.rawResponse = rawResponse;
     }
 

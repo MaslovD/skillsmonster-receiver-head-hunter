@@ -2,6 +2,7 @@ package com.masdmtr.skillsmonster.service;
 
 import com.masdmtr.skillsmonster.dao.SkillsMonsterDao;
 import com.masdmtr.skillsmonster.entity.Country;
+import com.masdmtr.skillsmonster.entity.SearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public class SkillsMonsterServiceImpl implements SkillsMonsterService {
     }
 
     @Override
-    public void addCountry(Country country) {
-        dao.addCountry(country);
+    public void addCountry(Country country, SearchResult searchResult) {
+        dao.addCountry(country, searchResult);
     }
 }

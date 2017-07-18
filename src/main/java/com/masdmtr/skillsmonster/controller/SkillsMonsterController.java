@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import com.masdmtr.skillsmonster.entity.Country;
+import com.masdmtr.skillsmonster.entity.SearchResult;
 import com.masdmtr.skillsmonster.service.SkillsMonsterService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,10 @@ public class SkillsMonsterController {
 
 
         Map<String, String> map = new HashMap<>();
+        SearchResult searchResult = new SearchResult();
+        searchResult.setId(2);
+        searchResult.setPage(1);
+        searchResult.setSearchReauestId(1);
 
         Country country = new Country();
         country.setShortName(cnt.getShortName());
@@ -58,17 +63,17 @@ public class SkillsMonsterController {
         map.put("test", "TEST");
         //country.setRawJson("{\"alpha2\":\"US\",\"shortName\":\"United States\",\"fullName\":\"Unites States of America\",\"alpha3\":\"USA\",\"numCode\":840}");
 
-        String jsonString = restTemplate.getForObject("https://api.hh.ru/vacancies?area=1&text=java&inductries=7.540&date_from=2017-07-17&date_to=2017-07-17", String.class);
+        String jsonString = restTemplate.getForObject("https://api.hh.ru/vacancies?area=1&text=java&inductries=7.540&date_from=2017-07-17&date_to=2017-07-17&per_page=500", String.class);
 
 
         Map<String, String> retMap = new Gson().fromJson(jsonString, new TypeToken<HashMap<String, Object>>() {
 
         }.getType());
 
+        searchResult.setRawResponse(retMap);
+        //country.setRawJson(retMap);
 
-        country.setRawJson(retMap);
-
-        skillsMonsterService.addCountry(country);
+        skillsMonsterService.addCountry(country, searchResult);
 
         return "";
     }

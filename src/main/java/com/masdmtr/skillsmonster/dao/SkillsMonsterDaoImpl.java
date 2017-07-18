@@ -1,6 +1,7 @@
 package com.masdmtr.skillsmonster.dao;
 
 import com.masdmtr.skillsmonster.entity.Country;
+import com.masdmtr.skillsmonster.entity.SearchResult;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -34,17 +35,17 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
     }
 
     @Override
-    public void addCountry(Country country) {
+    public void addCountry(Country country, SearchResult searchResult) {
         System.out.println();
         //sessionFactory.openSession().persist(country);
-
 
         Session session = sessionFactory.openSession();
 
         Transaction tx1 = session.beginTransaction();
 
         //session.save(country);
-        String str = (String) session.save(country);
+        session.save(country);
+        session.save(searchResult);
 
         tx1.commit();
 

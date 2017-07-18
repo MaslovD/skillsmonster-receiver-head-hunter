@@ -1,6 +1,7 @@
 package com.masdmtr.skillsmonster.dao;
 
 import com.masdmtr.skillsmonster.entity.Country;
+import com.masdmtr.skillsmonster.entity.SearchResult;
 
 import java.util.List;
 
@@ -10,5 +11,6 @@ import java.util.List;
 public interface SkillsMonsterDao {
     public List<Country> getCountryList();
 
-    void addCountry(Country country);
+    void addCountry(Country country, SearchResult searchResult);
+
 }

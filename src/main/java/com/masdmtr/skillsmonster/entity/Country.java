@@ -16,7 +16,7 @@ public class Country {
     private String fullName;
     private String alpha3;
     private Integer numCode;
-    private Map<String, String> rawJson;
+   /* private Map<String, String> rawJson;*/
 
     //private Collection<Area> areasByAlpha3;
 
@@ -71,7 +71,7 @@ public class Country {
     }
 
 
-    @Basic
+    /*@Basic
     @Type(type = "JsonDataUserType")
     @Column(name = "raw_json", nullable = true)
     public Map<String, String> getRawJson() {
@@ -80,7 +80,7 @@ public class Country {
 
     public void setRawJson(Map<String, String> rawJson) {
         this.rawJson = rawJson;
-    }
+    }*/
 
     @Override
     public boolean equals(Object o) {
