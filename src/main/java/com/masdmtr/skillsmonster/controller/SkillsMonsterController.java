@@ -51,7 +51,7 @@ public class SkillsMonsterController {
         SearchResult searchResult = new SearchResult();
         searchResult.setId(2);
         searchResult.setPage(1);
-        searchResult.setSearchReauestId(1);
+        //searchResult.setSearchReauestId(1);
 
         Country country = new Country();
         country.setShortName(cnt.getShortName());
@@ -73,10 +73,8 @@ public class SkillsMonsterController {
         searchResult.setRawResponse(retMap);
         //country.setRawJson(retMap);
 
-        skillsMonsterService.addCountry(country, searchResult);
+        //skillsMonsterService.addCountry(country, searchResult);
 
         return "";
     }
-
-
 }

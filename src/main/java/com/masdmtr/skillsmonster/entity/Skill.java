@@ -6,34 +6,24 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 /**
- * Created by dmaslov on 13/07/17.
+ * Created by dmaslov on 7/26/17.
  */
 @Entity
 public class Skill {
-    private Integer id;
-    private String name;
+    private int id;
     private String code;
-    private Boolean keySkill;
     private Integer collectionId;
+    private Boolean keySkill;
+    private String name;
 
     @Id
     @Column(name = "id", nullable = false)
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
-    }
-
-    @Basic
-    @Column(name = "name", nullable = true, length = 200)
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Basic
@@ -47,6 +37,16 @@ public class Skill {
     }
 
     @Basic
+    @Column(name = "collection_id", nullable = true)
+    public Integer getCollectionId() {
+        return collectionId;
+    }
+
+    public void setCollectionId(Integer collectionId) {
+        this.collectionId = collectionId;
+    }
+
+    @Basic
     @Column(name = "key_skill", nullable = true)
     public Boolean getKeySkill() {
         return keySkill;
@@ -57,13 +57,13 @@ public class Skill {
     }
 
     @Basic
-    @Column(name = "collection_id", nullable = true)
-    public Integer getCollectionId() {
-        return collectionId;
+    @Column(name = "name", nullable = true, length = 200)
+    public String getName() {
+        return name;
     }
 
-    public void setCollectionId(Integer collectionId) {
-        this.collectionId = collectionId;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -73,22 +73,22 @@ public class Skill {
 
         Skill skill = (Skill) o;
 
-        if (id != null ? !id.equals(skill.id) : skill.id != null) return false;
-        if (name != null ? !name.equals(skill.name) : skill.name != null) return false;
+        if (id != skill.id) return false;
         if (code != null ? !code.equals(skill.code) : skill.code != null) return false;
-        if (keySkill != null ? !keySkill.equals(skill.keySkill) : skill.keySkill != null) return false;
         if (collectionId != null ? !collectionId.equals(skill.collectionId) : skill.collectionId != null) return false;
+        if (keySkill != null ? !keySkill.equals(skill.keySkill) : skill.keySkill != null) return false;
+        if (name != null ? !name.equals(skill.name) : skill.name != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
+        int result = id;
         result = 31 * result + (code != null ? code.hashCode() : 0);
-        result = 31 * result + (keySkill != null ? keySkill.hashCode() : 0);
         result = 31 * result + (collectionId != null ? collectionId.hashCode() : 0);
+        result = 31 * result + (keySkill != null ? keySkill.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
 }
