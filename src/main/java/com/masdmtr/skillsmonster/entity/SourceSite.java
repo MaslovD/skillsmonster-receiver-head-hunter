@@ -12,6 +12,10 @@ public class SourceSite {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     private String apiUrl;
     private String name;
     private String url;
@@ -48,6 +52,18 @@ public class SourceSite {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Basic
+    @Column (name="status", nullable = false)
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override

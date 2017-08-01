@@ -73,7 +73,8 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
         //sessionFactory.openSession().persist(country);
 
         Session session = sessionFactory.openSession();
-        add here processing of country and link to enitial request
+       // continue here and add processing of country and link to initial request
+
         Transaction tx1 = session.beginTransaction();
 
         //session.save(country);

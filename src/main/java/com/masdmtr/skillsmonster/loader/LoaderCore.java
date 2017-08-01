@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import com.masdmtr.skillsmonster.entity.Area;
 import com.masdmtr.skillsmonster.entity.SearchRequest;
 import com.masdmtr.skillsmonster.entity.SearchResult;
+import com.masdmtr.skillsmonster.receiver.Receiver;
 import com.masdmtr.skillsmonster.service.SkillsMonsterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -23,11 +24,15 @@ import java.util.Map;
 public class LoaderCore {
 
     @Autowired
-    public SkillsMonsterService skillsMonsterService;
+    private SkillsMonsterService skillsMonsterService;
+    @Autowired
+    private LoaderController loaderController;
 
     @Scheduled(fixedRate = 1000)
     public void reportCurrentTime() {
         RestTemplate restTemplate = new RestTemplate();
+
+        loaderController.getReceivers().forEach(Receiver::load);
 
 
         // SearchRequest searchRequest = new SearchRequest();
