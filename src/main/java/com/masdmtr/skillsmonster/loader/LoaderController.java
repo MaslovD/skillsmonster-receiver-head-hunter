@@ -21,15 +21,18 @@ import java.util.List;
 @ComponentScan("com.masdmtr.skillsmonster")
 @Scope("singleton")
 public class LoaderController {
+
     @Autowired
+    @Qualifier("HeadHunter")
     Receiver receiver;
 
     @Autowired
     BeanFactory beans;
 
+
     @PostConstruct
     private void initController() {
-        Receiver receiver = beans.getBean("HeadHunter", Receiver.class);
+       // Receiver receiver = beans.getBean("HeadHunter", Receiver.class);
         receivers.add(receiver);
         System.out.println(receiver);
     }

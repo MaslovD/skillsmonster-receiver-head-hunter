@@ -18,7 +18,7 @@ import java.util.Map;
 public class SearchResult {
     private int id;
     private Integer page;
-    private Map<String, String> rawResponse;
+    private Map<String, Object> rawResponse;
     private Integer searchRequestId;
 
     @Id
@@ -45,11 +45,11 @@ public class SearchResult {
     @Basic
     @Type(type = "JsonDataUserType")
     @Column(name = "raw_response", nullable = true)
-    public Map<String, String> getRawResponse() {
+    public Map<String, Object> getRawResponse() {
         return rawResponse;
     }
 
-    public void setRawResponse(Map<String, String> rawResponse) {
+    public void setRawResponse(Map<String, Object> rawResponse) {
         this.rawResponse = rawResponse;
     }
 

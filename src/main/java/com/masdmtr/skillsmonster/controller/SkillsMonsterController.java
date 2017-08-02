@@ -66,7 +66,7 @@ public class SkillsMonsterController {
         String jsonString = restTemplate.getForObject("https://api.hh.ru/vacancies?area=1&text=java&inductries=7.540&date_from=2017-07-17&date_to=2017-07-17&per_page=500", String.class);
 
 
-        Map<String, String> retMap = new Gson().fromJson(jsonString, new TypeToken<HashMap<String, Object>>() {
+        Map<String, Object> retMap = new Gson().fromJson(jsonString, new TypeToken<HashMap<String, Object>>() {
 
         }.getType());
 

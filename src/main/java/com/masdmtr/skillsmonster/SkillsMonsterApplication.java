@@ -19,10 +19,12 @@ import org.slf4j.LoggerFactory;
 
 @SpringBootApplication
 @EnableScheduling
-@ComponentScan("com.masdmtr.skillsmonster")
+@ComponentScan("com.masdmtr")
 public class SkillsMonsterApplication {
     private static final Logger log = LoggerFactory.getLogger(SkillsMonsterApplication.class);
 
+    @Autowired
+    LoaderController loaderController;
 
     public static void main(String[] args) {
         SpringApplication.run(SkillsMonsterApplication.class, args);
