@@ -2,17 +2,19 @@ package com.masdmtr.skillsmonster.loader;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.masdmtr.skillsmonster.entity.Area;
-import com.masdmtr.skillsmonster.entity.SearchRequest;
-import com.masdmtr.skillsmonster.entity.SearchResult;
+import com.masdmtr.skillsmonster.entity.*;
 import com.masdmtr.skillsmonster.receiver.Receiver;
 import com.masdmtr.skillsmonster.service.SkillsMonsterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import sun.misc.Contended;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +22,7 @@ import java.util.Map;
  * Created by dmaslov on 7/25/17.
  */
 
+@SuppressWarnings("ThrowablePrintedToSystemOut")
 @Component
 public class LoaderCore {
 
@@ -28,13 +31,13 @@ public class LoaderCore {
     @Autowired
     private LoaderController loaderController;
 
-
     @Scheduled(fixedRate = 86400000)
-    public void reportCurrentTime() {
-        RestTemplate restTemplate = new RestTemplate();
-
+    public void load() {
         loaderController.getReceivers().forEach(Receiver::load);
-
     }
 
+    //@Scheduled(fixedRate = 50000000)
+    public void getsome() {
+        loaderController.getReceivers().forEach(Receiver::loadVacancyDetailes);
+    }
 }

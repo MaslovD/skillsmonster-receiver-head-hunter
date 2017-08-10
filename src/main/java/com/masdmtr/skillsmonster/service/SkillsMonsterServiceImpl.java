@@ -1,13 +1,11 @@
 package com.masdmtr.skillsmonster.service;
 
 import com.masdmtr.skillsmonster.dao.SkillsMonsterDao;
-import com.masdmtr.skillsmonster.entity.Area;
-import com.masdmtr.skillsmonster.entity.Country;
-import com.masdmtr.skillsmonster.entity.SearchResult;
-import com.masdmtr.skillsmonster.entity.SourceSite;
+import com.masdmtr.skillsmonster.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,6 +36,22 @@ public class SkillsMonsterServiceImpl implements SkillsMonsterService {
     @Override
     public SourceSite getSourceSite(int id) {
         return dao.getSourceSiteById(id);
+    }
+
+    @Override
+    public ArrayList<VacancyToLoadHh> getListToLoadFromHh() {
+        return dao.getListToLoadFromHh();
+
+    }
+
+    @Override
+    public void addVacancy(Vacancy vacancy) {
+        dao.addVacancy(vacancy);
+    }
+
+    @Override
+    public void addSearchRequest(SearchRequest searchRequest) {
+        dao.addSearchRequest(searchRequest);
     }
 
     @Override

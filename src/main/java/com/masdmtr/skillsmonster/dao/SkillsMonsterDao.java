@@ -1,10 +1,8 @@
 package com.masdmtr.skillsmonster.dao;
 
-import com.masdmtr.skillsmonster.entity.Area;
-import com.masdmtr.skillsmonster.entity.Country;
-import com.masdmtr.skillsmonster.entity.SearchResult;
-import com.masdmtr.skillsmonster.entity.SourceSite;
+import com.masdmtr.skillsmonster.entity.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,4 +18,9 @@ public interface SkillsMonsterDao {
     SourceSite getSourceSiteById(int id);
 
     void addSearchResult(SearchResult searchResult);
+    ArrayList getListToLoadFromHh();
+
+    void addVacancy(Vacancy vacancy);
+
+    void addSearchRequest(SearchRequest searchRequest);
 }

@@ -13,9 +13,9 @@ public class SearchRequest {
 
     private int id;
     private Timestamp dateTime;
-    private Integer found;
+    private Long found;
     private String industryId;
-    private Integer pages;
+    private Long pages;
     private Integer perPage;
     private Timestamp periodFrom;
     private Timestamp periodTo;
@@ -24,7 +24,7 @@ public class SearchRequest {
     private Area areaByAreaId;
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     public int getId() {
         return id;
@@ -46,22 +46,21 @@ public class SearchRequest {
 
     @Basic
     @Column(name = "found", nullable = true)
-    public Integer getFound() {
+    public Long getFound() {
         return found;
     }
 
-    public void setFound(Integer found) {
+    public void setFound(Long found) {
         this.found = found;
     }
 
-
     @Basic
     @Column(name = "pages", nullable = true)
-    public Integer getPages() {
+    public Long getPages() {
         return pages;
     }
 
-    public void setPages(Integer pages) {
+    public void setPages(Long pages) {
         this.pages = pages;
     }
 

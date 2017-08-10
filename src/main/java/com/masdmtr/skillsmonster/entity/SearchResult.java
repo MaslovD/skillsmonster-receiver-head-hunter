@@ -19,10 +19,10 @@ public class SearchResult {
     private int id;
     private Integer page;
     private Map<String, Object> rawResponse;
-    private Integer searchRequestId;
+    private SearchRequest searchRequest;
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     public int getId() {
         return id;
@@ -53,16 +53,16 @@ public class SearchResult {
         this.rawResponse = rawResponse;
     }
 
-    @Basic
-    @Column(name = "search_request_id", nullable = true)
-    public Integer getSearchRequestId() {
-        return searchRequestId;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "search_request_id")
+    public SearchRequest getSearchRequest() {
+        return searchRequest;
     }
 
-    public void setSearchRequestId(Integer searchRequestId) {
-        this.searchRequestId = searchRequestId;
+    public void setSearchRequest(SearchRequest searchRequest) {
+        this.searchRequest = searchRequest;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -74,7 +74,7 @@ public class SearchResult {
         if (id != that.id) return false;
         if (page != null ? !page.equals(that.page) : that.page != null) return false;
         if (rawResponse != null ? !rawResponse.equals(that.rawResponse) : that.rawResponse != null) return false;
-        if (searchRequestId != null ? !searchRequestId.equals(that.searchRequestId) : that.searchRequestId != null)
+        if (searchRequest != null ? !searchRequest.equals(that.searchRequest) : that.searchRequest != null)
             return false;
 
         return true;
@@ -85,7 +85,7 @@ public class SearchResult {
         int result = id;
         result = 31 * result + (page != null ? page.hashCode() : 0);
         result = 31 * result + (rawResponse != null ? rawResponse.hashCode() : 0);
-        result = 31 * result + (searchRequestId != null ? searchRequestId.hashCode() : 0);
+        result = 31 * result + (searchRequest != null ? searchRequest.hashCode() : 0);
         return result;
     }
 }

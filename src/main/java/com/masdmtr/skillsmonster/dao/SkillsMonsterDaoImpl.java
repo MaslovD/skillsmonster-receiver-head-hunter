@@ -1,18 +1,15 @@
 package com.masdmtr.skillsmonster.dao;
 
-import com.masdmtr.skillsmonster.entity.Area;
-import com.masdmtr.skillsmonster.entity.Country;
-import com.masdmtr.skillsmonster.entity.SearchResult;
-import com.masdmtr.skillsmonster.entity.SourceSite;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import com.masdmtr.skillsmonster.entity.*;
+import org.hibernate.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import javax.persistence.EntityManagerFactory;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +24,7 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
     @Autowired
     private SessionFactory sessionFactory;
 
+
     @Override
     public List<Country> getCountryList() {
 
@@ -38,17 +36,10 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
     @Override
     public void addCountry(Country country) {
         System.out.println();
-        //sessionFactory.openSession().persist(country);
-
         Session session = sessionFactory.openSession();
-
         Transaction tx1 = session.beginTransaction();
-
-        //session.save(country);
         session.save(country);
-
         tx1.commit();
-
         session.flush();
         session.close();
     }
@@ -69,20 +60,42 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
 
     @Override
     public void addSearchResult(SearchResult searchResult) {
-        System.out.println();
-        //sessionFactory.openSession().persist(country);
-
         Session session = sessionFactory.openSession();
-       // continue here and add processing of country and link to initial request
-
         Transaction tx1 = session.beginTransaction();
-
-        //session.save(country);
         session.save(searchResult);
-
         tx1.commit();
-
         session.flush();
         session.close();
     }
+
+    @Override
+    public ArrayList getListToLoadFromHh() {
+
+        Criteria criteria = sessionFactory.openSession().createCriteria(VacancyToLoadHh.class);
+        return new ArrayList<VacancyToLoadHh>(criteria.list());
+        //System.out.println("fd");
+    }
+
+    @Override
+    public void addVacancy(Vacancy vacancy) {
+        Session session = sessionFactory.openSession();
+        Transaction tx1 = session.beginTransaction();
+        session.save(vacancy);
+        tx1.commit();
+        session.flush();
+        session.close();
+
+    }
+
+    @Override
+    public void addSearchRequest(SearchRequest searchRequest) {
+        System.out.println();
+        Session session = sessionFactory.openSession();
+        Transaction tx1 = session.beginTransaction();
+        session.save(searchRequest);
+        tx1.commit();
+        session.flush();
+        session.close();
+    }
+
 }

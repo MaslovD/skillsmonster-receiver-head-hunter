@@ -27,11 +27,14 @@
 --ALTER TABLE search_request ADD CONSTRAINT search_request_industry_code_fk FOREIGN KEY (industry_id) REFERENCES industry (code);
 
 CREATE FUNCTION is_vacancy_loaded(vac_id CHARACTER VARYING) RETURNS BOOLEAN LANGUAGE SQL AS $$SELECT exists(SELECT 1 FROM vacancy WHERE id = vac_id)$$;
+
 CREATE VIEW vacancy_to_load AS SELECT i.id,i.name,i.created_at,(i.employer -> 'name' :: TEXT) AS emp_name,(i.address -> 'city' :: TEXT) AS emp_city,(i.salary -> 'to' :: TEXT) AS salary_to FROM (search_result sr CROSS JOIN LATERAL jsonb_to_recordset((sr.raw_response #> '{items}' :: TEXT [])) i(id TEXT,name TEXT,url TEXT,created_at TIMESTAMP WITHOUT TIME ZONE,employer JSONB,address JSONB,salary JSONB)) WHERE (is_vacancy_loaded((i.id) :: CHARACTER VARYING) IS FALSE);
 CREATE VIEW all_vacancies AS SELECT i.id,i.name,i.created_at,(i.employer -> 'name' :: TEXT) AS emp_name,(i.address -> 'city' :: TEXT) AS emp_city,(i.salary -> 'to' :: TEXT) AS salary_to FROM (search_result sr CROSS JOIN LATERAL jsonb_to_recordset((sr.raw_response #> '{items}' :: TEXT [])) i(id TEXT,name TEXT,url TEXT,created_at TIMESTAMP WITHOUT TIME ZONE,employer JSONB,address JSONB,salary JSONB));
 CREATE VIEW key_skills AS SELECT vl.id,i.name FROM (vacancy vl CROSS JOIN LATERAL jsonb_to_recordset((vl.raw_data #> '{key_skills}' :: TEXT [])) i(name TEXT));
 CREATE VIEW all_key_skills AS SELECT i.name,count(i.name) AS count FROM (vacancy vl CROSS JOIN LATERAL jsonb_to_recordset((vl.raw_data #> '{key_skills}' :: TEXT [])) i(name TEXT)) GROUP BY i.name ORDER BY (count(i.name)) DESC;
 CREATE VIEW all_key_skills_by_date AS SELECT ((vl.raw_data ->> 'published_at' :: TEXT)) :: TIMESTAMP WITH TIME ZONE AS published,i.name,count(*) AS count FROM (vacancy vl CROSS JOIN LATERAL jsonb_to_recordset((vl.raw_data #> '{key_skills}' :: TEXT [])) i(name TEXT)) GROUP BY ((vl.raw_data ->> 'published_at' :: TEXT)) :: TIMESTAMP WITH TIME ZONE,i.name;
+CREATE VIEW vacancy_to_load_hh AS SELECT i.id,i.name,i.created_at,(i.employer -> 'name'::text) AS emp_name,(i.address -> 'city'::text) AS emp_city,(i.salary -> 'to'::text) AS salary_to FROM (search_result sr CROSS JOIN LATERAL jsonb_to_recordset((sr.raw_response #> '{items}'::text[])) i(id text, name text, url text, created_at timestamp without time zone, employer jsonb, address jsonb, salary jsonb)) WHERE (NOT (i.id IN ( SELECT (vacancy.id)::text AS id FROM vacancy)));
+
 
 INSERT INTO public.source_site (id,name,url,api_url) VALUES (1,'HeadHunter','https://www.hh.ru','https://api.hh.ru/');
 INSERT INTO public.country (alpha_2,short_name,full_name,alpha_3,num_code) VALUES ('US','United States','Unites States of America','USA',840);

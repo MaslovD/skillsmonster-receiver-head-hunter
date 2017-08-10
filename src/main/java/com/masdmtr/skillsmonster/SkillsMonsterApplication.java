@@ -1,6 +1,7 @@
 package com.masdmtr.skillsmonster;
 
 import com.masdmtr.skillsmonster.loader.LoaderController;
+import org.hibernate.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,6 +17,8 @@ import org.springframework.web.client.RestTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.persistence.EntityManagerFactory;
+
 
 @SpringBootApplication
 @EnableScheduling
@@ -25,6 +28,7 @@ public class SkillsMonsterApplication {
 
     @Autowired
     LoaderController loaderController;
+
 
     public static void main(String[] args) {
         SpringApplication.run(SkillsMonsterApplication.class, args);
@@ -38,10 +42,9 @@ public class SkillsMonsterApplication {
     @Bean
     public CommandLineRunner run(RestTemplate restTemplate) throws Exception {
         return args -> {
-            //Quote quote = restTemplate.getForObject("http://gturnquist-quoters.cfapps.io/api/random", Quote.class);
 
-            //Object obj = restTemplate.getForObject("https://api.hh.ru/industries", Object.class);
-            //String response = restTemplate.getForObject("https://api.hh.ru/industries", String.class);
+//            Query q = entityManagerFactory.createNativeQuery("CREATE VIEW result_set AS select record FROM my_data");
+  //                  q.executeUpdate();
 
             log.info("log_string");
         };

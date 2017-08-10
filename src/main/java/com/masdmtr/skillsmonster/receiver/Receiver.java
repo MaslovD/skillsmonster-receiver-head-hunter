@@ -8,5 +8,6 @@ import org.springframework.stereotype.Component;
 @Component
 public interface Receiver  {
     public void load ();
+    public void loadVacancyDetailes();
 
 }
