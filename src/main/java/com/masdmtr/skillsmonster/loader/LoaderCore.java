@@ -31,7 +31,7 @@ public class LoaderCore {
     @Autowired
     private LoaderController loaderController;
 
-    @Scheduled(fixedRate = 86400000)
+    //@Scheduled(fixedRate = 86400000)
     public void load() {
         loaderController.getReceivers().forEach(Receiver::load);
     }
