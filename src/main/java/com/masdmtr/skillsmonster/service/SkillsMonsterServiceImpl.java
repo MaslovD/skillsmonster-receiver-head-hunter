@@ -2,6 +2,7 @@ package com.masdmtr.skillsmonster.service;
 
 import com.masdmtr.skillsmonster.dao.SkillsMonsterDao;
 import com.masdmtr.skillsmonster.entity.*;
+import com.masdmtr.skillsmonster.entity.ui.Menu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +42,11 @@ public class SkillsMonsterServiceImpl implements SkillsMonsterService {
     @Override
     public ArrayList<VacancyToLoadHh> getListToLoadFromHh() {
         return dao.getListToLoadFromHh();
+    }
 
+    @Override
+    public ArrayList<Menu> getMenu() {
+        return dao.getMenu();
     }
 
     @Override

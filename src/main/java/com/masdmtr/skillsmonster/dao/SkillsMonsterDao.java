@@ -18,7 +18,10 @@ public interface SkillsMonsterDao {
     SourceSite getSourceSiteById(int id);
 
     void addSearchResult(SearchResult searchResult);
+
     ArrayList getListToLoadFromHh();
+
+    ArrayList getMenu();
 
     void addVacancy(Vacancy vacancy);
 

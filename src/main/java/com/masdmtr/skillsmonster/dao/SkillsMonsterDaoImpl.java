@@ -1,6 +1,7 @@
 package com.masdmtr.skillsmonster.dao;
 
 import com.masdmtr.skillsmonster.entity.*;
+import com.masdmtr.skillsmonster.entity.ui.Menu;
 import org.hibernate.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -73,6 +74,13 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
 
         Criteria criteria = sessionFactory.openSession().createCriteria(VacancyToLoadHh.class);
         return new ArrayList<VacancyToLoadHh>(criteria.list());
+        //System.out.println("fd");
+    }
+    @Override
+    public ArrayList getMenu() {
+
+        Criteria criteria = sessionFactory.openSession().createCriteria(Menu.class);
+        return new ArrayList<Menu>(criteria.list());
         //System.out.println("fd");
     }
 

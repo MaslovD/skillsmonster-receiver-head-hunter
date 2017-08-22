@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
 import com.masdmtr.skillsmonster.entity.Country;
 import com.masdmtr.skillsmonster.entity.SearchResult;
+import com.masdmtr.skillsmonster.entity.ui.Menu;
 import com.masdmtr.skillsmonster.service.SkillsMonsterService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +76,14 @@ public class SkillsMonsterController {
 
         return "";
     }
+
+    @RequestMapping(value = apiVer + "/menu", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    List<Menu> getMenu() {
+        List<Menu> userDetails = skillsMonsterService.getMenu();
+        return userDetails;
+    }
+
 
     @RequestMapping(value = apiVer + "/app/menu", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody

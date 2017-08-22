@@ -1,6 +1,7 @@
 package com.masdmtr.skillsmonster.service;
 
 import com.masdmtr.skillsmonster.entity.*;
+import com.masdmtr.skillsmonster.entity.ui.Menu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,10 @@ public interface SkillsMonsterService {
     SourceSite getSourceSite(int id);
 
     ArrayList<VacancyToLoadHh> getListToLoadFromHh();
+
+    ArrayList<Menu> getMenu();
+
+
 
     void addVacancy(Vacancy vacancy);
 
