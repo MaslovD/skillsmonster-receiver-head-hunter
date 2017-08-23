@@ -1,6 +1,7 @@
 package com.masdmtr.skillsmonster.entity.ui;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by dmaslov on 8/21/17.
@@ -45,12 +46,16 @@ public class Menu {
     private MenuItemIcon icon; //IMenuItemIcon
 
     @ManyToOne
-    @JoinColumn(name = "sub", nullable = true)
-    private Menu sub; //IMenuItemSub
-
-    @ManyToOne
     @JoinColumn(name = "badge", nullable = true)
     private MenuItemBadge badge; //IMenuItemBadge
+
+    @OneToMany (mappedBy="parent")
+    private Set<Menu> sub; //IMenuItemSub
+
+    @ManyToOne
+    @JoinColumn(name="parent")
+    private Menu parent;
+
 
     public String getTitle() {
         return title;
@@ -124,7 +129,7 @@ public class Menu {
         this.icon = icon;
     }
 
-    public Menu getsub() {
+    public Set<Menu> getsub() {
         return sub;
     }
 

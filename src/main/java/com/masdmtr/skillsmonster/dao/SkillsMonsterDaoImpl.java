@@ -3,6 +3,8 @@ package com.masdmtr.skillsmonster.dao;
 import com.masdmtr.skillsmonster.entity.*;
 import com.masdmtr.skillsmonster.entity.ui.Menu;
 import org.hibernate.*;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -80,6 +82,9 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
     public ArrayList getMenu() {
 
         Criteria criteria = sessionFactory.openSession().createCriteria(Menu.class);
+        criteria.add(Restrictions.isNull("parent"));
+        criteria.addOrder(Order.asc("id"));
+
         return new ArrayList<Menu>(criteria.list());
         //System.out.println("fd");
     }

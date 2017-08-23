@@ -46,7 +46,9 @@ public class SkillsMonsterServiceImpl implements SkillsMonsterService {
 
     @Override
     public ArrayList<Menu> getMenu() {
-        return dao.getMenu();
+        ArrayList<Menu> tmp=dao.getMenu();
+
+        return tmp;
     }
 
     @Override
