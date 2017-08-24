@@ -83,7 +83,7 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
 
         Criteria criteria = sessionFactory.openSession().createCriteria(Menu.class);
         criteria.add(Restrictions.isNull("parent"));
-        criteria.addOrder(Order.asc("id"));
+        criteria.addOrder(Order.asc("order"));
 
         return new ArrayList<Menu>(criteria.list());
         //System.out.println("fd");

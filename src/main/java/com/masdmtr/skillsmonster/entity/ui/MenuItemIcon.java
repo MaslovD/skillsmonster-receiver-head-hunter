@@ -1,5 +1,7 @@
 package com.masdmtr.skillsmonster.entity.ui;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 
 /**
@@ -12,8 +14,9 @@ public class MenuItemIcon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Basic
-    @Column(name = "icon_class", nullable = true, length = 100)
-    private String icon_name;
+    @JsonProperty("class")
+    @Column(name = "class", nullable = true, length = 100)
+    private String icon_clazz;
     @Basic
     @Column(name = "color", nullable = true, length = 100)
     private String color;
@@ -21,12 +24,12 @@ public class MenuItemIcon {
     @Column(name = "bg", nullable = true, length = 100)
     private String bg;
 
-    public String getIcon_name() {
-        return icon_name;
+    public String getIcon_clazz() {
+        return icon_clazz;
     }
 
-    public void setIcon_name(String icon_name) {
-        this.icon_name = icon_name;
+    public void setIcon_name(String icon_class) {
+        this.icon_clazz = icon_class;
     }
 
     public String getColor() {

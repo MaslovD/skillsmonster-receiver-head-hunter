@@ -41,6 +41,10 @@ public class Menu {
     @Column(name = "external_link", nullable = true, length = 500)
     private String externalLink;
 
+    @Basic
+    @Column(name = "order", nullable = true)
+    private String order;
+
     @ManyToOne
     @JoinColumn(name = "icon", nullable = true)
     private MenuItemIcon icon; //IMenuItemIcon
