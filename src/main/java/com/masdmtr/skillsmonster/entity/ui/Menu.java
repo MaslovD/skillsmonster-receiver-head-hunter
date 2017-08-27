@@ -18,52 +18,40 @@ public class Menu {
     private String title;
 
     @Basic
-    @Column(name = "color", nullable = true, length = 500)
-    private String color;
+    @Column(name = "url", nullable = true, length = 500)
+    private String url;
 
     @Basic
-    @Column(name = "active", nullable = true, length = 500)
-    private boolean active;
+    @Column(name = "router_link", nullable = true, length = 500)
+    private String routerLink;
 
     @Basic
-    @Column(name = "disabled", nullable = true, length = 500)
-    private boolean disabled;
+    @Column(name = "icon", nullable = true)
+    private String icon; //IMenuItemIcon
 
     @Basic
-    @Column(name = "group_title", nullable = true, length = 500)
-    private boolean groupTitle;
+    @Column(name = "selected", nullable = true)
+    private Boolean selected;
 
     @Basic
-    @Column(name = "routing", nullable = true, length = 500)
-    private String routing;
+    @Column(name = "expanded", nullable = true)
+    private Boolean expanded;
 
     @Basic
-    @Column(name = "external_link", nullable = true, length = 500)
-    private String externalLink;
-
-    @Basic
-    @Column(name = "order", nullable = true)
+    @Column(name = "item_order", nullable = true)
     private String order;
 
-    @ManyToOne
-    @JoinColumn(name = "icon", nullable = true)
-    private MenuItemIcon icon; //IMenuItemIcon
+    @Basic
+    @Column(name = "target", nullable = true)
+    private String target;
 
-    @ManyToOne
-    @JoinColumn(name = "badge", nullable = true)
-    private MenuItemBadge badge; //IMenuItemBadge
 
     @OneToMany (mappedBy="parent")
-    private Set<Menu> sub; //IMenuItemSub
+    private Set<Menu> subMenu; //IMenuItemSub
 
     @ManyToOne
     @JoinColumn(name="parent")
     private Menu parent;
-
-
-    public String getTitle() {
-        return title;
-    }
 
     public int getId() {
         return id;
@@ -73,76 +61,84 @@ public class Menu {
         this.id = id;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public String getColor() {
-        return color;
+    public String getUrl() {
+        return url;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public boolean isActive() {
-        return active;
+    public String getRouterLink() {
+        return routerLink;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setRouterLink(String routerLink) {
+        this.routerLink = routerLink;
     }
 
-    public boolean isDisabled() {
-        return disabled;
-    }
-
-    public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
-    }
-
-    public boolean isGroupTitle() {
-        return groupTitle;
-    }
-
-    public void setGroupTitle(boolean groupTitle) {
-        this.groupTitle = groupTitle;
-    }
-
-    public String getRouting() {
-        return routing;
-    }
-
-    public void setRouting(String routing) {
-        this.routing = routing;
-    }
-
-    public String getExternalLink() {
-        return externalLink;
-    }
-
-    public void setExternalLink(String externalLink) {
-        this.externalLink = externalLink;
-    }
-
-    public MenuItemIcon getIcon() {
+    public String getIcon() {
         return icon;
     }
 
-    public void setIcon(MenuItemIcon icon) {
+    public void setIcon(String icon) {
         this.icon = icon;
     }
 
-    public Set<Menu> getsub() {
-        return sub;
+    public Boolean getSelected() {
+        return selected;
     }
 
-    public MenuItemBadge getBadge() {
-        return badge;
+    public void setSelected(Boolean selected) {
+        this.selected = selected;
     }
 
-    public void setBadge(MenuItemBadge badge) {
-        this.badge = badge;
+    public Boolean getExpanded() {
+        return expanded;
+    }
+
+    public void setExpanded(Boolean expanded) {
+        this.expanded = expanded;
+    }
+
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
+    }
+
+    public String getTarget() {
+        return target;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
+    }
+
+    public Set<Menu> getSubMenu() {
+        return subMenu;
+    }
+
+    public void setSubMenu(Set<Menu> subMenu) {
+        this.subMenu = subMenu;
+    }
+
+    public Menu getParent() {
+        return parent;
+    }
+
+    public void setParent(Menu parent) {
+        this.parent = parent;
     }
 }
 

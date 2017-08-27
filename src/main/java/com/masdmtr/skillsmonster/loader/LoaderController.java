@@ -8,7 +8,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import sun.jvm.hotspot.debugger.linux.sparc.LinuxSPARCThreadContext;
 
 import javax.annotation.PostConstruct;
 import java.util.LinkedList;

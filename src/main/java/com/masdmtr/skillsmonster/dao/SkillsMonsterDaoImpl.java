@@ -32,7 +32,7 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
     public List<Country> getCountryList() {
 
         Criteria criteria = sessionFactory.openSession().createCriteria(Country.class);
-        List<Country> tmpList = criteria.list();
+        //List tmpList = criteria.list();
         return criteria.list();
     }
 
@@ -78,6 +78,7 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
         return new ArrayList<VacancyToLoadHh>(criteria.list());
         //System.out.println("fd");
     }
+
     @Override
     public ArrayList getMenu() {
 
