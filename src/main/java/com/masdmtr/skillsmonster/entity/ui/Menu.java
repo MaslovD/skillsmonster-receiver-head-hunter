@@ -49,16 +49,12 @@ public class Menu {
     @OneToMany (mappedBy="parent")
     private Set<Menu> subMenu; //IMenuItemSub
 
-    @ManyToOne
+   @ManyToOne
     @JoinColumn(name="parent")
     private Menu parent;
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -129,16 +125,23 @@ public class Menu {
         return subMenu;
     }
 
+
+
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setSubMenu(Set<Menu> subMenu) {
         this.subMenu = subMenu;
     }
 
-    public Menu getParent() {
-        return parent;
-    }
-
-    public void setParent(Menu parent) {
+   /* public void setParent(Menu parent) {
         this.parent = parent;
-    }
+    }*/
+
+    /*public Menu getParent() {
+        return parent;
+    }*/
 }
 
