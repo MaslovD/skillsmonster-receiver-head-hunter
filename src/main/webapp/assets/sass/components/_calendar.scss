@@ -1,0 +1,61 @@
+@import '../../../assets/sass/variable';
+
+.cal-month-view {
+  display: block;
+
+  .cal-days {
+    border-left: 0;
+    border-right: 0;
+  }
+  .cal-open-day-events {
+    background: main-color(500);
+    box-shadow: none;
+
+    .cal-event-action {
+      color: rgba(#fff,.5);
+      display: inline-block;
+      font-size: 16px;
+      margin: 0 2px;
+      vertical-align: top;
+
+      &:hover {
+        color: #fff;
+      }
+    }
+  }
+  .cal-day-number {
+    opacity: 1;
+  }
+  .cal-cell-row {
+    .cal-cell {
+      &:hover {
+        background: rgba(main-color(500),.5);
+        color: main-contrast(500);
+      }
+    }
+    &:hover {
+      background: rgba(main-color(500),.3);
+    }
+  }
+  .cal-cell.cal-has-events.cal-open {
+    background: rgba(main-color(500),.5);
+  }
+  .cal-days {
+    .cal-cell-row {
+      border-bottom-color: main-color(500);
+    }
+  }
+  .cal-day-badge {
+    background: accent-color(500);
+  }
+  .cal-day-cell {
+    &:not(:last-child) {
+      border-right-color: main-color(500);
+    }
+    &.cal-weekend {
+      .cal-day-number {
+        color: accent-color(500);
+      }
+    }
+  }
+}
