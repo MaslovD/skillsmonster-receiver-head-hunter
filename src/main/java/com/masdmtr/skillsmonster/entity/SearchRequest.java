@@ -22,6 +22,7 @@ public class SearchRequest {
     private String rawRequest;
     private Industry industryByIndustryId;
     private Area areaByAreaId;
+    private Specialization specializationId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -104,39 +105,6 @@ public class SearchRequest {
         this.rawRequest = rawRequest;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        SearchRequest that = (SearchRequest) o;
-
-        if (id != that.id) return false;
-        if (dateTime != null ? !dateTime.equals(that.dateTime) : that.dateTime != null) return false;
-        if (found != null ? !found.equals(that.found) : that.found != null) return false;
-        if (industryId != null ? !industryId.equals(that.industryId) : that.industryId != null) return false;
-        if (pages != null ? !pages.equals(that.pages) : that.pages != null) return false;
-        if (perPage != null ? !perPage.equals(that.perPage) : that.perPage != null) return false;
-        if (periodFrom != null ? !periodFrom.equals(that.periodFrom) : that.periodFrom != null) return false;
-        if (periodTo != null ? !periodTo.equals(that.periodTo) : that.periodTo != null) return false;
-        if (rawRequest != null ? !rawRequest.equals(that.rawRequest) : that.rawRequest != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (dateTime != null ? dateTime.hashCode() : 0);
-        result = 31 * result + (found != null ? found.hashCode() : 0);
-        result = 31 * result + (industryId != null ? industryId.hashCode() : 0);
-        result = 31 * result + (pages != null ? pages.hashCode() : 0);
-        result = 31 * result + (perPage != null ? perPage.hashCode() : 0);
-        result = 31 * result + (periodFrom != null ? periodFrom.hashCode() : 0);
-        result = 31 * result + (periodTo != null ? periodTo.hashCode() : 0);
-        result = 31 * result + (rawRequest != null ? rawRequest.hashCode() : 0);
-        return result;
-    }
 
     @ManyToOne
     @JoinColumn(name = "industry_id", referencedColumnName = "code")
@@ -156,5 +124,15 @@ public class SearchRequest {
 
     public void setAreaByAreaId(Area areaByAreaId) {
         this.areaByAreaId = areaByAreaId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "specialization_id", referencedColumnName = "sub_id")
+
+    public Specialization getSpecializationId() {
+        return specializationId;
+    }
+    public void setSpecializationId(Specialization specializationId) {
+        this.specializationId = specializationId;
     }
 }

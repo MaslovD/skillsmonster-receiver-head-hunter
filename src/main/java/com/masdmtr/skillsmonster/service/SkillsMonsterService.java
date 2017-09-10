@@ -25,8 +25,9 @@ public interface SkillsMonsterService {
     ArrayList<Menu> getMenu();
 
 
-
     void addVacancy(Vacancy vacancy);
 
     void addSearchRequest(SearchRequest searchRequest);
+
+    ArrayList<Specialization> getSpecializationList();
 }

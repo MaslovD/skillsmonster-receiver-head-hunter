@@ -2,6 +2,7 @@ package com.masdmtr.skillsmonster.dao;
 
 import com.masdmtr.skillsmonster.entity.*;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,8 @@ import java.util.List;
  */
 public interface SkillsMonsterDao {
     List<Country> getCountryList();
+
+    ArrayList<Specialization> getSpecializationList();
 
     void addCountry(Country country);
 

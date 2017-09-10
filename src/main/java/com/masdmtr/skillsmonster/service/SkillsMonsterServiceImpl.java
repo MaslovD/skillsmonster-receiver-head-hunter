@@ -61,6 +61,12 @@ public class SkillsMonsterServiceImpl implements SkillsMonsterService {
     }
 
     @Override
+    public ArrayList<Specialization> getSpecializationList() {
+        ArrayList tmp=dao.getSpecializationList();
+        return tmp;
+    }
+
+    @Override
     public void addCountry(Country country) {
         dao.addCountry(country);
     }

@@ -27,13 +27,19 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-
     @Override
     public List<Country> getCountryList() {
 
         Criteria criteria = sessionFactory.openSession().createCriteria(Country.class);
         //List tmpList = criteria.list();
         return criteria.list();
+    }
+
+    @Override
+    public ArrayList<Specialization> getSpecializationList() {
+        Criteria criteria = sessionFactory.openSession().createCriteria(Specialization.class);
+        //criteria.addOrder(Order.asc("subId"));
+        return new ArrayList<Specialization>(criteria.list());
     }
 
     @Override

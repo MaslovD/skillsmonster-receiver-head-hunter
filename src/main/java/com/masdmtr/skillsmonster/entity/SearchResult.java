@@ -64,28 +64,5 @@ public class SearchResult {
         this.searchRequest = searchRequest;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        SearchResult that = (SearchResult) o;
-
-        if (id != that.id) return false;
-        if (page != null ? !page.equals(that.page) : that.page != null) return false;
-        if (rawResponse != null ? !rawResponse.equals(that.rawResponse) : that.rawResponse != null) return false;
-        if (searchRequest != null ? !searchRequest.equals(that.searchRequest) : that.searchRequest != null)
-            return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (page != null ? page.hashCode() : 0);
-        result = 31 * result + (rawResponse != null ? rawResponse.hashCode() : 0);
-        result = 31 * result + (searchRequest != null ? searchRequest.hashCode() : 0);
-        return result;
-    }
 }

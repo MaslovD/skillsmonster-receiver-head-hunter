@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.masdmtr.skillsmonster.entity.SearchRequest;
 import com.masdmtr.skillsmonster.entity.SearchResult;
+import com.masdmtr.skillsmonster.entity.Specialization;
 import com.masdmtr.skillsmonster.entity.Vacancy;
 import com.masdmtr.skillsmonster.loader.LoaderController;
 import com.masdmtr.skillsmonster.service.SkillsMonsterService;
@@ -15,11 +16,11 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.management.Query;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.Year;
+import java.text.MessageFormat;
+import java.time.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -42,60 +43,69 @@ public class HeadHunterReceiver extends ReceiverImpl {
         LocalDateTime timePoint = LocalDateTime.now();
         String industry = "";//"industry=7.540&";
         String area = "";//"area=1&";
-        String specialization = "specialization=1.221&";
+        String specializationTmp = "specialization={0}&";
         Integer perPage = 500;
+        ArrayList<Specialization> specializationList = skillsMonsterService.getSpecializationList();
 
-        LocalDate dateFrom = LocalDate.of(2017, Month.AUGUST, 05);
+        LocalDate dateFrom = LocalDate.of(2017, Month.AUGUST, 12);
 
         LocalDate dateTo = LocalDate.now();
 
         //LocalDate dateTo = LocalDate.of(2017, Month.AUGUST, 06);
 
-
         LocalDate publDate = dateFrom;
 
         while (dateFrom.compareTo(dateTo) <= 0) {
 
-            System.out.println("Date: " + publDate.toString());
+            for (Specialization spec : specializationList) {
 
-            RestTemplate restTemplate = new RestTemplate();
-            Integer pageNum = 0;
-            Long totalPages = 100L;
+                RestTemplate restTemplate = new RestTemplate();
+                Integer pageNum = 0;
+                Long totalPages = 100L;
 
-            while (totalPages > pageNum) {
+                Object[] params = new Object[]{spec.getSubId()};
+                String specialization = MessageFormat.format(specializationTmp, params);
+                System.out.printf("Date: %s , Specialization: %s %n", publDate.toString(), spec.getSubId());
 
-                SearchRequest searchRequest = new SearchRequest();
+                while (totalPages > pageNum) {
 
-                String reqString = "https://api.hh.ru/vacancies?" + specialization + area + industry + "date_from=" + publDate.toString() + "&date_to=" + publDate.toString() + "&per_page=" + perPage.toString() + "&page=" + pageNum.toString();
+                    SearchRequest searchRequest = new SearchRequest();
 
-                String jsonString = restTemplate.getForObject(reqString, String.class);
+                    String reqString = "https://api.hh.ru/vacancies?" + specialization + area + industry + "date_from=" + publDate.toString() + "&date_to=" + publDate.toString() + "&per_page=" + perPage.toString() + "&page=" + pageNum.toString();
 
-                searchRequest.setRawRequest(reqString);
-                searchRequest.setDateTime(new Timestamp(System.currentTimeMillis()));
-                //skillsMonsterService.addSearchRequest(searchRequest);
+                    String jsonString = restTemplate.getForObject(reqString, String.class);
 
-                Map<String, Object> retMap = new Gson().fromJson(jsonString, new TypeToken<HashMap<String, Object>>() {
-                }.getType());
+                    searchRequest.setRawRequest(reqString);
+                    searchRequest.setDateTime(new Timestamp(System.currentTimeMillis()));
+                    //skillsMonsterService.addSearchRequest(searchRequest);
 
-                totalPages = Math.round((Double) retMap.get("pages"));
-                Long totalFound = Math.round((Double) retMap.get("found"));
-                System.out.println("Total found: " + totalFound + " Page: " + pageNum);
-                searchRequest.setPages(totalPages);
-                searchRequest.setFound(totalFound);
-                searchRequest.setPerPage(perPage);
-                searchRequest.setPeriodFrom(new Timestamp(publDate.toEpochDay()));
-                searchRequest.setPeriodTo(new Timestamp(publDate.toEpochDay()));
-                SearchResult searchResult = new SearchResult();
-                searchResult.setSearchRequest(searchRequest);
-                searchResult.setPage(pageNum);
-                searchResult.setRawResponse(retMap);
-                skillsMonsterService.addSearchResult(searchResult);
+                    Map<String, Object> retMap = new Gson().fromJson(jsonString, new TypeToken<HashMap<String, Object>>() {
+                    }.getType());
 
-                pageNum++;
+                    totalPages = Math.round((Double) retMap.get("pages"));
+                    Long totalFound = Math.round((Double) retMap.get("found"));
+                    System.out.println("Total found: " + totalFound + " Page: " + pageNum);
+                    searchRequest.setPages(totalPages);
+                    searchRequest.setFound(totalFound);
+                    searchRequest.setPerPage(perPage);
+                    //Timestamp.valueOf(publDate.atStartOfDay());
+                    //Timestamp timestamp = Timestamp.valueOf(publDate.atStartOfDay());
+                    searchRequest.setPeriodFrom(Timestamp.valueOf(publDate.atStartOfDay()));
+                    searchRequest.setPeriodTo(Timestamp.valueOf(publDate.atStartOfDay()));
+                    searchRequest.setSpecializationId(spec);
+                    SearchResult searchResult = new SearchResult();
+                    searchResult.setSearchRequest(searchRequest);
+                    searchResult.setPage(pageNum);
+                    searchResult.setRawResponse(retMap);
+                    skillsMonsterService.addSearchResult(searchResult);
 
+                    pageNum++;
+
+                }
             }
             publDate = publDate.plusDays(1);
         }
+
         System.out.println("Head Hunter Receiver Finished");
     }
 
