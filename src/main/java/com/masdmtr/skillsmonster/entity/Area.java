@@ -10,14 +10,17 @@ import javax.persistence.*;
 public class Area {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int id;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String code;
     private String extCode;
     private String name;
     private String type;
     private String zip;
+    private String countryId;
+    private String countryName;
+    private String areaName;
+
 
     @Column(name = "code", nullable = true, length = 100)
     public String getCode() {
@@ -64,31 +67,35 @@ public class Area {
         this.zip = zip;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Area area = (Area) o;
-
-        if (id != area.id) return false;
-        if (code != null ? !code.equals(area.code) : area.code != null) return false;
-        if (extCode != null ? !extCode.equals(area.extCode) : area.extCode != null) return false;
-        if (name != null ? !name.equals(area.name) : area.name != null) return false;
-        if (type != null ? !type.equals(area.type) : area.type != null) return false;
-        if (zip != null ? !zip.equals(area.zip) : area.zip != null) return false;
-
-        return true;
+    public Integer getId() {
+        return id;
     }
 
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (code != null ? code.hashCode() : 0);
-        result = 31 * result + (extCode != null ? extCode.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (zip != null ? zip.hashCode() : 0);
-        return result;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getCountryId() {
+        return countryId;
+    }
+
+    public void setCountryId(String countryId) {
+        this.countryId = countryId;
+    }
+
+    public String getCountryName() {
+        return countryName;
+    }
+
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
+    }
+
+    public String getAreaName() {
+        return areaName;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
     }
 }

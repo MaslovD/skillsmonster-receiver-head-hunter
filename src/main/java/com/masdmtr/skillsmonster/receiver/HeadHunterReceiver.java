@@ -2,10 +2,7 @@ package com.masdmtr.skillsmonster.receiver;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.masdmtr.skillsmonster.entity.SearchRequest;
-import com.masdmtr.skillsmonster.entity.SearchResult;
-import com.masdmtr.skillsmonster.entity.Specialization;
-import com.masdmtr.skillsmonster.entity.Vacancy;
+import com.masdmtr.skillsmonster.entity.*;
 import com.masdmtr.skillsmonster.loader.LoaderController;
 import com.masdmtr.skillsmonster.service.SkillsMonsterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,65 +39,76 @@ public class HeadHunterReceiver extends ReceiverImpl {
 
         LocalDateTime timePoint = LocalDateTime.now();
         String industry = "";//"industry=7.540&";
-        String area = "";//"area=1&";
+        String areaTmp = "area={0}&";
         String specializationTmp = "specialization={0}&";
         Integer perPage = 500;
         ArrayList<Specialization> specializationList = skillsMonsterService.getSpecializationList();
 
-        LocalDate dateFrom = LocalDate.of(2017, Month.AUGUST, 12);
+        ArrayList<Area> areaList = skillsMonsterService.getAreaList();
 
+        //LocalDate dateFrom = LocalDate.of(2017, Month.SEPTEMBER, 05);
+        LocalDate dateFrom = LocalDate.now();
         LocalDate dateTo = LocalDate.now();
 
         //LocalDate dateTo = LocalDate.of(2017, Month.AUGUST, 06);
 
         LocalDate publDate = dateFrom;
 
-        while (dateFrom.compareTo(dateTo) <= 0) {
+        while (publDate.compareTo(dateTo) <= 0) {
+            System.out.println(dateFrom.compareTo(dateTo));
 
-            for (Specialization spec : specializationList) {
+            for (Area ar : areaList) {
 
-                RestTemplate restTemplate = new RestTemplate();
-                Integer pageNum = 0;
-                Long totalPages = 100L;
+                for (Specialization spec : specializationList) {
 
-                Object[] params = new Object[]{spec.getSubId()};
-                String specialization = MessageFormat.format(specializationTmp, params);
-                System.out.printf("Date: %s , Specialization: %s %n", publDate.toString(), spec.getSubId());
+                    RestTemplate restTemplate = new RestTemplate();
+                    Integer pageNum = 0;
+                    Long totalPages = 100L;
 
-                while (totalPages > pageNum) {
+                    Object[] params = new Object[]{spec.getSubId()};
+                    String specialization = MessageFormat.format(specializationTmp, params);
 
-                    SearchRequest searchRequest = new SearchRequest();
+                    params = new Object[]{ar.getId().toString()};
+                    String area = MessageFormat.format(areaTmp, params);
 
-                    String reqString = "https://api.hh.ru/vacancies?" + specialization + area + industry + "date_from=" + publDate.toString() + "&date_to=" + publDate.toString() + "&per_page=" + perPage.toString() + "&page=" + pageNum.toString();
+                    System.out.printf("Date: %s, Specialization: %s, Area: %s %n", publDate.toString(), spec.getSubId(), ar.getId().toString());
 
-                    String jsonString = restTemplate.getForObject(reqString, String.class);
+                    while (totalPages > pageNum) {
 
-                    searchRequest.setRawRequest(reqString);
-                    searchRequest.setDateTime(new Timestamp(System.currentTimeMillis()));
-                    //skillsMonsterService.addSearchRequest(searchRequest);
+                        SearchRequest searchRequest = new SearchRequest();
 
-                    Map<String, Object> retMap = new Gson().fromJson(jsonString, new TypeToken<HashMap<String, Object>>() {
-                    }.getType());
+                        String reqString = "https://api.hh.ru/vacancies?" + specialization + area + industry + "date_from=" + publDate.toString() + "&date_to=" + publDate.toString() + "&per_page=" + perPage.toString() + "&page=" + pageNum.toString();
 
-                    totalPages = Math.round((Double) retMap.get("pages"));
-                    Long totalFound = Math.round((Double) retMap.get("found"));
-                    System.out.println("Total found: " + totalFound + " Page: " + pageNum);
-                    searchRequest.setPages(totalPages);
-                    searchRequest.setFound(totalFound);
-                    searchRequest.setPerPage(perPage);
-                    //Timestamp.valueOf(publDate.atStartOfDay());
-                    //Timestamp timestamp = Timestamp.valueOf(publDate.atStartOfDay());
-                    searchRequest.setPeriodFrom(Timestamp.valueOf(publDate.atStartOfDay()));
-                    searchRequest.setPeriodTo(Timestamp.valueOf(publDate.atStartOfDay()));
-                    searchRequest.setSpecializationId(spec);
-                    SearchResult searchResult = new SearchResult();
-                    searchResult.setSearchRequest(searchRequest);
-                    searchResult.setPage(pageNum);
-                    searchResult.setRawResponse(retMap);
-                    skillsMonsterService.addSearchResult(searchResult);
+                        String jsonString = restTemplate.getForObject(reqString, String.class);
 
-                    pageNum++;
+                        searchRequest.setRawRequest(reqString);
+                        searchRequest.setDateTime(new Timestamp(System.currentTimeMillis()));
+                        //skillsMonsterService.addSearchRequest(searchRequest);
 
+                        Map<String, Object> retMap = new Gson().fromJson(jsonString, new TypeToken<HashMap<String, Object>>() {
+                        }.getType());
+
+                        totalPages = Math.round((Double) retMap.get("pages"));
+                        Long totalFound = Math.round((Double) retMap.get("found"));
+                        System.out.println("Total found: " + totalFound + " Page: " + pageNum);
+                        searchRequest.setPages(totalPages);
+                        searchRequest.setFound(totalFound);
+                        searchRequest.setPerPage(perPage);
+                        searchRequest.setAreaByAreaId(ar);
+                        //Timestamp.valueOf(publDate.atStartOfDay());
+                        //Timestamp timestamp = Timestamp.valueOf(publDate.atStartOfDay());
+                        searchRequest.setPeriodFrom(Timestamp.valueOf(publDate.atStartOfDay()));
+                        searchRequest.setPeriodTo(Timestamp.valueOf(publDate.atStartOfDay()));
+                        searchRequest.setSpecializationId(spec);
+                        SearchResult searchResult = new SearchResult();
+                        searchResult.setSearchRequest(searchRequest);
+                        searchResult.setPage(pageNum);
+                        searchResult.setRawResponse(retMap);
+                        skillsMonsterService.addSearchResult(searchResult);
+
+                        pageNum++;
+
+                    }
                 }
             }
             publDate = publDate.plusDays(1);

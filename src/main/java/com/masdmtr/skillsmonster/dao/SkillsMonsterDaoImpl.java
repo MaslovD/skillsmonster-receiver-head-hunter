@@ -38,9 +38,18 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
     @Override
     public ArrayList<Specialization> getSpecializationList() {
         Criteria criteria = sessionFactory.openSession().createCriteria(Specialization.class);
-        //criteria.addOrder(Order.asc("subId"));
+       // criteria.add(Restrictions.ilike("subId","1.%"));
         return new ArrayList<Specialization>(criteria.list());
     }
+
+    @Override
+    public ArrayList<Area> getAreaList() {
+        Criteria criteria = sessionFactory.openSession().createCriteria(Area.class);
+       // criteria.add(Restrictions.ilike("subId","1.%"));
+        return new ArrayList<Area>(criteria.list());
+    }
+
+
 
     @Override
     public void addCountry(Country country) {
@@ -117,5 +126,6 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
         session.flush();
         session.close();
     }
+
 
 }

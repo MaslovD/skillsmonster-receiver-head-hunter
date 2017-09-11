@@ -67,6 +67,12 @@ public class SkillsMonsterServiceImpl implements SkillsMonsterService {
     }
 
     @Override
+    public ArrayList<Area> getAreaList() {
+        ArrayList tmp=dao.getAreaList();
+        return tmp;
+    }
+
+    @Override
     public void addCountry(Country country) {
         dao.addCountry(country);
     }

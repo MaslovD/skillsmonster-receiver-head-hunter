@@ -30,4 +30,6 @@ public interface SkillsMonsterService {
     void addSearchRequest(SearchRequest searchRequest);
 
     ArrayList<Specialization> getSpecializationList();
+    ArrayList<Area> getAreaList();
+
 }
