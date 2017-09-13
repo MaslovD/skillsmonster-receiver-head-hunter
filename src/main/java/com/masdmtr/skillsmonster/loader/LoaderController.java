@@ -1,12 +1,13 @@
 package com.masdmtr.skillsmonster.loader;
 
+
 import com.masdmtr.skillsmonster.receiver.Receiver;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -26,14 +27,17 @@ public class LoaderController {
     Receiver receiver;
 
     @Autowired
+    Logger logger;
+
+    @Autowired
     BeanFactory beans;
 
 
     @PostConstruct
     private void initController() {
-       // Receiver receiver = beans.getBean("HeadHunter", Receiver.class);
+        // Receiver receiver = beans.getBean("HeadHunter", Receiver.class);
         receivers.add(receiver);
-        System.out.println(receiver);
+        logger.info(receiver.toString());
     }
 
     private List<Receiver> receivers = new LinkedList<>();

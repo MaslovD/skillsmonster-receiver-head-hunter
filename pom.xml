@@ -5,7 +5,7 @@
 
 	<groupId>com.masdmtr</groupId>
 	<artifactId>skills-monster</artifactId>
-	<version>0.0.7</version>
+	<version>0.0.9</version>
 	<packaging>jar</packaging>
 
 	<name>skills-monster</name>
@@ -58,6 +58,11 @@
             <artifactId>android-json</artifactId>
             <version>RELEASE</version>
         </dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
+		</dependency>
     </dependencies>
 
 	<build>
