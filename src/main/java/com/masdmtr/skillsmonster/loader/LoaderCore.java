@@ -24,8 +24,8 @@ public class LoaderCore {
     @Autowired
     private LoaderController loaderController;
 
-    //  @Scheduled(cron ="*/86400 * * * * *") //there was an issue with first invocation (I want it to start after main module start)
-    @Scheduled(fixedDelay = 864000)
+    @Scheduled(cron ="${skillsmonster.demon.cron}") //there was an issue with first invocation (I want it to start after main module start)
+    //@Scheduled(fixedDelay = 864000)
     public void load() {
         loaderController.getReceivers().forEach(Receiver::load);
     }

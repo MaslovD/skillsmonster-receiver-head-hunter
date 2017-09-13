@@ -24,10 +24,13 @@ import javax.persistence.EntityManagerFactory;
 @EnableScheduling
 @ComponentScan("com.masdmtr")
 public class SkillsMonsterApplication {
-    private static final Logger log = LoggerFactory.getLogger(SkillsMonsterApplication.class);
+
 
     @Autowired
     LoaderController loaderController;
+
+    @Autowired
+    Logger logger;
 
 
     public static void main(String[] args) {
@@ -44,9 +47,9 @@ public class SkillsMonsterApplication {
         return args -> {
 
 //            Query q = entityManagerFactory.createNativeQuery("CREATE VIEW result_set AS select record FROM my_data");
-  //                  q.executeUpdate();
+            //                  q.executeUpdate();
 
-            log.info("log_string");
+
         };
     }
 }

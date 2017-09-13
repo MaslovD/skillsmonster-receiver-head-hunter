@@ -53,7 +53,6 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
 
     @Override
     public void addCountry(Country country) {
-        System.out.println();
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
         session.save(country);
@@ -118,7 +117,6 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
 
     @Override
     public void addSearchRequest(SearchRequest searchRequest) {
-        System.out.println();
         Session session = sessionFactory.openSession();
         Transaction tx1 = session.beginTransaction();
         session.save(searchRequest);
