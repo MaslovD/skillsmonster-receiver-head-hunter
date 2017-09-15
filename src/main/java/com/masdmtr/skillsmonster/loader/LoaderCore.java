@@ -30,7 +30,7 @@ public class LoaderCore {
         loaderController.getReceivers().forEach(Receiver::load);
     }
 
-    //@Scheduled(fixedRate = 50000000)
+    @Scheduled(fixedDelay = 86400)
     public void getsome() {
         loaderController.getReceivers().forEach(Receiver::loadVacancyDetailes);
     }

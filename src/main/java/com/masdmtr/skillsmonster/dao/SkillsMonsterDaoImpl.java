@@ -89,6 +89,7 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
     public ArrayList getListToLoadFromHh() {
 
         Criteria criteria = sessionFactory.openSession().createCriteria(VacancyToLoadHh.class);
+        criteria.addOrder(Order.asc("createdAt"));
         return new ArrayList<VacancyToLoadHh>(criteria.list());
         //System.out.println("fd");
     }

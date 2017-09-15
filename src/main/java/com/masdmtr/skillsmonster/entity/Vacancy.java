@@ -12,20 +12,31 @@ import java.util.Map;
  */
 @Entity
 public class Vacancy {
-
-    private String id;
+    private long id;
+    private String vacancyId;
     private Map<String, Object> rawData;
     private Integer searchRequestId;
     private Timestamp loadDateTime;
 
     @Id
-    @Column(name = "id", nullable = false, length = 100)
-    public String getId() {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    @Basic
+    @Column(name = "vacancy_id", nullable = false, length = 100)
+    public String getVacancyId() {
+        return vacancyId;
+    }
+
+    public void setVacancyId(String vacancyId) {
+        this.vacancyId = vacancyId;
     }
 
     @Basic
@@ -61,26 +72,5 @@ public class Vacancy {
         this.loadDateTime = loadDateTime;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        Vacancy vacancy = (Vacancy) o;
-
-        if (id != null ? !id.equals(vacancy.id) : vacancy.id != null) return false;
-        if (rawData != null ? !rawData.equals(vacancy.rawData) : vacancy.rawData != null) return false;
-        if (searchRequestId != null ? !searchRequestId.equals(vacancy.searchRequestId) : vacancy.searchRequestId != null)
-            return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (rawData != null ? rawData.hashCode() : 0);
-        result = 31 * result + (searchRequestId != null ? searchRequestId.hashCode() : 0);
-        return result;
-    }
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+
 import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.time.*;
@@ -136,23 +137,25 @@ public class HeadHunterReceiver extends ReceiverImpl {
                 //.stream()
                 .parallelStream()
                 .forEach(vac -> {
+                    String vacId = vac.getId();
+
                     try {
-                        String vacId = vac.getId();
-                        System.out.println("ID: " + vacId);
+                        logger.info("Vacancy ID: {} Created: {}", vacId,vac.getCreatedAt());
                         String reqString = "https://api.hh.ru/vacancies/" + vacId;
                         String jsonString = restTemplate.getForObject(reqString, String.class);
                         Map<String, Object> retMap = new Gson().fromJson(jsonString, new TypeToken<HashMap<String, Object>>() {
                         }.getType());
                         Vacancy vacancy = new Vacancy();
-                        vacancy.setId(vac.getId());
+                        vacancy.setVacancyId(vac.getId());
                         vacancy.setRawData(retMap);
                         vacancy.setLoadDateTime(new Timestamp(System.currentTimeMillis()));
                         skillsMonsterService.addVacancy(vacancy);
                     } catch (HttpClientErrorException ex) {
-                        System.out.println("Error loading info from hh.ru");
+                        logger.error("Error loading info from hh.ru ID: {}", vacId);
+                        logger.error(ExceptionUtils.getFullStackTrace(ex));
                     }
                 });
-        skillsMonsterService.getListToLoadFromHh();
+        //skillsMonsterService.getListToLoadFromHh();
 
     }
 }

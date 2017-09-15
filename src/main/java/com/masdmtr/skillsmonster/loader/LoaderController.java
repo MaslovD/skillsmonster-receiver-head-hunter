@@ -32,7 +32,6 @@ public class LoaderController {
     @Autowired
     BeanFactory beans;
 
-
     @PostConstruct
     private void initController() {
         // Receiver receiver = beans.getBean("HeadHunter", Receiver.class);
