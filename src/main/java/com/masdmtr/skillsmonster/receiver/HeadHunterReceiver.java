@@ -82,7 +82,6 @@ public class HeadHunterReceiver extends ReceiverImpl {
                     while (totalPages > pageNum) {
                         try {
 
-
                             SearchRequest searchRequest = new SearchRequest();
 
                             String reqString = "https://api.hh.ru/vacancies?" + specialization + area + industry + "date_from=" + publDate.toString() + "&date_to=" + publDate.toString() + "&per_page=" + perPage.toString() + "&page=" + pageNum.toString();

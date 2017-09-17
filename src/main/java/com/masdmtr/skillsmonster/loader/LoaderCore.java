@@ -24,14 +24,15 @@ public class LoaderCore {
     @Autowired
     private LoaderController loaderController;
 
-    @Scheduled(cron ="${skillsmonster.demon.cron}") //there was an issue with first invocation (I want it to start after main module start)
+    @Scheduled(cron ="${skillsmonster.demon.cron}") //there was an issue with first invocation (I want it to start right after main module started)
     //@Scheduled(fixedDelay = 864000)
     public void load() {
         loaderController.getReceivers().forEach(Receiver::load);
     }
 
-    @Scheduled(fixedDelay = 86400)
-    public void getsome() {
+    //@Scheduled(cron ="${skillsmonster.receiver.hh}")
+    //@Scheduled(fixedDelay = 86400)
+    public void loadVacancyDetailes() {
         loaderController.getReceivers().forEach(Receiver::loadVacancyDetailes);
     }
 }

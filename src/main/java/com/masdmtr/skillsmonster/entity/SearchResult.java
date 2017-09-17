@@ -20,6 +20,7 @@ public class SearchResult {
     private Integer page;
     private Map<String, Object> rawResponse;
     private SearchRequest searchRequest;
+    private String status;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +41,16 @@ public class SearchResult {
 
     public void setPage(Integer page) {
         this.page = page;
+    }
+
+    @Basic
+    @Column(name = "status", nullable = true)
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Basic
