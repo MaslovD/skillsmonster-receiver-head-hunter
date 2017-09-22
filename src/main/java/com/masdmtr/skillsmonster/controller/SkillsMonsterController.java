@@ -84,89 +84,10 @@ public class SkillsMonsterController {
         return userDetails;
     }
 
+    @RequestMapping(value = apiVer + "/vacancy", method = RequestMethod.GET)
+    public void getVacancyDetailes() {
 
-    @RequestMapping(value = apiVer + "/app/menu", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody
-    String getSideMenu() {
-
-        return "[\n" +
-                "  {\n" +
-                "    \"title\": \"Main\",\n" +
-                "    \"groupTitle\" : true\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"title\": \"Dashboard\",\n" +
-                "    \"icon\": {\n" +
-                "      \"class\": \"fa fa-home\",\n" +
-                "      \"bg\": \"rgba(255,255,255,0.1)\",\n" +
-                "      \"color\": \"#fff\"\n" +
-                "    },\n" +
-                "    \"routing\": \"/default-layout/dashboard\",\n" +
-                "    \"badge\": {\n" +
-                "      \"text\": \"New\",\n" +
-                "      \"color\": \"#fff\",\n" +
-                "      \"bg\": \"#E57373\"\n" +
-                "    },\n" +
-                "    \"sub\": [\n" +
-                "      {\n" +
-                "        \"title\": \"Skills\",\n" +
-                "        \"routing\": \"/default-layout/dashboard\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"title\": \"Dashboard v2\",\n" +
-                "        \"routing\": \"/default-layout/dashboard-2\"\n" +
-                "      }\n" +
-                "    ]\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"title\": \"Widgets\",\n" +
-                "    \"icon\": {\n" +
-                "      \"class\": \"fa fa-th\",\n" +
-                "      \"bg\": \"rgba(255,255,255,0.1)\",\n" +
-                "      \"color\": \"#fff\"\n" +
-                "    },\n" +
-                "    \"routing\": \"/default-layout/widgets\"\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"title\": \"Vacancy calendar\",\n" +
-                "    \"icon\": {\n" +
-                "      \"class\": \"fa fa-calendar\",\n" +
-                "      \"bg\": \"rgba(255,255,255,0.1)\",\n" +
-                "      \"color\": \"#fff\"\n" +
-                "    },\n" +
-                "    \"routing\": \"/default-layout/calendar\"\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"title\": \"Detailed info by\",\n" +
-                "    \"groupTitle\" : true\n" +
-                "  },\n" +
-                "  {\n" +
-                "    \"title\": \"Programming language\",\n" +
-                "    \"icon\": {\n" +
-                "      \"class\": \"fa fa-briefcase\",\n" +
-                "      \"bg\": \"rgba(255,255,255,0.1)\",\n" +
-                "      \"color\": \"#fff\"\n" +
-                "    },\n" +
-                "    \"sub\": [\n" +
-                "      {\n" +
-                "        \"title\": \"Java\",\n" +
-                "        \"routing\": \"/default-layout/button\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"title\": \"JavaScript\",\n" +
-                "        \"routing\": \"/default-layout/card\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"title\": \"Python\",\n" +
-                "        \"routing\": \"/default-layout/checkbox\"\n" +
-                "      },\n" +
-                "      {\n" +
-                "        \"title\": \"Ruby\",\n" +
-                "        \"routing\": \"/default-layout/chips\"\n" +
-                "      }\n" +
-                "    ]\n" +
-                "  }\n" +
-                "]\n";
+        skillsMonsterService.getVacancyDetailes();
     }
 
 }

@@ -32,4 +32,5 @@ public interface SkillsMonsterService {
     ArrayList<Specialization> getSpecializationList();
     ArrayList<Area> getAreaList();
 
+    void getVacancyDetailes();
 }

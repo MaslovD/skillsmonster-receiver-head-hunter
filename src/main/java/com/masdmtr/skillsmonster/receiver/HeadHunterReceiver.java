@@ -157,4 +157,5 @@ public class HeadHunterReceiver extends ReceiverImpl {
         //skillsMonsterService.getListToLoadFromHh();
 
     }
+
 }

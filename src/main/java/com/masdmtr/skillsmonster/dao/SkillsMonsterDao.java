@@ -31,4 +31,6 @@ public interface SkillsMonsterDao {
     void addSearchRequest(SearchRequest searchRequest);
 
     ArrayList<Area> getAreaList();
+
+    void getVacancyDetailes();
 }

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import javax.persistence.EntityManagerFactory;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,17 +39,29 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
     @Override
     public ArrayList<Specialization> getSpecializationList() {
         Criteria criteria = sessionFactory.openSession().createCriteria(Specialization.class);
-       // criteria.add(Restrictions.ilike("subId","1.%"));
+        // criteria.add(Restrictions.ilike("subId","1.%"));
         return new ArrayList<Specialization>(criteria.list());
     }
 
     @Override
     public ArrayList<Area> getAreaList() {
         Criteria criteria = sessionFactory.openSession().createCriteria(Area.class);
-       // criteria.add(Restrictions.ilike("subId","1.%"));
+        // criteria.add(Restrictions.ilike("subId","1.%"));
         return new ArrayList<Area>(criteria.list());
     }
 
+    @Override
+    public void getVacancyDetailes() {
+        Session session = sessionFactory.openSession();
+
+        Query query = session.createSQLQuery("select SUM(found) from search_request WHERE period_from='2017-09-18' AND found>0");
+
+        BigDecimal res = (BigDecimal) query.uniqueResult();
+
+        session.close();
+
+
+    }
 
 
     @Override

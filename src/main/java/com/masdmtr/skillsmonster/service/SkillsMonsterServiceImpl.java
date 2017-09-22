@@ -73,6 +73,12 @@ public class SkillsMonsterServiceImpl implements SkillsMonsterService {
     }
 
     @Override
+    public void getVacancyDetailes() {
+        dao.getVacancyDetailes();
+
+    }
+
+    @Override
     public void addCountry(Country country) {
         dao.addCountry(country);
     }
