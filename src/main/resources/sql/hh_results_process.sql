@@ -10,6 +10,7 @@ SELECT
   (i.area ->> 'name' :: TEXT)     AS area_name,
   (i.salary -> 'to' :: TEXT)      AS salary_to
 
+
 INTO vacancy_hh
 
 FROM (search_result sr
