@@ -54,9 +54,9 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
     public void getVacancyDetailes() {
         Session session = sessionFactory.openSession();
 
-        Query query = session.createSQLQuery("select SUM(found) from search_request WHERE period_from='2017-09-18' AND found>0");
+        session.createSQLQuery("select * from add_vacancy_to_queue() AS VARCHAR").list();
 
-        BigDecimal res = (BigDecimal) query.uniqueResult();
+        //query.uniqueResult();
 
         session.close();
 

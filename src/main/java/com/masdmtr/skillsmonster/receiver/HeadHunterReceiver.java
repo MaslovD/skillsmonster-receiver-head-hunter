@@ -108,12 +108,16 @@ public class HeadHunterReceiver extends ReceiverImpl {
                             searchRequest.setPeriodFrom(Timestamp.valueOf(publDate.atStartOfDay()));
                             searchRequest.setPeriodTo(Timestamp.valueOf(publDate.atStartOfDay()));
                             searchRequest.setSpecializationId(spec);
+
                             SearchResult searchResult = new SearchResult();
                             searchResult.setSearchRequest(searchRequest);
                             searchResult.setPage(pageNum);
                             searchResult.setRawResponse(retMap);
-                            skillsMonsterService.addSearchResult(searchResult);
-
+                            searchResult.setFound(totalFound);
+                            searchResult.setStatus("NEW");
+                            if (totalFound > 0) {
+                                skillsMonsterService.addSearchResult(searchResult);
+                            }
                             pageNum++;
 
                         } catch (Exception e) {
@@ -139,7 +143,7 @@ public class HeadHunterReceiver extends ReceiverImpl {
                     String vacId = vac.getId();
 
                     try {
-                        logger.info("Vacancy ID: {} Created: {}", vacId,vac.getCreatedAt());
+                        logger.info("Vacancy ID: {} Created: {}", vacId, vac.getCreatedAt());
                         String reqString = "https://api.hh.ru/vacancies/" + vacId;
                         String jsonString = restTemplate.getForObject(reqString, String.class);
                         Map<String, Object> retMap = new Gson().fromJson(jsonString, new TypeToken<HashMap<String, Object>>() {

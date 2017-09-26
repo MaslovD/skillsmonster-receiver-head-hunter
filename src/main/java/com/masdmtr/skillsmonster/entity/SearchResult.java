@@ -21,6 +21,7 @@ public class SearchResult {
     private Map<String, Object> rawResponse;
     private SearchRequest searchRequest;
     private String status;
+    private Long found;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,10 +49,14 @@ public class SearchResult {
     public String getStatus() {
         return status;
     }
-
     public void setStatus(String status) {
         this.status = status;
     }
+
+    @Basic
+    @Column(name = "found", nullable = true)
+    public long getFound() {return found;}
+    public void setFound(Long found) {this.found = found;}
 
     @Basic
     @Type(type = "JsonDataUserType")

@@ -1,5 +1,5 @@
 BEGIN;
-INSERT INTO vacancy_hh
+INSERT INTO processing_queue
   SELECT
     sreq.id                            r_id,
     sreq.found                         found,
@@ -24,7 +24,7 @@ INSERT INTO vacancy_hh
                area JSONB,
                salary JSONB
                )
-    INNER JOIN search_request sreq ON sres.search_request_id = sreq.id AND sres.status = 'NEW' --AND sreq.period_from = '2017-09-21'
+    INNER JOIN search_request sreq ON sres.search_request_id = sreq.id AND sres.status = 'NEW'
 
   ) FOR UPDATE;
 
