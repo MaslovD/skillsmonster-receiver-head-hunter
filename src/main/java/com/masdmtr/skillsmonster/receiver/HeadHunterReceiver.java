@@ -9,9 +9,12 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import javax.persistence.EntityManager;
+import javax.persistence.StoredProcedureQuery;
 import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.time.*;
@@ -33,6 +36,9 @@ public class HeadHunterReceiver extends ReceiverImpl {
 
     @Autowired
     Logger logger;
+
+    @Autowired
+    EntityManager entityManager;
 
     @Override
     public void load() {
@@ -160,6 +166,13 @@ public class HeadHunterReceiver extends ReceiverImpl {
                 });
         //skillsMonsterService.getListToLoadFromHh();
 
+    }
+
+    @Override
+    @Transactional
+    public void updateProcessingQueue() {
+        StoredProcedureQuery sp = entityManager.createStoredProcedureQuery("public.add_vacancy_to_queue");
+        sp.getResultList();
     }
 
 }

@@ -11,7 +11,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.StoredProcedureQuery;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,9 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
 
     @Autowired
     private SessionFactory sessionFactory;
+
+    @Autowired
+    EntityManager em;
 
     @Override
     public List<Country> getCountryList() {
@@ -51,16 +56,10 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
     }
 
     @Override
+    @Transactional
     public void getVacancyDetailes() {
-        Session session = sessionFactory.openSession();
-
-        session.createSQLQuery("select * from add_vacancy_to_queue() AS VARCHAR").list();
-
-        //query.uniqueResult();
-
-        session.close();
-
-
+        StoredProcedureQuery sp = em.createStoredProcedureQuery("public.add_vacancy_to_queue");
+        sp.getResultList();
     }
 
 

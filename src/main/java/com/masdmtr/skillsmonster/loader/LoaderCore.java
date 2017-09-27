@@ -25,11 +25,17 @@ public class LoaderCore {
     private LoaderController loaderController;
 
 
-    @Scheduled(cron ="${skillsmonster.demon.cron}") //there was an issue with first invocation (I want it to start right after main module started)
+    @Scheduled(cron ="${skillsmonster.demon.cron}")
     //@Scheduled(fixedDelay = 864000)
     public void load() {
         loaderController.getReceivers().forEach(Receiver::load);
     }
+
+    @Scheduled(cron ="${skillsmonster.receiver.hh.queue_update}")
+    public void updateProcessingQueue() {
+        loaderController.getReceivers().forEach(Receiver::updateProcessingQueue);
+    }
+
 
     //@Scheduled(cron ="${skillsmonster.receiver.hh}")
     //@Scheduled(fixedDelay = 86400)

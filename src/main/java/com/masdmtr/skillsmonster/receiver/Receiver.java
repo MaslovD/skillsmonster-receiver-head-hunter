@@ -9,5 +9,5 @@ import org.springframework.stereotype.Component;
 public interface Receiver  {
     public void load ();
     public void loadVacancyDetailes();
-
+    public void updateProcessingQueue();
 }
