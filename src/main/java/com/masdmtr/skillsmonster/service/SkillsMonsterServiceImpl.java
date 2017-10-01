@@ -40,13 +40,13 @@ public class SkillsMonsterServiceImpl implements SkillsMonsterService {
     }
 
     @Override
-    public ArrayList<VacancyToLoadHh> getListToLoadFromHh() {
+    public ArrayList<ProcessingQueue> getProcessingQueue() {
         return dao.getListToLoadFromHh();
     }
 
     @Override
     public ArrayList<Menu> getMenu() {
-        ArrayList tmp=dao.getMenu();
+        ArrayList tmp = dao.getMenu();
         return tmp;
     }
 
@@ -62,13 +62,13 @@ public class SkillsMonsterServiceImpl implements SkillsMonsterService {
 
     @Override
     public ArrayList<Specialization> getSpecializationList() {
-        ArrayList tmp=dao.getSpecializationList();
+        ArrayList tmp = dao.getSpecializationList();
         return tmp;
     }
 
     @Override
     public ArrayList<Area> getAreaList() {
-        ArrayList tmp=dao.getAreaList();
+        ArrayList tmp = dao.getAreaList();
         return tmp;
     }
 
@@ -76,6 +76,11 @@ public class SkillsMonsterServiceImpl implements SkillsMonsterService {
     public void getVacancyDetailes() {
         dao.getVacancyDetailes();
 
+    }
+
+    @Override
+    public void updateProcessingQueue(ProcessingQueue processingQueueItem) {
+        dao.updateProcessingQueueItem(processingQueueItem);
     }
 
     @Override

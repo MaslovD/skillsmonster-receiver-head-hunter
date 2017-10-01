@@ -20,7 +20,7 @@ public interface SkillsMonsterService {
 
     SourceSite getSourceSite(int id);
 
-    ArrayList<VacancyToLoadHh> getListToLoadFromHh();
+    ArrayList<ProcessingQueue> getProcessingQueue();
 
     ArrayList<Menu> getMenu();
 
@@ -33,4 +33,6 @@ public interface SkillsMonsterService {
     ArrayList<Area> getAreaList();
 
     void getVacancyDetailes();
+
+    void updateProcessingQueue(ProcessingQueue processingQueueItem);
 }

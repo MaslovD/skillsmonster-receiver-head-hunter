@@ -21,7 +21,9 @@ import java.time.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by dmaslov on 7/17/17.
@@ -41,7 +43,7 @@ public class HeadHunterReceiver extends ReceiverImpl {
     EntityManager entityManager;
 
     @Override
-    public void load() {
+    public void searchVacancy() {
 
         logger.info("Head Hunter Receiver Started");
 
@@ -142,37 +144,41 @@ public class HeadHunterReceiver extends ReceiverImpl {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        skillsMonsterService.getListToLoadFromHh()
+        skillsMonsterService.getProcessingQueue()
                 //.stream()
                 .parallelStream()
-                .forEach(vac -> {
-                    String vacId = vac.getId();
+                .forEach(processingQueueItem -> {
+                    String vacId = processingQueueItem.getVacancyId();
 
                     try {
-                        logger.info("Vacancy ID: {} Created: {}", vacId, vac.getCreatedAt());
+                        logger.info("Vacancy ID: {} Created: {}", vacId, processingQueueItem.getCreatedAt());
                         String reqString = "https://api.hh.ru/vacancies/" + vacId;
                         String jsonString = restTemplate.getForObject(reqString, String.class);
                         Map<String, Object> retMap = new Gson().fromJson(jsonString, new TypeToken<HashMap<String, Object>>() {
                         }.getType());
                         Vacancy vacancy = new Vacancy();
-                        vacancy.setVacancyId(vac.getId());
+                        vacancy.setVacancyId(vacId);
                         vacancy.setRawData(retMap);
+
                         vacancy.setLoadDateTime(new Timestamp(System.currentTimeMillis()));
                         skillsMonsterService.addVacancy(vacancy);
+                        processingQueueItem.setProcessedAt(new Timestamp(System.currentTimeMillis()));
+                        processingQueueItem.setStatus("LOADED");
+                        skillsMonsterService.updateProcessingQueue(processingQueueItem);
+
                     } catch (HttpClientErrorException ex) {
                         logger.error("Error loading info from hh.ru ID: {}", vacId);
                         logger.error(ExceptionUtils.getFullStackTrace(ex));
                     }
                 });
-        //skillsMonsterService.getListToLoadFromHh();
-
     }
 
     @Override
     @Transactional
     public void updateProcessingQueue() {
-        StoredProcedureQuery sp = entityManager.createStoredProcedureQuery("public.add_vacancy_to_queue");
-        sp.getResultList();
-    }
 
+        StoredProcedureQuery sp = entityManager.createStoredProcedureQuery("public.add_vacancy_to_queue");
+        List resultList = sp.getResultList();
+        logger.info("added {} vacancies to the processing queue", resultList.get(0).toString());
+    }
 }

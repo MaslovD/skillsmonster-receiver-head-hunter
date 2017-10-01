@@ -62,6 +62,15 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
         sp.getResultList();
     }
 
+    @Override
+    public void updateProcessingQueueItem(ProcessingQueue processingQueueItem) {
+        Session session = sessionFactory.openSession();
+        Transaction tx1 = session.beginTransaction();
+        session.update(processingQueueItem);
+        tx1.commit();
+        session.flush();
+        session.close();
+    }
 
     @Override
     public void addCountry(Country country) {
@@ -97,13 +106,22 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
         session.close();
     }
 
+//    @Override
+//    public ArrayList getListToLoadFromHh() {
+//
+//        Criteria criteria = sessionFactory.openSession().createCriteria(VacancyToLoadHh.class);
+//        criteria.addOrder(Order.asc("createdAt"));
+//        return new ArrayList<VacancyToLoadHh>(criteria.list());
+//        //System.out.println("fd");
+//    }
+
     @Override
     public ArrayList getListToLoadFromHh() {
-
-        Criteria criteria = sessionFactory.openSession().createCriteria(VacancyToLoadHh.class);
+        Criteria criteria = sessionFactory.openSession().createCriteria(ProcessingQueue.class);
         criteria.addOrder(Order.asc("createdAt"));
-        return new ArrayList<VacancyToLoadHh>(criteria.list());
-        //System.out.println("fd");
+        criteria.add(Restrictions.eq("status", "NEW"));
+        ArrayList<ProcessingQueue> processingQueue = new ArrayList<ProcessingQueue>(criteria.list());
+        return processingQueue;
     }
 
     @Override
@@ -125,7 +143,6 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
         tx1.commit();
         session.flush();
         session.close();
-
     }
 
     @Override
@@ -137,6 +154,4 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
         session.flush();
         session.close();
     }
-
-
 }

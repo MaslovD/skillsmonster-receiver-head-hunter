@@ -6,8 +6,10 @@ import org.springframework.stereotype.Component;
  * Created by dmaslov on 7/31/17.
  */
 @Component
-public interface Receiver  {
-    public void load ();
-    public void loadVacancyDetailes();
-    public void updateProcessingQueue();
+public interface Receiver {
+    void searchVacancy();
+
+    void loadVacancyDetailes();
+
+    void updateProcessingQueue();
 }

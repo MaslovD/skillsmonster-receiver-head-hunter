@@ -33,4 +33,6 @@ public interface SkillsMonsterDao {
     ArrayList<Area> getAreaList();
 
     void getVacancyDetailes();
+
+    void updateProcessingQueueItem(ProcessingQueue processingQueueItem);
 }

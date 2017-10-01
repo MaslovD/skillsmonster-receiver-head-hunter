@@ -13,10 +13,10 @@ import java.util.Map;
 @Entity
 public class Vacancy {
     private long id;
-    private String vacancyId;
+    private Timestamp loadDateTime;
     private Map<String, Object> rawData;
     private Integer searchRequestId;
-    private Timestamp loadDateTime;
+    private String vacancyId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
