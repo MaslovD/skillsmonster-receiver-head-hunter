@@ -75,7 +75,6 @@ public class SkillsMonsterServiceImpl implements SkillsMonsterService {
     @Override
     public void getVacancyDetailes() {
         dao.getVacancyDetailes();
-
     }
 
     @Override

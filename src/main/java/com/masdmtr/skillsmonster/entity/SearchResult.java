@@ -1,5 +1,6 @@
 package com.masdmtr.skillsmonster.entity;
 
+import com.masdmtr.skillsmonster.entity.analytics.ThreeColumnRanking;
 import com.masdmtr.skillsmonster.json.JsonDataUserType;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;

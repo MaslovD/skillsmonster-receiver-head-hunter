@@ -35,7 +35,8 @@ public class SkillsMonsterController {
     private RestTemplate restTemplate;
 
     @RequestMapping(value = apiVer + "/country/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody
+    public
+    @ResponseBody
     List<Country> listCountries() {
         List<Country> userDetails = skillsMonsterService.getCountryList();
         return userDetails;
