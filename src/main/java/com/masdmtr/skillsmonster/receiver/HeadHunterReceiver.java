@@ -167,8 +167,12 @@ public class HeadHunterReceiver extends ReceiverImpl {
                         skillsMonsterService.updateProcessingQueue(processingQueueItem);
 
                     } catch (HttpClientErrorException ex) {
-                        logger.error("Error loading info from hh.ru ID: {}", vacId);
-                        logger.error(ExceptionUtils.getFullStackTrace(ex));
+                        logger.error("Error loading info from hh.ru ID: {} Created: {}", vacId, processingQueueItem.getCreatedAt());
+                        processingQueueItem.setProcessedAt(new Timestamp(System.currentTimeMillis()));
+                        processingQueueItem.setStatus("ERROR");
+                        skillsMonsterService.updateProcessingQueue(processingQueueItem);
+
+                        logger.error(ExceptionUtils.getMessage(ex));
                     }
                 });
     }

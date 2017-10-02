@@ -120,7 +120,7 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
         Criteria criteria = sessionFactory.openSession().createCriteria(ProcessingQueue.class);
         criteria.addOrder(Order.asc("createdAt"));
         criteria.add(Restrictions.eq("status", "NEW"));
-        criteria.setMaxResults(50000);
+        criteria.setMaxResults(1000);
         ArrayList<ProcessingQueue> processingQueue = new ArrayList<ProcessingQueue>(criteria.list());
         return processingQueue;
     }
