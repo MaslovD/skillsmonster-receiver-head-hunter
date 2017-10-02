@@ -116,6 +116,7 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
 //    }
 
 
+    
     @Override
     public ArrayList getListToLoadFromHh() {
         Criteria criteria = sessionFactory.openSession().createCriteria(ProcessingQueue.class);
