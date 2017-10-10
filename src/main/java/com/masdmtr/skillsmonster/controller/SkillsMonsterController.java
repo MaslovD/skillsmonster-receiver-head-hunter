@@ -41,6 +41,7 @@ public class SkillsMonsterController {
         List<Country> userDetails = skillsMonsterService.getCountryList();
         return userDetails;
     }
+    
 
     @RequestMapping(value = apiVer + "/country/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
