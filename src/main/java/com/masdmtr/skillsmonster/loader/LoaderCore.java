@@ -32,16 +32,16 @@ public class LoaderCore {
 
     //TODO
     //
-    @Scheduled(cron = "${skillsmonster.demon.cron}")
+    @Scheduled(cron = "${skillsmonster.receiver.hh.vacancy_searcher}")
     //@Scheduled(fixedDelay = 864000)
-    public void load() {
+    public void search() {
         logger.info("vacancy searcher started");
         loaderController.getReceivers().forEach(Receiver::searchVacancy);
         logger.info("vacancy searcher finished");
     }
 
     //TODO
-    @Scheduled(cron = "${skillsmonster.receiver.hh.queue_update}")
+    @Scheduled(cron = "${skillsmonster.receiver.hh.queue_updater}")
     public void updateProcessingQueue() {
         logger.info("processing queue updater started");
         loaderController.getReceivers().forEach(Receiver::updateProcessingQueue);
@@ -49,7 +49,7 @@ public class LoaderCore {
     }
 
     //TODO
-    @Scheduled(cron = "${skillsmonster.receiver.hh}")
+    @Scheduled(cron = "${skillsmonster.receiver.hh.vacancy_loader}")
     public void loadVacancyDetailes() {
         logger.info("vacancy loader started");
         loaderController.getReceivers().forEach(Receiver::loadVacancyDetailes);

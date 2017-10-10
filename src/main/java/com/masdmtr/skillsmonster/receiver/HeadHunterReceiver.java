@@ -105,7 +105,7 @@ public class HeadHunterReceiver extends ReceiverImpl {
 
                             totalPages = Math.round((Double) retMap.get("pages"));
                             Long totalFound = Math.round((Double) retMap.get("found"));
-                            logger.info("Total found: {}  Page: {}", totalFound, pageNum);
+                            logger.debug("Total found: {}  Page: {}", totalFound, pageNum);
 
                             searchRequest.setPages(totalPages);
                             searchRequest.setFound(totalFound);
@@ -124,6 +124,7 @@ public class HeadHunterReceiver extends ReceiverImpl {
                             searchResult.setFound(totalFound);
                             searchResult.setStatus("NEW");
                             if (totalFound > 0) {
+                                logger.info("Total found: {}  Page: {}", totalFound, pageNum);
                                 skillsMonsterService.addSearchResult(searchResult);
                             }
                             pageNum++;
@@ -151,7 +152,7 @@ public class HeadHunterReceiver extends ReceiverImpl {
                     String vacId = processingQueueItem.getVacancyId();
 
                     try {
-                        logger.info("Vacancy ID: {} Created: {}", vacId, processingQueueItem.getCreatedAt());
+                        logger.debug("Vacancy ID: {} Created: {}", vacId, processingQueueItem.getCreatedAt());
                         String reqString = "https://api.hh.ru/vacancies/" + vacId;
                         String jsonString = restTemplate.getForObject(reqString, String.class);
                         Map<String, Object> retMap = new Gson().fromJson(jsonString, new TypeToken<HashMap<String, Object>>() {

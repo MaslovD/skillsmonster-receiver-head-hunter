@@ -35,24 +35,40 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
 
     @Override
     public List<Country> getCountryList() {
-
-        Criteria criteria = sessionFactory.openSession().createCriteria(Country.class);
-        //List tmpList = criteria.list();
-        return criteria.list();
+        Session session = sessionFactory.openSession();
+        try {
+            Criteria criteria = session.createCriteria(Country.class);
+            //List tmpList = criteria.list();
+            return criteria.list();
+        } finally {
+            session.close();
+        }
     }
 
     @Override
     public ArrayList<Specialization> getSpecializationList() {
-        Criteria criteria = sessionFactory.openSession().createCriteria(Specialization.class);
-        // criteria.add(Restrictions.ilike("subId","1.%"));
-        return new ArrayList<Specialization>(criteria.list());
+        Session session = sessionFactory.openSession();
+        try {
+            Criteria criteria = sessionFactory.openSession().createCriteria(Specialization.class);
+
+            // criteria.add(Restrictions.ilike("subId","1.%"));
+            return new ArrayList<Specialization>(criteria.list());
+        } finally {
+            session.close();
+        }
     }
 
     @Override
     public ArrayList<Area> getAreaList() {
-        Criteria criteria = sessionFactory.openSession().createCriteria(Area.class);
-        // criteria.add(Restrictions.ilike("subId","1.%"));
-        return new ArrayList<Area>(criteria.list());
+        Session session = sessionFactory.openSession();
+        try {
+            Criteria criteria = sessionFactory.openSession().createCriteria(Area.class);
+            // criteria.add(Restrictions.ilike("subId","1.%"));
+            return new ArrayList<Area>(criteria.list());
+        } finally {
+            session.close();
+        }
+
     }
 
     @Override
@@ -65,96 +81,130 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
     @Override
     public void updateProcessingQueueItem(ProcessingQueue processingQueueItem) {
         Session session = sessionFactory.openSession();
-        Transaction tx1 = session.beginTransaction();
-        session.update(processingQueueItem);
-        tx1.commit();
-        session.flush();
+//        try {
+            Transaction tx1 = session.beginTransaction();
+            session.update(processingQueueItem);
+            tx1.commit();
+            session.flush();
+//        } finally {
+//            session.close();
+//        }
+
         session.close();
     }
 
     @Override
     public void addCountry(Country country) {
+
         Session session = sessionFactory.openSession();
-        Transaction tx1 = session.beginTransaction();
-        session.save(country);
-        tx1.commit();
-        session.flush();
+        try {
+            Transaction tx1 = session.beginTransaction();
+            session.save(country);
+            tx1.commit();
+            session.flush();
+        } finally {
+            session.close();
+        }
+
         session.close();
     }
 
     @Override
     public Area getAreaById(int id) {
         Session session = sessionFactory.openSession();
-        Area area = (Area) session.get(Area.class, id);
-        return area;
+        try {
+            Area area = (Area) session.get(Area.class, id);
+            return area;
+        } finally {
+            session.close();
+        }
+
     }
 
     @Override
     public SourceSite getSourceSiteById(int id) {
         Session session = sessionFactory.openSession();
-        SourceSite sourceSite = (SourceSite) session.get(SourceSite.class, id);
-        return sourceSite;
+        try {
+            SourceSite sourceSite = (SourceSite) session.get(SourceSite.class, id);
+            return sourceSite;
+        } finally {
+            session.close();
+        }
     }
 
     @Override
     public void addSearchResult(SearchResult searchResult) {
         Session session = sessionFactory.openSession();
-        Transaction tx1 = session.beginTransaction();
-        session.save(searchResult);
-        tx1.commit();
-        session.flush();
-        session.close();
+        try {
+            Transaction tx1 = session.beginTransaction();
+            session.save(searchResult);
+            tx1.commit();
+            session.flush();
+        } finally {
+            session.close();
+        }
+
     }
 
-//    @Override
-//    public ArrayList getListToLoadFromHh() {
-//
-//        Criteria criteria = sessionFactory.openSession().createCriteria(VacancyToLoadHh.class);
-//        criteria.addOrder(Order.asc("createdAt"));
-//        return new ArrayList<VacancyToLoadHh>(criteria.list());
-//        //System.out.println("fd");
-//    }
-
-
-    
     @Override
     public ArrayList getListToLoadFromHh() {
-        Criteria criteria = sessionFactory.openSession().createCriteria(ProcessingQueue.class);
-        criteria.addOrder(Order.asc("createdAt"));
-        criteria.add(Restrictions.eq("status", "NEW"));
-        criteria.setMaxResults(1000);
-        ArrayList<ProcessingQueue> processingQueue = new ArrayList<ProcessingQueue>(criteria.list());
-        return processingQueue;
+        Session session = sessionFactory.openSession();
+
+        try {
+            Criteria criteria = session.createCriteria(ProcessingQueue.class);
+            criteria.addOrder(Order.asc("createdAt"));
+            criteria.add(Restrictions.eq("status", "NEW"));
+            criteria.setMaxResults(1000);
+            ArrayList<ProcessingQueue> processingQueue = new ArrayList<ProcessingQueue>(criteria.list());
+            return processingQueue;
+        } finally {
+            session.close();
+        }
     }
 
     @Override
     public ArrayList getMenu() {
 
-        Criteria criteria = sessionFactory.openSession().createCriteria(Menu.class);
-        criteria.add(Restrictions.isNull("parent"));
-        criteria.addOrder(Order.asc("order"));
+        Session session = sessionFactory.openSession();
+//        try {
 
-        return new ArrayList<Menu>(criteria.list());
-        //System.out.println("fd");
+            Criteria criteria = session.createCriteria(Menu.class);
+
+            criteria.add(Restrictions.isNull("parent"));
+            criteria.addOrder(Order.asc("order"));
+            return new ArrayList<Menu>(criteria.list());
+//        } finally {
+//            session.close();
+//        }
+
+
     }
 
     @Override
     public void addVacancy(Vacancy vacancy) {
+
         Session session = sessionFactory.openSession();
-        Transaction tx1 = session.beginTransaction();
-        session.save(vacancy);
-        tx1.commit();
-        session.flush();
-        session.close();
+        try {
+            Transaction tx1 = session.beginTransaction();
+            session.save(vacancy);
+            tx1.commit();
+            session.flush();
+        } finally {
+            session.close();
+        }
     }
 
     @Override
     public void addSearchRequest(SearchRequest searchRequest) {
+
         Session session = sessionFactory.openSession();
-        Transaction tx1 = session.beginTransaction();
-        session.save(searchRequest);
-        tx1.commit();
-        session.flush();
-        session.close();
+        try {
+            Transaction tx1 = session.beginTransaction();
+            session.save(searchRequest);
+            tx1.commit();
+            session.flush();
+        } finally {
+            session.close();
+        }
     }
 }
