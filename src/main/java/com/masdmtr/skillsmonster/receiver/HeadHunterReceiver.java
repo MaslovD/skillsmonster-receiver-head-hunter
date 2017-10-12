@@ -51,7 +51,7 @@ public class HeadHunterReceiver extends ReceiverImpl {
         String industry = "";//"industry=7.540&";
         String areaTmp = "area={0}&";
         String specializationTmp = "specialization={0}&";
-        Integer perPage = 500;
+        Integer perPage = 100;
         ArrayList<Specialization> specializationList = skillsMonsterService.getSpecializationList();
 
         ArrayList<Area> areaList = skillsMonsterService.getAreaList();
