@@ -32,8 +32,8 @@ public class LoaderCore {
 
     //TODO
     //
-    @Scheduled(cron = "${skillsmonster.receiver.hh.vacancy_searcher}")
-    //@Scheduled(fixedDelay = 864000)
+   // @Scheduled(cron = "${skillsmonster.receiver.hh.vacancy_searcher}")
+    @Scheduled(fixedDelay = 864000)
     public void search() {
         logger.info("vacancy searcher started");
         loaderController.getReceivers().forEach(Receiver::searchVacancy);

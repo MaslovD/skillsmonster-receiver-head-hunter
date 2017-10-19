@@ -15,8 +15,8 @@ public class Vacancy {
     private long id;
     private Timestamp loadDateTime;
     private Map<String, Object> rawData;
-    private Integer searchRequestId;
     private String vacancyId;
+    private ProcessingQueue processingQueueId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,18 +50,6 @@ public class Vacancy {
         this.rawData = rawResponse;
     }
 
-
-    @Basic
-    @Column(name = "search_request_id", nullable = true)
-    public Integer getSearchRequestId() {
-        return searchRequestId;
-    }
-
-    public void setSearchRequestId(Integer searchRequestId) {
-        this.searchRequestId = searchRequestId;
-    }
-
-
     @Basic
     @Column(name = "load_date_time")
     public Timestamp getLoadDateTime() {
@@ -72,5 +60,13 @@ public class Vacancy {
         this.loadDateTime = loadDateTime;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "processing_queue_id", referencedColumnName = "id")
+    public ProcessingQueue getProcessingQueueId() {
+        return processingQueueId;
+    }
 
+    public void setProcessingQueueId(ProcessingQueue processingQueueId) {
+        this.processingQueueId = processingQueueId;
+    }
 }

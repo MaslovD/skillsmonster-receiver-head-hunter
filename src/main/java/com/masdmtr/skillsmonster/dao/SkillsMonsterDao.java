@@ -35,4 +35,10 @@ public interface SkillsMonsterDao {
     void getVacancyDetailes();
 
     void updateProcessingQueueItem(ProcessingQueue processingQueueItem);
+
+    void getAreaChildren(Area area);
+
+    ArrayList<Integer> getAreaCountryList();
+
+    ArrayList<Area> getAreaByCountryId(Integer countryId);
 }

@@ -4,6 +4,7 @@ import com.masdmtr.skillsmonster.entity.*;
 import com.masdmtr.skillsmonster.entity.ui.Menu;
 import org.hibernate.*;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -82,15 +83,57 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
     public void updateProcessingQueueItem(ProcessingQueue processingQueueItem) {
         Session session = sessionFactory.openSession();
 //        try {
-            Transaction tx1 = session.beginTransaction();
-            session.update(processingQueueItem);
-            tx1.commit();
-            session.flush();
+        Transaction tx1 = session.beginTransaction();
+        session.update(processingQueueItem);
+        tx1.commit();
+        session.flush();
 //        } finally {
 //            session.close();
 //        }
 
         session.close();
+    }
+
+    @Override
+    public void getAreaChildren(Area area) {
+        Session session = sessionFactory.openSession();
+
+        try {
+            Criteria criteria = session.createCriteria(Area.class);
+            List tmpList = criteria.list();
+
+            //return criteria.list();
+        } finally {
+            session.close();
+        }
+    }
+
+    @Override
+    public ArrayList<Integer> getAreaCountryList() {
+        Session session = sessionFactory.openSession();
+
+        try {
+            Criteria criteria = session.createCriteria(Area.class)
+                    .setProjection(Projections.projectionList()
+                            .add(Projections.groupProperty("countryId")));
+            return (ArrayList) criteria.list();
+
+        } finally {
+            session.close();
+        }
+    }
+
+    @Override
+    public ArrayList<Area> getAreaByCountryId(Integer countryId) {
+        Session session = sessionFactory.openSession();
+        try {
+            ArrayList<Area> areas = (ArrayList) session.createCriteria(Area.class).add(Restrictions.eq("countryId", countryId))
+                    .list();
+            return areas;
+        } finally {
+            session.close();
+        }
+
     }
 
     @Override
@@ -168,11 +211,11 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
         Session session = sessionFactory.openSession();
 //        try {
 
-            Criteria criteria = session.createCriteria(Menu.class);
+        Criteria criteria = session.createCriteria(Menu.class);
 
-            criteria.add(Restrictions.isNull("parent"));
-            criteria.addOrder(Order.asc("order"));
-            return new ArrayList<Menu>(criteria.list());
+        criteria.add(Restrictions.isNull("parent"));
+        criteria.addOrder(Order.asc("order"));
+        return new ArrayList<Menu>(criteria.list());
 //        } finally {
 //            session.close();
 //        }

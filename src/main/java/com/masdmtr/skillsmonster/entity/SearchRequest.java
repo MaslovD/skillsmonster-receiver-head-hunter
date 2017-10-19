@@ -15,7 +15,7 @@ public class SearchRequest {
     private Timestamp dateTime;
     private Long found;
     private String industryId;
-    private Long pages;
+    private Integer pages;
     private Integer perPage;
     private Timestamp periodFrom;
     private Timestamp periodTo;
@@ -57,11 +57,11 @@ public class SearchRequest {
 
     @Basic
     @Column(name = "pages", nullable = true)
-    public Long getPages() {
+    public Integer getPages() {
         return pages;
     }
 
-    public void setPages(Long pages) {
+    public void setPages(Integer pages) {
         this.pages = pages;
     }
 

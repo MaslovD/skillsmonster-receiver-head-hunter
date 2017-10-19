@@ -30,9 +30,15 @@ public interface SkillsMonsterService {
     void addSearchRequest(SearchRequest searchRequest);
 
     ArrayList<Specialization> getSpecializationList();
+
     ArrayList<Area> getAreaList();
 
     void getVacancyDetailes();
 
     void updateProcessingQueue(ProcessingQueue processingQueueItem);
+
+    List<Integer> getAreaCountryList();
+
+    ArrayList<Area> getAreaByCountryId(Integer countryId);
+
 }

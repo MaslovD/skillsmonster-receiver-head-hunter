@@ -1,5 +1,8 @@
 package com.masdmtr.skillsmonster.entity;
 
+import com.masdmtr.skillsmonster.service.SkillsMonsterService;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.annotation.Generated;
 import javax.persistence.*;
 
@@ -17,10 +20,9 @@ public class Area {
     private String name;
     private String type;
     private String zip;
-    private String countryId;
+    private Integer countryId;
     private String countryName;
     private String areaName;
-
 
     @Column(name = "code", nullable = true, length = 100)
     public String getCode() {
@@ -75,11 +77,11 @@ public class Area {
         this.id = id;
     }
 
-    public String getCountryId() {
+    public Integer getCountryId() {
         return countryId;
     }
 
-    public void setCountryId(String countryId) {
+    public void setCountryId(Integer countryId) {
         this.countryId = countryId;
     }
 
@@ -98,4 +100,6 @@ public class Area {
     public void setAreaName(String areaName) {
         this.areaName = areaName;
     }
+
+
 }
