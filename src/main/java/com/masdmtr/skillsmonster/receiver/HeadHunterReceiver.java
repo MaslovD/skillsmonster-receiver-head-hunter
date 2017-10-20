@@ -179,6 +179,7 @@ public class HeadHunterReceiver extends ReceiverImpl {
 
         ArrayList resArray = new ArrayList<Map<String, Object>>();
 
+        
         while (pageNum == 0 || totalPages > pageNum) {
             try {
                 reqString = String.format("https://api.hh.ru/vacancies?&date_from=%s&date_to=%s&per_page=100&page=%s&area=%s", publDate.toString(), publDate.toString(), pageNum, countryId);
