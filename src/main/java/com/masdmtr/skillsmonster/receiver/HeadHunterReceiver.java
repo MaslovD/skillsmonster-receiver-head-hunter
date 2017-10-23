@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.masdmtr.skillsmonster.entity.*;
 import com.masdmtr.skillsmonster.service.SkillsMonsterService;
+import com.sun.tools.corba.se.idl.InterfaceGen;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.omg.CORBA.INTERNAL;
 import org.slf4j.Logger;
@@ -55,7 +56,6 @@ public class HeadHunterReceiver extends ReceiverImpl {
         String areaTmp = "area={0}&";
         String specializationTmp = "specialization={0}&";
 
-
         ArrayList<Specialization> specializationList = skillsMonsterService.getSpecializationList();
 
         LocalDate dateFrom = LocalDate.now().minusDays(1);
@@ -63,14 +63,49 @@ public class HeadHunterReceiver extends ReceiverImpl {
         LocalDate publDate = dateFrom;
 
         List<Integer> areaCountryList = skillsMonsterService.getAreaCountryList();
+        ArrayList<Map<String, Object>> searchResultArray;
+
+        HashMap<String,String> searchParams = new HashMap<String, String>();
 
         while (publDate.compareTo(dateTo) <= 0) {
 
             logger.debug(String.valueOf(dateFrom.compareTo(dateTo)));
 
             for (Integer countryid : areaCountryList) {
+                searchParams.put("AREA", countryid);
 
-                searchForVacancy(dateFrom, 113);
+                searchResultArray = searchForVacancy(publDate, searchParams);
+
+                System.out.println("search in more detailes");
+
+                if (searchResultArray == null) {
+
+                    ArrayList<Area> areaList = skillsMonsterService.getAreaByCountryId(countryid);
+                    for (Area ar : areaList) {
+
+                        for (Specialization spec : specializationList) {
+
+                            String specialization = MessageFormat.format(specializationTmp, spec.getSubId());
+                            String area = MessageFormat.format(areaTmp, ar.getId().toString());
+
+                            searchResultArray = searchForVacancy(publDate, countryid);
+
+                            logger.info("Date: {}, Specialization: {}, Area: {}", publDate.toString(), spec.getSubId(), ar.getId().toString());
+
+
+                        }
+
+
+                    }
+
+                } else {
+                    System.out.println("no need more detailes");
+
+                    if (res.size() > 0) {
+                        System.out.println("fd");
+                    }
+                }
+
 //
 //                if (resposeMap.get("found") > MAX_RESPOSE_SIZE) {
 //
@@ -155,16 +190,14 @@ public class HeadHunterReceiver extends ReceiverImpl {
 //
             }
 
-
+            publDate = publDate.plusDays(1);
         }
 
-
-        publDate = publDate.plusDays(1);
 
         logger.info("Head Hunter Receiver Finished");
     }
 
-    public String searchForVacancy(LocalDate publDate, Integer countryId) {
+    public ArrayList<Map<String, Object>> searchForVacancy(LocalDate publDate, HashMap<String,String> searchParams) {
         Map<String, Object> resposeMap;
         String reqString;
         String jsonString;
@@ -172,6 +205,11 @@ public class HeadHunterReceiver extends ReceiverImpl {
         Integer perPage = 100;
         Integer totalPages = 0;
         Integer pageNum = 0;
+        Integer found = 0;
+
+        String areaId = searchParams.get("AREA");
+
+        String areaId = searchParams.get("AREA");
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -179,15 +217,22 @@ public class HeadHunterReceiver extends ReceiverImpl {
 
         ArrayList resArray = new ArrayList<Map<String, Object>>();
 
-        
         while (pageNum == 0 || totalPages > pageNum) {
             try {
-                reqString = String.format("https://api.hh.ru/vacancies?&date_from=%s&date_to=%s&per_page=100&page=%s&area=%s", publDate.toString(), publDate.toString(), pageNum, countryId);
+
+                reqString = String.format("https://api.hh.ru/vacancies?&date_from=%s&date_to=%s&per_page=100&page=%s&area=%s", publDate.toString(), publDate.toString(), pageNum, areaId);
 
                 jsonString = restTemplate.getForObject(reqString, String.class);
 
                 resposeMap = new Gson().fromJson(jsonString, new TypeToken<HashMap<String, Object>>() {
                 }.getType());
+
+                found = ((Double) resposeMap.get("found")).intValue();
+                if (found > MAX_RESPOSE_SIZE) {
+                    resArray = null;
+                    break;
+                }
+
 
                 totalPages = ((Double) resposeMap.get("pages")).intValue();
 
@@ -199,7 +244,8 @@ public class HeadHunterReceiver extends ReceiverImpl {
                 logger.error(ExceptionUtils.getFullStackTrace(e));
             }
         }
-        return null;
+
+        return resArray;
     }
 
     @Override
