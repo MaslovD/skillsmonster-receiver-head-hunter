@@ -54,10 +54,7 @@ public class HeadHunterReceiver extends ReceiverImpl {
 
         LocalDateTime timePoint = LocalDateTime.now();
         String industry = "";//"industry=7.540&";
-        String areaTmp = "area={0}&";
-        String specializationTmp = "specialization={0}&";
 
-        ArrayList<Specialization> specializationList = skillsMonsterService.getSpecializationList();
 
         LocalDate dateFrom = LocalDate.now().minusDays(1);
         LocalDate dateTo = LocalDate.now().minusDays(1);
@@ -77,123 +74,20 @@ public class HeadHunterReceiver extends ReceiverImpl {
 
                 searchResultArray = searchForVacancy(publDate, searchParams);
 
-                if (searchResultArray == null) {
-                    System.out.println("search in more detailes");
-                    ArrayList<Area> areaList = skillsMonsterService.getAreaByCountryId(countryid);
-                    searchResultArray = new ArrayList<Map<String, Object>>();
-
-                    for (Area ar : areaList) {
-
-                        for (Specialization spec : specializationList) {
-
-                            // String area = MessageFormat.format(areaTmp, ar.getId().toString());
-                            String specialization = MessageFormat.format(specializationTmp, spec.getSubId());
-
-                            searchParams.put("AREA", ar.getId());
-                            searchParams.put("SPEC", spec.getSubId());
+//                else {
+//                    System.out.println("no need more detailes");
+//
+////                    if (res.size() > 0) {
+////                        System.out.println("fd");
+////                    }
+//                }
+//                System.out.println("processing complete");
+//                System.out.println(searchResultArray.size());
+//                searchResultArray.clear();
+//
+//            }
 
 
-                            Utils.addAllIfNotNull(searchResultArray, searchForVacancy(publDate, searchParams));
-
-                            logger.info("Date: {}, Specialization: {}, Area: {}", publDate.toString(), spec.getSubId(), ar.getId().toString());
-
-                        }
-
-                    }
-
-                } else {
-                    System.out.println("no need more detailes");
-
-//                    if (res.size() > 0) {
-//                        System.out.println("fd");
-//                    }
-                }
-                System.out.println("processing complete");
-                System.out.println(searchResultArray.size());
-                searchResultArray.clear();
-
-//
-//                if (resposeMap.get("found") > MAX_RESPOSE_SIZE) {
-//
-//                    ArrayList<Area> areaList = skillsMonsterService.getAreaByCountryId(countryid);
-//
-//                    for (Area ar : areaList) {
-//
-//                        for (Specialization spec : specializationList) {
-//
-//                            Integer pageNum = 0;
-//
-//                            String specialization = MessageFormat.format(specializationTmp, spec.getSubId());
-//
-//                            String area = MessageFormat.format(areaTmp, ar.getId().toString());
-//
-//                            logger.info("Date: {}, Specialization: {}, Area: {}", publDate.toString(), spec.getSubId(), ar.getId().toString());
-//
-//                            while (totalPages > pageNum) {
-//                                try {
-//
-//                                    reqString = "https://api.hh.ru/vacancies?" + "date_from=" + publDate.toString() + "&date_to=" + publDate.toString() + "&per_page=" + perPage.toString() + "&page=" + pageNum.toString() + specialization + area + industry;
-//
-//                                    logger.debug(reqString);
-//                                    jsonString = restTemplate.getForObject(reqString, String.class);
-//
-//                                    searchRequest.setRawRequest(reqString);
-//                                    searchRequest.setDateTime(new Timestamp(System.currentTimeMillis()));
-//                                    //skillsMonsterService.addSearchRequest(searchRequest);
-//
-//                                    resposeMap = new Gson().fromJson(jsonString, new TypeToken<HashMap<String, Object>>() {
-//                                    }.getType());
-//
-//                                    totalPages = ((Double) resposeMap.get("pages")).intValue();
-//
-//                                    totalFound = Math.round((Double) resposeMap.get("found"));
-//
-//                                    logger.debug("Total found: {}  Page: {}", totalFound, pageNum);
-//
-//
-//                                    searchRequest.setPages(totalPages);
-//                                    searchRequest.setFound(totalFound);
-//                                    searchRequest.setPerPage(perPage);
-//                                    searchRequest.setAreaByAreaId(ar);
-//                                    //Timestamp.valueOf(publDate.atStartOfDay());
-//                                    //Timestamp timestamp = Timestamp.valueOf(publDate.atStartOfDay());
-//                                    searchRequest.setPeriodFrom(Timestamp.valueOf(publDate.atStartOfDay()));
-//                                    searchRequest.setPeriodTo(Timestamp.valueOf(publDate.atStartOfDay()));
-//                                    searchRequest.setSpecializationId(spec);
-//
-//                                    SearchResult searchResult = new SearchResult();
-//                                    searchResult.setSearchRequest(searchRequest);
-//                                    searchResult.setPage(pageNum);
-//                                    searchResult.setRawResponse(resposeMap);
-//                                    searchResult.setFound(totalFound);
-//                                    searchResult.setStatus("NEW");
-//
-//                                    if (totalFound > 0) {
-//                                        logger.info("Total found: {}  Page: {}", totalFound, pageNum);
-//                                        skillsMonsterService.addSearchResult(searchResult);
-//                                    }
-//
-//                                    pageNum++;
-//
-//                                } catch (Exception e) {
-//                                    logger.error(ExceptionUtils.getFullStackTrace(e));
-//                                }
-//                            }
-//                        }
-//                    }
-
-
-//                } else {
-//
-//
-//
-//
-//
-////                logger.info("Total found: {}  Pages: {}", totalFound, totalPages);
-////
-////                logger.info(reqString);
-//
-//
             }
 
             publDate = publDate.plusDays(1);
@@ -203,57 +97,152 @@ public class HeadHunterReceiver extends ReceiverImpl {
         logger.info("Head Hunter Receiver Finished");
     }
 
-    public ArrayList<Map<String, Object>> searchForVacancy(LocalDate publDate, HashMap<String, Object> searchParams) {
-        Map<String, Object> resposeMap;
-        String reqString;
-        String jsonString;
+    public void addSearchResult(ArrayList<SearchResult> searchResults) {
+        try {
 
-        Integer perPage = 100;
-        Integer totalPages = 0;
+//            reqString = "https://api.hh.ru/vacancies?" + "date_from=" + publDate.toString() + "&date_to=" + publDate.toString() + "&per_page=" + perPage.toString() + "&page=" + pageNum.toString() + specialization + area + industry;
+//
+//            logger.debug(reqString);
+//            jsonString = restTemplate.getForObject(reqString, String.class);
+//
+//            searchRequest.setRawRequest(reqString);
+//            searchRequest.setDateTime(new Timestamp(System.currentTimeMillis()));
+//            //skillsMonsterService.addSearchRequest(searchRequest);
+//
+//            resposeMap = new Gson().fromJson(jsonString, new TypeToken<HashMap<String, Object>>() {
+//            }.getType());
+//
+//            totalPages = ((Double) resposeMap.get("pages")).intValue();
+//
+//            totalFound = Math.round((Double) resposeMap.get("found"));
+//
+//            logger.debug("Total found: {}  Page: {}", totalFound, pageNum);
+            searchResults.forEach((searchResult) -> {
+
+
+//                searchRequest.setPages(totalPages);
+//                searchRequest.setFound(totalFound);
+//                searchRequest.setPerPage(perPage);
+//                searchRequest.setAreaByAreaId(ar);
+//                //Timestamp.valueOf(publDate.atStartOfDay());
+//                //Timestamp timestamp = Timestamp.valueOf(publDate.atStartOfDay());
+//                searchRequest.setPeriodFrom(Timestamp.valueOf(publDate.atStartOfDay()));
+//                searchRequest.setPeriodTo(Timestamp.valueOf(publDate.atStartOfDay()));
+//                searchRequest.setSpecializationId(spec);
+//
+//                SearchResult searchResult = new SearchResult();
+//                searchResult.setSearchRequest(searchRequest);
+//                searchResult.setPage(pageNum);
+//                searchResult.setRawResponse(resposeMap);
+//                searchResult.setFound(totalFound);
+//                searchResult.setStatus("NEW");
+//
+//                logger.info("Total found: {}  Page: {}", totalFound, pageNum);
+//                skillsMonsterService.addSearchResult(searchResult);
+
+
+            });
+
+        } catch (Exception e) {
+            logger.error(ExceptionUtils.getFullStackTrace(e));
+        }
+    }
+
+    public ArrayList<Map<String, Object>> searchForVacancy(LocalDate publDate, HashMap<String, Object> searchParams) {
+
+
         Integer pageNum = 0;
         Integer found = 0;
 
-        Integer areaId = (Integer) searchParams.get("AREA");
-
-        String specId = (String) searchParams.get("SPEC");
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        SearchRequest searchRequest = new SearchRequest();
-
         ArrayList resArray = new ArrayList<Map<String, Object>>();
 
-        while (pageNum == 0 || totalPages > pageNum) {
-            try {
+        ArrayList<Specialization> specializationList = skillsMonsterService.getSpecializationList();
 
-                reqString = String.format("https://api.hh.ru/vacancies?&date_from=%s&date_to=%s&per_page=100&page=%s&area=%s%s", publDate.toString(), publDate.toString(), pageNum, areaId, specId != null ? "&specialization=".concat(specId) : "");
+        ArrayList<Map<String, Object>> vacancyList = getVacancyList(publDate, searchParams);
 
-                jsonString = restTemplate.getForObject(reqString, String.class);
+        found = ((Double) vacancyList.get(0).get("found")).intValue();
+        Integer areaId = (Integer) searchParams.get("AREA");
 
-                resposeMap = new Gson().fromJson(jsonString, new TypeToken<HashMap<String, Object>>() {
-                }.getType());
 
-                found = ((Double) resposeMap.get("found")).intValue();
+        if (found > MAX_RESPOSE_SIZE) {
+            logger.info("Date: {}, Area: {}, Found: {}", publDate.toString(), areaId.toString(), found);
+            ArrayList<Area> areaList = skillsMonsterService.getAreaByCountryId(areaId);
+
+            for (Area ar : areaList) {
+
+                searchParams.clear();
+                searchParams.put("AREA", ar.getId());
+
+                vacancyList = getVacancyList(publDate, searchParams);
+
+                found = ((Double) vacancyList.get(0).get("found")).intValue();
+
                 if (found > MAX_RESPOSE_SIZE) {
-                    resArray = null;
-                    break;
+                    logger.info("\t\t Date: {}, Area: {}, Found: {}", publDate.toString(), ar.getId(), found);
+                    for (Specialization spec : specializationList) {
+
+                        // String area = MessageFormat.format(areaTmp, ar.getId().toString());
+                        // String specialization = MessageFormat.format(specializationTmp, spec.getSubId());
+
+                        searchParams.put("SPEC", spec.getSubId());
+                        vacancyList = getVacancyList(publDate, searchParams);
+
+                        found = ((Double) vacancyList.get(0).get("found")).intValue();
+
+                        //Utils.addAllIfNotNull(searchResultArray, searchForVacancy(publDate, searchParams));
+
+                        logger.info("\t\t\tDate: {}, Specialization: {}, Area: {}, Found: {}", publDate.toString(), spec.getSubId(), ar.getId().toString(), found);
+
+                    }
                 }
 
-                if (found > 0) {
-                    resArray.add(resposeMap);
-                }
+                logger.info("\t\t Date: {}, Area: {}, Found: {}", publDate.toString(), ar.getId().toString(), found);
 
-                totalPages = ((Double) resposeMap.get("pages")).intValue();
-
-                pageNum++;
-
-
-            } catch (Exception e) {
-                logger.error(ExceptionUtils.getFullStackTrace(e));
             }
         }
 
+        logger.info("Date: {}, Area: {}, Found: {}", publDate.toString(), areaId.toString(), found);
+
         return resArray;
+    }
+
+    public ArrayList<Map<String, Object>> getVacancyList(LocalDate publDate, HashMap<String, Object> searchParams) {
+        String reqString;
+        String jsonString;
+        Integer pageNum = 0;
+        Integer perPage = 100;
+        Integer totalPages = 0;
+        Integer found = 0;
+        Map<String, Object> resposeMap;
+        RestTemplate restTemplate = new RestTemplate();
+        ArrayList<Map<String, Object>> retArray = new ArrayList<Map<String, Object>>();
+        String areaTmp = "area={0}&";
+        String specializationTmp = "specialization={0}&";
+        Integer areaId = (Integer) searchParams.get("AREA");
+        String specId = (String) searchParams.get("SPEC");
+
+        while (pageNum == 0 || totalPages > pageNum) {
+
+            reqString = String.format("https://api.hh.ru/vacancies?&date_from=%s&date_to=%s&per_page=100&page=%s&area=%s%s", publDate.toString(), publDate.toString(), pageNum, areaId, specId != null ? "&specialization=".concat(specId) : "");
+
+            jsonString = restTemplate.getForObject(reqString, String.class);
+
+            resposeMap = new Gson().fromJson(jsonString, new TypeToken<HashMap<String, Object>>() {
+            }.getType());
+
+            retArray.add(resposeMap);
+
+            totalPages = ((Double) resposeMap.get("pages")).intValue();
+            found = ((Double) resposeMap.get("found")).intValue();
+
+            pageNum++;
+
+            if (found > MAX_RESPOSE_SIZE) {
+                break;
+            }
+
+        }
+        return retArray;
     }
 
     @Override
