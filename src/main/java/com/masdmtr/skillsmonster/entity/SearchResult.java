@@ -20,9 +20,10 @@ public class SearchResult {
     private int id;
     private Integer page;
     private Map<String, Object> rawResponse;
-    private SearchRequest searchRequest;
     private String status;
-    private Long found;
+    private Double found;
+    private String rawRequest;
+    private Integer totalPages;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,8 +57,8 @@ public class SearchResult {
 
     @Basic
     @Column(name = "found", nullable = true)
-    public long getFound() {return found;}
-    public void setFound(Long found) {this.found = found;}
+    public Double getFound() {return found;}
+    public void setFound(Double found) {this.found = found;}
 
     @Basic
     @Type(type = "JsonDataUserType")
@@ -70,15 +71,24 @@ public class SearchResult {
         this.rawResponse = rawResponse;
     }
 
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "search_request_id")
-    public SearchRequest getSearchRequest() {
-        return searchRequest;
+    @Basic
+    @Column(name = "raw_request", nullable = false)
+    public String getRawRequest() {
+        return rawRequest;
     }
 
-    public void setSearchRequest(SearchRequest searchRequest) {
-        this.searchRequest = searchRequest;
+    public void setRawRequest(String rawRequest) {
+        this.rawRequest = rawRequest;
+    }
+
+    @Basic
+    @Column(name = "total_pages", nullable = false)
+    public Integer getTotalPages() {
+        return totalPages;
+    }
+
+    public void setTotalPages(Integer totalPages) {
+        this.totalPages = totalPages;
     }
 
 

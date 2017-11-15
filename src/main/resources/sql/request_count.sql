@@ -1,1 +1,1 @@
-select count(*) from search_request WHERE period_from='2017-09-25'
+select count(*) from processing_queue

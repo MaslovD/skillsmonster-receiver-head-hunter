@@ -55,10 +55,7 @@ public class SkillsMonsterServiceImpl implements SkillsMonsterService {
         dao.addVacancy(vacancy);
     }
 
-    @Override
-    public void addSearchRequest(SearchRequest searchRequest) {
-        dao.addSearchRequest(searchRequest);
-    }
+
 
     @Override
     public ArrayList<Specialization> getSpecializationList() {

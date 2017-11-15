@@ -5,7 +5,7 @@
 
 	<groupId>com.masdmtr</groupId>
 	<artifactId>skills-monster</artifactId>
-	<version>0.0.21</version>
+	<version>0.0.22</version>
 	<packaging>jar</packaging>
 
 	<name>skills-monster</name>
@@ -69,33 +69,7 @@
             <artifactId>annotations</artifactId>
             <version>RELEASE</version>
         </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
-        </dependency>
     </dependencies>
-
 	<build>
 		<plugins>
 			<plugin>

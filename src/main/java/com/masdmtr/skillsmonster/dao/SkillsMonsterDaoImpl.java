@@ -237,17 +237,4 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
         }
     }
 
-    @Override
-    public void addSearchRequest(SearchRequest searchRequest) {
-
-        Session session = sessionFactory.openSession();
-        try {
-            Transaction tx1 = session.beginTransaction();
-            session.save(searchRequest);
-            tx1.commit();
-            session.flush();
-        } finally {
-            session.close();
-        }
-    }
 }
