@@ -1,0 +1,48 @@
+server:
+  port: 8080
+
+debug: false
+
+# ===============================
+# = LOGGING
+# ===============================
+logging:
+  level:
+    org.springframework.web: INFO
+    guru.springframework:
+      controllers: DEBUG
+      org.hibernate: ERROR
+  file: logs/spring-boot-logging.log
+
+# ===============================
+# = DATA SOURCE
+# ===============================
+spring:
+  skillsmonster:
+    schedule:
+      vacancy_searcher: "0 20 1 * * *"
+      queue_updater: "*/30 * * * * *"
+      vacancy_loader: "*/10 * * * * *"
+      host: "https://api.hh.ru/"
+    api:
+      version: v1
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: "jdbc:postgresql://192.168.1.53:5432/skillsmonster"
+    username: postgres
+    password: postgres
+# Keep the connection alive if idle for a long time (needed in production)
+    testWhileIdle: true
+    validationQuery: SELECT 1
+  jpa:
+    database-platform: com.masdmtr.skillsmonster.json.CustomPostgreSqlDialect
+    generate-ddl: true
+    hibernate:
+      dialect: com.masdmtr.skillsmonster.json.CustomPostgreSqlDialect
+      ddl-auto: validate
+      current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+#     enable_lazy_load_no_trans: true
+      connection:
+        charSet: UTF-8
+#     format-sql: true
+    use-sql-comments: true

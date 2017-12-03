@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Controller
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping(value = "/api/" + "${skillsmonster.api.version}" + "/analytics")
+@RequestMapping(value = "/api/" + "${spring.skillsmonster.api.version}" + "/analytics")
 public class AnalyticsController {
 
     @Autowired
