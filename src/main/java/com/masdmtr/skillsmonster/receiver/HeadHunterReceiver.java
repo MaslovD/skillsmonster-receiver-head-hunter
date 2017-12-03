@@ -249,7 +249,7 @@ public class HeadHunterReceiver extends ReceiverImpl {
     @Override
     @Transactional
     public void updateProcessingQueue() {
-        System.out.println("update_queue");
+     //   System.out.println("update_queue");
         StoredProcedureQuery sp = entityManager.createStoredProcedureQuery("public.add_vacancy_to_queue");
         List resultList = sp.getResultList();
 
