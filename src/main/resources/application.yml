@@ -8,7 +8,7 @@ spring:
       vacancy_searcher: "0 20 1 * * *"
       queue_updater: "*/30 * * * * *"
       vacancy_loader: "*/10 * * * * *"
-      host: "https://api.hh.ru/"
+    host: "https://api.hh.ru/"
     api:
       version: v1
   datasource:
@@ -65,7 +65,7 @@ spring:
       vacancy_searcher: "0 20 1 * * *"
       queue_updater: "*/30 * * * * *"
       vacancy_loader: "*/10 * * * * *"
-      host: "https://api.hh.ru/"
+    host: "https://api.hh.ru/"
     api:
       version: v1
   datasource:

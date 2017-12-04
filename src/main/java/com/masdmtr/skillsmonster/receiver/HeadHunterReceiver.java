@@ -42,7 +42,7 @@ public class HeadHunterReceiver extends ReceiverImpl {
     @Autowired
     EntityManager entityManager;
 
-    //@Value("${skillsmonster.reciever.hh.host}")
+    @Value("${spring.skillsmonster.host}")
     String apiHost;
 
     @Override

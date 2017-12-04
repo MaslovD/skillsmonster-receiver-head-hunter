@@ -5,7 +5,7 @@
 
     <groupId>skillsmonster</groupId>
     <artifactId>receiver-head-hunter</artifactId>
-    <version>0.0.24</version>
+    <version>0.0.27</version>
     <packaging>jar</packaging>
 
     <name>receiver-head-hunter</name>
@@ -22,8 +22,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-cloud.version>Dalston.SR4</spring-cloud.version>
         <java.version>1.8</java.version>
-        <docker.repo.user>masdmtr</docker.repo.user>
-        <docker.repo.password>Anna1985$</docker.repo.password>
+        <docker.repo.user>skillsmonster</docker.repo.user>
+        <!--<docker.repo.password></docker.repo.password>-->
         <profile.name>PROD</profile.name>
     </properties>
 
@@ -108,10 +108,10 @@
                 </executions>
                 <configuration>
                     <!--<registry>${project.registry}</registry>-->
-                    <authConfig>
-                        <username>${docker.repo.user}</username>
-                        <password>${docker.repo.password}</password>
-                    </authConfig>
+                    <!--<authConfig>-->
+                        <!--<username>${docker.repo.user}</username>-->
+                        <!--<password>${docker.repo.password}</password>-->
+                    <!--</authConfig>-->
                     <images>
                         <image>
                             <alias>${project.name}</alias>
