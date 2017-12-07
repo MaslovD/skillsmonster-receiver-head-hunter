@@ -5,7 +5,7 @@
 
     <groupId>skillsmonster</groupId>
     <artifactId>receiver-head-hunter</artifactId>
-    <version>0.0.27</version>
+    <version>0.0.29</version>
     <packaging>jar</packaging>
 
     <name>receiver-head-hunter</name>
@@ -24,7 +24,7 @@
         <java.version>1.8</java.version>
         <docker.repo.user>skillsmonster</docker.repo.user>
         <!--<docker.repo.password></docker.repo.password>-->
-        <profile.name>PROD</profile.name>
+        <profile.name>prod</profile.name>
     </properties>
 
     <dependencies>
@@ -71,6 +71,11 @@
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+            <version>1.1.2.RELEASE</version>
         </dependency>
     </dependencies>
     <distributionManagement>
@@ -140,7 +145,7 @@
                                                 <outputDirectory>jars</outputDirectory>
                                             </file>
                                             <file>
-                                                <source>${project.basedir}/src/main/resources/application.yml</source>
+                                                <source>${project.basedir}/src/main/resources/bootstrap.properties</source>
                                                 <outputDirectory>/</outputDirectory>
                                             </file>
                                         </files>
@@ -160,6 +165,4 @@
             </plugin>
         </plugins>
     </build>
-
-
 </project>
