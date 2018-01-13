@@ -1,1 +1,0 @@
-INSERT INTO public.source_site (id, name, url, api_url) VALUES (1, 'HeadHunter', 'https://www.hh.ru', 'https://api.hh.ru/');
