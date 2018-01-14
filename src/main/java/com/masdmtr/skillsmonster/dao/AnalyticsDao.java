@@ -10,6 +10,6 @@ import java.util.Map;
  */
 public interface AnalyticsDao {
 
-    
+
     List<TopProgLangRuHh> executeQuery(String query);
 }
