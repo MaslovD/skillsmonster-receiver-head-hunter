@@ -16,6 +16,7 @@ public interface SkillsMonsterDao {
 
     void addCountry(Country country);
 
+
     Area getAreaById(int id);
 
     SourceSite getSourceSiteById(int id);
