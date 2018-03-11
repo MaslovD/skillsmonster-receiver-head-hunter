@@ -1,5 +1,6 @@
 package com.masdmtr.skillsmonster.entity;
 
+
 import com.masdmtr.skillsmonster.service.SkillsMonsterService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 /**
  * Created by dmaslov on 7/26/17.
  */
+
 @Entity
 public class Area {
 

@@ -397,6 +397,7 @@ CREATE VIEW all_areas_hh AS SELECT (ar.value ->> 'id'::text) AS country_id,
     i.name AS area_name
    FROM ((dictionary_hh dic
      CROSS JOIN LATERAL jsonb_array_elements(dic.value) ar(value))
+
      CROSS JOIN LATERAL jsonb_to_recordset((ar.value #> '{areas}'::text[])) i(id text, name text, areas jsonb))
   WHERE ((dic.type)::text = 'AREA'::text)
 ;
@@ -416,6 +417,19 @@ CREATE VIEW key_skills AS SELECT vl.vacancy_id,
    FROM (vacancy vl
      CROSS JOIN LATERAL jsonb_to_recordset((vl.raw_data #> '{key_skills}'::text[])) i(name text))
 ;
+
+CREATE MATERIALIZED VIEW mv_top_skills_by_month_ru_hh AS SELECT row_number() OVER () AS id,
+																																date_trunc('MONTH'::text, ((vacancy.raw_data ->> 'created_at'::text))::timestamp without time zone) AS month,
+																																s.name AS skill,
+																																count(1) AS score
+																												 FROM ((vacancy
+																													 CROSS JOIN LATERAL jsonb_to_recordset((vacancy.raw_data #> '{key_skills}'::text[])) s(name text))
+																													 LEFT JOIN skill_group sg ON ((s.name = (sg.skill)::text)))
+																												 WHERE ((s.name IS NOT NULL) AND ((sg.name)::text = 'Programming Language'::text))
+																												 GROUP BY (date_trunc('MONTH'::text, ((vacancy.raw_data ->> 'created_at'::text))::timestamp without time zone)), s.name
+																												 ORDER BY (date_trunc('MONTH'::text, ((vacancy.raw_data ->> 'created_at'::text))::timestamp without time zone)), (count(1)) DESC;
+CREATE UNIQUE INDEX mv_top_skills_by_month_ru_hh_id_idx
+	ON mv_top_skills_by_month_ru_hh (id);
 
 create function is_vacancy_loaded(vac_id character varying) returns boolean
 	language sql

@@ -1,6 +1,8 @@
 package com.masdmtr.skillsmonster.service;
 
 
+import com.masdmtr.skillsmonster.dto.SkillRankingItem;
+
 import java.util.List;
 
 /**
@@ -8,4 +10,6 @@ import java.util.List;
  */
 public interface AnalyticsService {
     List getTopProgrammingLang();
+
+    List<SkillRankingItem> getSkillByMonthByNameRuHh(String skillName);
 }

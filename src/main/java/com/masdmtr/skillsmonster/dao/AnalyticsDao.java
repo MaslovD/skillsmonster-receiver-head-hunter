@@ -1,6 +1,6 @@
 package com.masdmtr.skillsmonster.dao;
 
-import com.masdmtr.skillsmonster.entity.analytics.TopProgLangRuHh;
+import com.masdmtr.skillsmonster.dto.SkillRankingDto;
 
 import java.util.List;
 import java.util.Map;
@@ -11,5 +11,5 @@ import java.util.Map;
 public interface AnalyticsDao {
 
 
-    List<TopProgLangRuHh> executeQuery(String query);
+    List executeQuery(String query);
 }
