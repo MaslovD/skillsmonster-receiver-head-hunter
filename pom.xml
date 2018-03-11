@@ -5,7 +5,7 @@
 
     <groupId>org.skillsmonster</groupId>
     <artifactId>receiver-head-hunter</artifactId>
-    <version>0.0.30</version>
+    <version>0.0.31</version>
     <packaging>jar</packaging>
 
     <name>receiver-head-hunter</name>
