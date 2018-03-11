@@ -1,7 +1,13 @@
 package com.masdmtr.skillsmonster.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.Month;
+import java.time.Year;
+import java.util.Date;
 
 
 @SqlResultSetMapping(
@@ -16,9 +22,8 @@ import java.sql.Timestamp;
 
 @Entity
 public class SkillRankingItem {
-@Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-//    @Column(name = "id", updatable = false, nullable = false)
+    @Id
+    @JsonIgnore
     private Long id;
     private Timestamp month;
     public String skill;
@@ -32,9 +37,10 @@ public class SkillRankingItem {
         return id;
     }
 
-
-    public Timestamp getMonth() {
-        return month;
+    public String getMonth() {
+        Month m = month.toLocalDateTime().getMonth();
+        int y = month.toLocalDateTime().getYear();
+        return String.valueOf(m.getValue()).concat("/").concat(String.valueOf(y));
     }
 
 
