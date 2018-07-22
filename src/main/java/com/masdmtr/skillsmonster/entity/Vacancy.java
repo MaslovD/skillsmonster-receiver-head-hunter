@@ -5,6 +5,9 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
@@ -13,10 +16,37 @@ import java.util.Map;
 @Entity
 public class Vacancy {
     private long id;
-    private Timestamp loadDateTime;
+    private OffsetDateTime loadDateTime;
     private Map<String, Object> rawData;
     private String vacancyId;
-    private ProcessingQueue processingQueueId;
+    private String name;
+    private String areaUrl;
+    private String areaId;
+    private String areaName;
+    private Double salaryFrom;
+    private Double salaryTo;
+    private Boolean salaryGross;
+    private String salaryCurrency;
+    private String snippetRequirement;
+    private String snippetResponsibility;
+    private Boolean archived;
+    private Boolean premium;
+    private String source;
+    private String createdAt;
+    private String publishedAt;
+    private String url;
+    private String alternateUrl;
+    private String applyAlternateUrl;
+    private String address;
+    private String departmentId;
+    private String departmentName;
+    private String sortPointDistance;
+    private String empId;
+    private String empName;
+    private String empUrl;
+    private String status;
+    private String typeId;
+    private String typeName;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,22 +81,13 @@ public class Vacancy {
     }
 
     @Basic
-    @Column(name = "load_date_time")
-    public Timestamp getLoadDateTime() {
+    @Column(name = "load_date_time", columnDefinition = "DATE")
+    public OffsetDateTime getLoadDateTime() {
         return loadDateTime;
     }
 
-    public void setLoadDateTime(Timestamp loadDateTime) {
+    public void setLoadDateTime(OffsetDateTime loadDateTime) {
         this.loadDateTime = loadDateTime;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "processing_queue_id", referencedColumnName = "id")
-    public ProcessingQueue getProcessingQueueId() {
-        return processingQueueId;
-    }
-
-    public void setProcessingQueueId(ProcessingQueue processingQueueId) {
-        this.processingQueueId = processingQueueId;
-    }
 }

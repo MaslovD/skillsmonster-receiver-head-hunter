@@ -1,5 +1,6 @@
 package com.masdmtr.skillsmonster.receiver;
 
+import com.masdmtr.skillsmonster.dto.ProcessingQueueItem;
 import org.springframework.stereotype.Component;
 
 /**
@@ -8,6 +9,11 @@ import org.springframework.stereotype.Component;
 @Component
 public interface Receiver {
     void searchVacancy();
-    void loadVacancyDetailes();
-    void updateProcessingQueue();
+
+    //void loadVacancyDetailes();
+
+    void loadVacancyDetailsMq(ProcessingQueueItem processingQueueItem);
+
+    //  void updateProcessingQueue();
+
 }

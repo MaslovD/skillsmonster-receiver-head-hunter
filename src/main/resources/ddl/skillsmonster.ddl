@@ -85,6 +85,8 @@ create table vacancy
 )
 ;
 
+
+
 create unique index vacancy_id_uindex
 	on vacancy (id)
 ;

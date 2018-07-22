@@ -17,14 +17,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoaderCore {
 
-    @Autowired
     private SkillsMonsterService skillsMonsterService;
-
-    @Autowired
     private LoaderController loaderController;
+    private Logger logger;
 
     @Autowired
-    private Logger logger;
+    public LoaderCore(SkillsMonsterService skillsMonsterService, LoaderController loaderController, Logger logger) {
+        this.skillsMonsterService = skillsMonsterService;
+        this.loaderController = loaderController;
+        this.logger = logger;
+
+    }
 
     @Scheduled(cron = "${spring.skillsmonster.schedule.vacancy_searcher}")
     //  @Scheduled(fixedDelay = 864000)
@@ -34,17 +37,17 @@ public class LoaderCore {
         logger.info("vacancy searcher finished");
     }
 
-    @Scheduled(cron = "${spring.skillsmonster.schedule.queue_updater}")
-    public void updateProcessingQueue() {
-        logger.info("processing queue updater started");
-        loaderController.getReceivers().forEach(Receiver::updateProcessingQueue);
-        logger.info("processing queue updater finished");
-    }
+//    @Scheduled(cron = "${spring.skillsmonster.schedule.queue_updater}")
+//    public void updateProcessingQueue() {
+//        logger.info("processing queue updater started");
+//        loaderController.getReceivers().forEach(Receiver::updateProcessingQueue);
+//        logger.info("processing queue updater finished");
+//    }
 
-    @Scheduled(cron = "${spring.skillsmonster.schedule.vacancy_loader}")
-    public void loadVacancyDetailes() {
-        logger.info("vacancy loader started");
-        loaderController.getReceivers().forEach(Receiver::loadVacancyDetailes);
-        logger.info("vacancy loader detailes finished");
-    }
+//    @Scheduled(cron = "${spring.skillsmonster.schedule.vacancy_loader}")
+//    public void loadVacancyDetailes() {
+//        logger.info("vacancy loader started");
+//        loaderController.getReceivers().forEach(Receiver::loadVacancyDetailes);
+//        logger.info("vacancy loader detailes finished");
+//    }
 }
