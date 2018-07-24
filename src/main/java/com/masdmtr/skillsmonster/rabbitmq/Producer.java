@@ -36,6 +36,7 @@ public class Producer {
 
     private String itemMessageToJson(ProcessingQueueItem processingQueueItem) {
         ObjectMapper mapper = new ObjectMapper();
+
         try {
             return mapper.writeValueAsString(processingQueueItem);
 

@@ -1,5 +1,7 @@
 package com.masdmtr.skillsmonster.dto;
 
+import java.time.LocalDateTime;
+
 public class ProcessingQueueItem {
 
     private String vacancyId;
@@ -16,8 +18,8 @@ public class ProcessingQueueItem {
     private Boolean archived;
     private Boolean premium;
     private String source;
-    private String createdAt;
-    private String publishedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime publishedAt;
     private String url;
     private String alternateUrl;
     private String applyAlternateUrl;
@@ -148,19 +150,19 @@ public class ProcessingQueueItem {
         this.source = source;
     }
 
-    public String getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public String getPublishedAt() {
+    public LocalDateTime getPublishedAt() {
         return publishedAt;
     }
 
-    public void setPublishedAt(String publishedAt) {
+    public void setPublishedAt(LocalDateTime publishedAt) {
         this.publishedAt = publishedAt;
     }
 

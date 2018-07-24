@@ -20,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.persistence.EntityManager;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import com.masdmtr.skillsmonster.rabbitmq.Producer;
@@ -204,8 +205,8 @@ public class HeadHunterReceiver extends ReceiverImpl {
 
                             //TODO
                             // processingQueueItem.setSortPointDistance((String) ((LinkedTreeMap) elem).get("sortPointDistance"));
-                            processingQueueItem.setCreatedAt((String) ((LinkedTreeMap) elem).get("created_at"));
-                            processingQueueItem.setPublishedAt((String) ((LinkedTreeMap) elem).get("published_at"));
+                            processingQueueItem.setCreatedAt((LocalDateTime) ((LinkedTreeMap) elem).get("created_at"));
+                            processingQueueItem.setPublishedAt((LocalDateTime) ((LinkedTreeMap) elem).get("published_at"));
 
                             processingQueueItem.setEmpId(((LinkedTreeMap) elem).get("employer") != null ?
                                     (String) ((LinkedTreeMap) ((LinkedTreeMap) elem).get("employer")).get("id") : null);
@@ -327,13 +328,48 @@ public class HeadHunterReceiver extends ReceiverImpl {
             Vacancy vacancy = new Vacancy();
             vacancy.setVacancyId(vacId);
             vacancy.setRawData(retMap);
+            vacancy.setAddress(processingQueueItem.getAddress());
+            vacancy.setAlternateUrl(processingQueueItem.getAlternateUrl());
+            vacancy.setApplyAlternateUrl(processingQueueItem.getApplyAlternateUrl());
+            vacancy.setArchived(processingQueueItem.getArchived());
 
-           // vacancy.setLoadDateTime(new Timestamp(System.currentTimeMillis()));
+
+            vacancy.setName(processingQueueItem.getName());
+            vacancy.setAreaUrl(processingQueueItem.getAreaUrl());
+            vacancy.setAreaId(processingQueueItem.getAreaId());
+            vacancy.setAreaName(processingQueueItem.getAreaName());
+            vacancy.setSalaryFrom(processingQueueItem.getSalaryFrom());
+            vacancy.setSalaryTo(processingQueueItem.getSalaryTo());
+            vacancy.setSalaryGross(processingQueueItem.getSalaryGross());
+            vacancy.setSalaryCurrency(processingQueueItem.getSalaryCurrency());
+            vacancy.setSnippetRequirement(processingQueueItem.getSnippetRequirement());
+            vacancy.setSnippetResponsibility(processingQueueItem.getSnippetResponsibility());
+            vacancy.setArchived(processingQueueItem.getArchived());
+            vacancy.setPremium(processingQueueItem.getPremium());
+            vacancy.setSource(processingQueueItem.getSource());
+            vacancy.setCreatedAt(processingQueueItem.getCreatedAt());
+            vacancy.setPublishedAt(processingQueueItem.getPublishedAt());
+            vacancy.setUrl(processingQueueItem.getUrl());
+            vacancy.setAlternateUrl(processingQueueItem.getAlternateUrl());
+            vacancy.setApplyAlternateUrl(processingQueueItem.getApplyAlternateUrl());
+            vacancy.setAddress(processingQueueItem.getAddress());
+            vacancy.setDepartmentId(processingQueueItem.getDepartmentId());
+            vacancy.setDepartmentName(processingQueueItem.getDepartmentName());
+            vacancy.setSortPointDistance(processingQueueItem.getSortPointDistance());
+            vacancy.setEmpId(processingQueueItem.getEmpId());
+            vacancy.setEmpName(processingQueueItem.getEmpName());
+            vacancy.setEmpUrl(processingQueueItem.getEmpUrl());
+            vacancy.setStatus(processingQueueItem.getStatus());
+            vacancy.setTypeId(processingQueueItem.getTypeId());
+            vacancy.setTypeName(processingQueueItem.getTypeName());
+
+//            vacancy.setLoadDateTime(new Timestamp(System.currentTimeMillis()));
             skillsMonsterService.addVacancy(vacancy);
-            //    processingQueueItem.setProcessedAt(new Timestamp(System.currentTimeMillis()));
-            // skillsMonsterService.updateProcessingQueue(processingQueueItem);
 
-        } catch (HttpClientErrorException ex) {
+            System.out.println("");
+        } catch
+                (HttpClientErrorException
+                        ex) {
             logger.error("Error loading info from hh.ru ID: {}", vacId);
             //    processingQueueItem.setProcessedAt(new Timestamp(System.currentTimeMillis()));
             processingQueueItem.setStatus("ERROR");
