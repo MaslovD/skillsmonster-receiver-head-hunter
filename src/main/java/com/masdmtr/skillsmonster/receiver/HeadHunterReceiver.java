@@ -205,8 +205,8 @@ public class HeadHunterReceiver extends ReceiverImpl {
 
                             //TODO
                             // processingQueueItem.setSortPointDistance((String) ((LinkedTreeMap) elem).get("sortPointDistance"));
-                            processingQueueItem.setCreatedAt((LocalDateTime) ((LinkedTreeMap) elem).get("created_at"));
-                            processingQueueItem.setPublishedAt((LocalDateTime) ((LinkedTreeMap) elem).get("published_at"));
+                            processingQueueItem.setCreatedAt((String) ((LinkedTreeMap) elem).get("created_at"));
+                            processingQueueItem.setPublishedAt((String) ((LinkedTreeMap) elem).get("published_at"));
 
                             processingQueueItem.setEmpId(((LinkedTreeMap) elem).get("employer") != null ?
                                     (String) ((LinkedTreeMap) ((LinkedTreeMap) elem).get("employer")).get("id") : null);
@@ -347,8 +347,8 @@ public class HeadHunterReceiver extends ReceiverImpl {
             vacancy.setArchived(processingQueueItem.getArchived());
             vacancy.setPremium(processingQueueItem.getPremium());
             vacancy.setSource(processingQueueItem.getSource());
-            vacancy.setCreatedAt(processingQueueItem.getCreatedAt());
-            vacancy.setPublishedAt(processingQueueItem.getPublishedAt());
+            //vacancy.setCreatedAt(processingQueueItem.getCreatedAt());
+            //vacancy.setPublishedAt(processingQueueItem.getPublishedAt());
             vacancy.setUrl(processingQueueItem.getUrl());
             vacancy.setAlternateUrl(processingQueueItem.getAlternateUrl());
             vacancy.setApplyAlternateUrl(processingQueueItem.getApplyAlternateUrl());

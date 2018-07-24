@@ -1,7 +1,6 @@
 package com.masdmtr.skillsmonster.rabbitmq;
 
 import com.masdmtr.skillsmonster.dto.ProcessingQueueItem;
-import com.masdmtr.skillsmonster.receiver.HeadHunterReceiver;
 import com.masdmtr.skillsmonster.receiver.Receiver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +23,7 @@ public class Consumer {
     }
 
     @RabbitListener(queues = "${spring.rabbitmq.skillsmonster.queue.searchResults}")
-    public void receiveQueueItemLevel1(final ProcessingQueueItem processingQueueItem) throws InterruptedException {
+    public void receiveProcessingQueueItem(final ProcessingQueueItem processingQueueItem) {
         receiver.loadVacancyDetailsMq(processingQueueItem);
     }
 }

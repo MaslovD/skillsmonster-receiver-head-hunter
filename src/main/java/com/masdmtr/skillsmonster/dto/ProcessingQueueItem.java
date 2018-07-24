@@ -1,6 +1,11 @@
 package com.masdmtr.skillsmonster.dto;
 
+import org.apache.tomcat.jni.Local;
+
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ProcessingQueueItem {
 
@@ -18,8 +23,8 @@ public class ProcessingQueueItem {
     private Boolean archived;
     private Boolean premium;
     private String source;
-    private LocalDateTime createdAt;
-    private LocalDateTime publishedAt;
+    private OffsetDateTime createdAt;
+    private OffsetDateTime publishedAt;
     private String url;
     private String alternateUrl;
     private String applyAlternateUrl;
@@ -126,7 +131,7 @@ public class ProcessingQueueItem {
         this.snippetResponsibility = snippetResponsibility;
     }
 
-    
+
     public Boolean getArchived() {
         return archived;
     }
@@ -151,20 +156,23 @@ public class ProcessingQueueItem {
         this.source = source;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public OffsetDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedAt(String createdAt) {
+        DateTimeFormatter aFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        this.createdAt = OffsetDateTime.parse(createdAt, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+        System.out.println("");
+
     }
 
-    public LocalDateTime getPublishedAt() {
+    public OffsetDateTime getPublishedAt() {
         return publishedAt;
     }
 
-    public void setPublishedAt(LocalDateTime publishedAt) {
-        this.publishedAt = publishedAt;
+    public void setPublishedAt(String publishedAt) {
+        this.publishedAt = OffsetDateTime.parse(publishedAt);
     }
 
     public String getUrl() {

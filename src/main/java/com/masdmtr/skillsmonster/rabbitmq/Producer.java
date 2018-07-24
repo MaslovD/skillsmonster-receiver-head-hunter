@@ -24,21 +24,23 @@ public class Producer {
     private static final Logger logger = LoggerFactory.getLogger(Producer.class);
 
     private final RabbitTemplate rabbitTemplate;
+    private ObjectMapper jacksonObjectMapper;
+
     @Value("${spring.rabbitmq.skillsmonster.exchange}")
     private String dataLoaderSparkExchange;
     @Value("${spring.rabbitmq.skillsmonster.routingKey}")
     public String dataLoaderSparkRoutingKey;
 
     @Autowired
-    public Producer(final RabbitTemplate rabbitTemplate) {
+    public Producer(final RabbitTemplate rabbitTemplate, ObjectMapper jacksonObjectMapper) {
+        this.jacksonObjectMapper = jacksonObjectMapper;
         this.rabbitTemplate = rabbitTemplate;
     }
 
     private String itemMessageToJson(ProcessingQueueItem processingQueueItem) {
-        ObjectMapper mapper = new ObjectMapper();
 
         try {
-            return mapper.writeValueAsString(processingQueueItem);
+            return jacksonObjectMapper.writeValueAsString(processingQueueItem);
 
         } catch (JsonProcessingException e) {
             e.printStackTrace();
