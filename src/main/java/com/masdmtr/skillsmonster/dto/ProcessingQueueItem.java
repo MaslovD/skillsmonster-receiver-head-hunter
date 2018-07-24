@@ -126,6 +126,7 @@ public class ProcessingQueueItem {
         this.snippetResponsibility = snippetResponsibility;
     }
 
+    
     public Boolean getArchived() {
         return archived;
     }
