@@ -3,8 +3,13 @@ package com.masdmtr.skillsmonster.receiver;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
-import com.masdmtr.skillsmonster.dto.ProcessingQueueItem;
-import com.masdmtr.skillsmonster.entity.*;
+import com.masdmtr.skillsmonster.config.DateFormatter;
+import com.masdmtr.skillsmonster.config.RabbitConfig;
+import com.masdmtr.skillsmonster.dto.VacancyDto;
+import com.masdmtr.skillsmonster.persistence.model.Area;
+import com.masdmtr.skillsmonster.persistence.model.Specialization;
+import com.masdmtr.skillsmonster.persistence.model.Vacancy;
+import com.masdmtr.skillsmonster.rabbitmq.Producer;
 import com.masdmtr.skillsmonster.service.SkillsMonsterService;
 import com.rabbitmq.client.Consumer;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -18,12 +23,11 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityManager;
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
-
-import com.masdmtr.skillsmonster.rabbitmq.Producer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by dmaslov on 7/17/17.
@@ -40,16 +44,25 @@ public class HeadHunterReceiver extends ReceiverImpl {
     private Producer producer;
     private RestTemplate restTemplate;
     private static final Logger logger = LoggerFactory.getLogger(Consumer.class);
-
+    private RabbitConfig rabbitConfig;
+    private DateFormatter dateFormatter;
     @Value("${spring.skillsmonster.host}")
     String apiHost;
 
     @Autowired
-    public HeadHunterReceiver(EntityManager entityManager, SkillsMonsterService skillsMonsterService, Producer producer, RestTemplate restTemplate) {
+    public HeadHunterReceiver(EntityManager entityManager,
+                              SkillsMonsterService skillsMonsterService,
+                              Producer producer,
+                              RestTemplate restTemplate,
+                              RabbitConfig rabbitConfig,
+                              DateFormatter dateFormatter
+    ) {
         this.entityManager = entityManager;
         this.skillsMonsterService = skillsMonsterService;
         this.producer = producer;
         this.restTemplate = restTemplate;
+        this.rabbitConfig = rabbitConfig;
+        this.dateFormatter = dateFormatter;
     }
 
     @Override
@@ -155,7 +168,7 @@ public class HeadHunterReceiver extends ReceiverImpl {
 
                 ((ArrayList) res.get("items")).forEach(
                         elem -> {
-                            ProcessingQueueItem processingQueueItem = new ProcessingQueueItem();
+                            VacancyDto processingQueueItem = new VacancyDto();
                             processingQueueItem.setVacancyId((String) ((LinkedTreeMap) elem).get("id"));
                             processingQueueItem.setName((String) ((LinkedTreeMap) elem).get("name"));
 
@@ -205,8 +218,10 @@ public class HeadHunterReceiver extends ReceiverImpl {
 
                             //TODO
                             // processingQueueItem.setSortPointDistance((String) ((LinkedTreeMap) elem).get("sortPointDistance"));
-                            processingQueueItem.setCreatedAt((String) ((LinkedTreeMap) elem).get("created_at"));
-                            processingQueueItem.setPublishedAt((String) ((LinkedTreeMap) elem).get("published_at"));
+                            processingQueueItem.setCreatedAt(
+                                    (String) ((LinkedTreeMap) elem).get("created_at"));
+                            processingQueueItem.setPublishedAt(
+                                    (String) ((LinkedTreeMap) elem).get("published_at"));
 
                             processingQueueItem.setEmpId(((LinkedTreeMap) elem).get("employer") != null ?
                                     (String) ((LinkedTreeMap) ((LinkedTreeMap) elem).get("employer")).get("id") : null);
@@ -309,7 +324,7 @@ public class HeadHunterReceiver extends ReceiverImpl {
 //    }
 
     @Override
-    public void loadVacancyDetailsMq(ProcessingQueueItem processingQueueItem) {
+    public void loadVacancyDetailsMq(VacancyDto processingQueueItem) {
 
 
         String vacId = processingQueueItem.getVacancyId();

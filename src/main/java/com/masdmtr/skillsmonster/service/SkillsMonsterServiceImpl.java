@@ -1,8 +1,8 @@
 package com.masdmtr.skillsmonster.service;
 
-import com.masdmtr.skillsmonster.dao.SkillsMonsterDao;
-import com.masdmtr.skillsmonster.entity.*;
-import com.masdmtr.skillsmonster.entity.ui.Menu;
+import com.masdmtr.skillsmonster.persistence.repository.SkillsMonsterDao;
+import com.masdmtr.skillsmonster.persistence.model.ui.Menu;
+import com.masdmtr.skillsmonster.persistence.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

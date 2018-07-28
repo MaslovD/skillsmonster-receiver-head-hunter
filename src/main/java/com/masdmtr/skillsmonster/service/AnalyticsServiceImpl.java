@@ -1,6 +1,6 @@
 package com.masdmtr.skillsmonster.service;
 
-import com.masdmtr.skillsmonster.dao.AnalyticsDao;
+import com.masdmtr.skillsmonster.persistence.repository.AnalyticsDao;
 import com.masdmtr.skillsmonster.dto.SkillRankingItem;
 
 import org.springframework.beans.factory.annotation.Autowired;

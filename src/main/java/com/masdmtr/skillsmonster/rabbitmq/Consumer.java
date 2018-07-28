@@ -1,6 +1,6 @@
 package com.masdmtr.skillsmonster.rabbitmq;
 
-import com.masdmtr.skillsmonster.dto.ProcessingQueueItem;
+import com.masdmtr.skillsmonster.dto.VacancyDto;
 import com.masdmtr.skillsmonster.receiver.Receiver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +23,7 @@ public class Consumer {
     }
 
     @RabbitListener(queues = "${spring.rabbitmq.skillsmonster.queue.searchResults}")
-    public void receiveProcessingQueueItem(final ProcessingQueueItem processingQueueItem) {
+    public void receiveProcessingQueueItem(final VacancyDto processingQueueItem) {
         receiver.loadVacancyDetailsMq(processingQueueItem);
     }
 }

@@ -13,7 +13,7 @@ public class JacksonConfig {
     public ObjectMapper objectMapper() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);mapper.configure(MapperFeature.DEFAULT_VIEW_INCLUSION, true);
-        mapper.registerModule(new JavaTimeModule());
+      //  mapper.registerModule(new JavaTimeModule());
         return mapper;
     }
 }

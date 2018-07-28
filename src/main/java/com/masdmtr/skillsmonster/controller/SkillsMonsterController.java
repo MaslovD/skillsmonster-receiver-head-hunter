@@ -1,13 +1,11 @@
 package com.masdmtr.skillsmonster.controller;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
-import com.masdmtr.skillsmonster.entity.Country;
-import com.masdmtr.skillsmonster.entity.SearchResult;
-import com.masdmtr.skillsmonster.entity.ui.Menu;
+import com.masdmtr.skillsmonster.persistence.model.Country;
+import com.masdmtr.skillsmonster.persistence.model.SearchResult;
+import com.masdmtr.skillsmonster.persistence.model.ui.Menu;
 import com.masdmtr.skillsmonster.service.SkillsMonsterService;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 

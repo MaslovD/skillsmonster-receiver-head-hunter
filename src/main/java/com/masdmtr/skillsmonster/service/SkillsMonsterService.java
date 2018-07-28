@@ -1,7 +1,7 @@
 package com.masdmtr.skillsmonster.service;
 
-import com.masdmtr.skillsmonster.entity.*;
-import com.masdmtr.skillsmonster.entity.ui.Menu;
+import com.masdmtr.skillsmonster.persistence.model.ui.Menu;
+import com.masdmtr.skillsmonster.persistence.model.*;
 
 import java.util.ArrayList;
 import java.util.List;

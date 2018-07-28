@@ -15,6 +15,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.interceptor.RetryOperationsInterceptor;
 
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+
 /**
  * Proudly created by dmaslov on 02/01/2018.
  */
@@ -150,6 +153,7 @@ public class RabbitConfig {
 
         return jsonConverter;
     }
+
 
 
 }

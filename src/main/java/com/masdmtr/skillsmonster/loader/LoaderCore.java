@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.time.format.DateTimeFormatter;
+
 
 /**
  * Created by dmaslov on 7/25/17.
@@ -20,17 +22,20 @@ public class LoaderCore {
     private SkillsMonsterService skillsMonsterService;
     private LoaderController loaderController;
     private Logger logger;
+    private DateTimeFormatter dateTimeFormatter;
 
     @Autowired
-    public LoaderCore(SkillsMonsterService skillsMonsterService, LoaderController loaderController, Logger logger) {
+    public LoaderCore(SkillsMonsterService skillsMonsterService, LoaderController loaderController, Logger logger, DateTimeFormatter dateTimeFormatter) {
         this.skillsMonsterService = skillsMonsterService;
         this.loaderController = loaderController;
         this.logger = logger;
+        this.dateTimeFormatter = dateTimeFormatter;
 
     }
 
-    @Scheduled(cron = "${spring.skillsmonster.schedule.vacancy_searcher}")
-    //  @Scheduled(fixedDelay = 864000)
+    //@Scheduled(cron = "${spring.skillsmonster.schedule.vacancy_searcher}")
+
+    @Scheduled(fixedDelay = 30)
     public void search() {
         logger.info("vacancy searcher started");
         loaderController.getReceivers().forEach(Receiver::searchVacancy);

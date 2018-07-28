@@ -6,7 +6,7 @@ package com.masdmtr.skillsmonster.rabbitmq;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.masdmtr.skillsmonster.dto.ProcessingQueueItem;
+import com.masdmtr.skillsmonster.dto.VacancyDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
@@ -37,7 +37,7 @@ public class Producer {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    private String itemMessageToJson(ProcessingQueueItem processingQueueItem) {
+    private String itemMessageToJson(VacancyDto processingQueueItem) {
 
         try {
             return jacksonObjectMapper.writeValueAsString(processingQueueItem);
@@ -48,7 +48,7 @@ public class Producer {
         }
     }
 
-    public void sendMessage(ProcessingQueueItem queueItem) {
+    public void sendMessage(VacancyDto queueItem) {
         logger.debug("Sending message...");
 
         String jsonMsg = itemMessageToJson(queueItem);
