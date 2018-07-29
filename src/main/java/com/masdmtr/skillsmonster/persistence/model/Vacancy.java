@@ -3,20 +3,19 @@ package com.masdmtr.skillsmonster.persistence.model;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
+import java.util.Date;
 import java.util.Map;
 
 /**
  * Created by dmaslov on 7/26/17.
  */
+
 @Entity
 public class Vacancy {
     private long id;
-    private OffsetDateTime loadDateTime;
+    private Date loadDateTime;
     private Map<String, Object> rawData;
     private String vacancyId;
     private String name;
@@ -32,8 +31,8 @@ public class Vacancy {
     private Boolean archived;
     private Boolean premium;
     private String source;
-    private LocalDateTime createdAt;
-    private LocalDateTime publishedAt;
+    private OffsetDateTime createdAt;
+    private OffsetDateTime publishedAt;
     private String url;
     private String alternateUrl;
     private String applyAlternateUrl;
@@ -47,6 +46,13 @@ public class Vacancy {
     private String status;
     private String typeId;
     private String typeName;
+    private String industryId;
+    private String industrySubId;
+    private String specializationId;
+    private String specializationSubId;
+
+    public Vacancy() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -82,11 +88,11 @@ public class Vacancy {
 
     @Basic
     @Column(name = "load_date_time", columnDefinition = "DATE")
-    public OffsetDateTime getLoadDateTime() {
+    public Date getLoadDateTime() {
         return loadDateTime;
     }
 
-    public void setLoadDateTime(OffsetDateTime loadDateTime) {
+    public void setLoadDateTime(Date loadDateTime) {
         this.loadDateTime = loadDateTime;
     }
 
@@ -142,11 +148,11 @@ public class Vacancy {
         this.source = source;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public void setPublishedAt(LocalDateTime publishedAt) {
+    public void setPublishedAt(OffsetDateTime publishedAt) {
         this.publishedAt = publishedAt;
     }
 
@@ -254,11 +260,11 @@ public class Vacancy {
         return source;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public OffsetDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public LocalDateTime getPublishedAt() {
+    public OffsetDateTime getPublishedAt() {
         return publishedAt;
     }
 
@@ -312,5 +318,37 @@ public class Vacancy {
 
     public String getTypeName() {
         return typeName;
+    }
+
+    public String getIndustryId() {
+        return industryId;
+    }
+
+    public void setIndustryId(String industryId) {
+        this.industryId = industryId;
+    }
+
+    public String getSpecializationId() {
+        return specializationId;
+    }
+
+    public void setSpecializationId(String specializationId) {
+        this.specializationId = specializationId;
+    }
+
+    public String getIndustrySubId() {
+        return industrySubId;
+    }
+
+    public void setIndustrySubId(String industrySubId) {
+        this.industrySubId = industrySubId;
+    }
+
+    public String getSpecializationSubId() {
+        return specializationSubId;
+    }
+
+    public void setSpecializationSubId(String specializationSubId) {
+        this.specializationSubId = specializationSubId;
     }
 }

@@ -1,9 +1,6 @@
 package com.masdmtr.skillsmonster.persistence.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by dmaslov on 7/26/17.

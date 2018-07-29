@@ -1,6 +1,6 @@
 package com.masdmtr.skillsmonster.dto;
 
-public class VacancyDto {
+public class SearchResultDto {
 
     private String vacancyId;
     private String name;
@@ -31,9 +31,13 @@ public class VacancyDto {
     private String status;
     private String typeId;
     private String typeName;
+    private String industryId;
+    private String industrySubId;
+    private String specializationId;
+    private String specializationSubId;
 
 
-    public VacancyDto() {
+    public SearchResultDto() {
     }
 
     public String getVacancyId() {
@@ -269,5 +273,37 @@ public class VacancyDto {
 
     public void setDepartmentName(String departmentName) {
         this.departmentName = departmentName;
+    }
+
+    public String getIndustryId() {
+        return industryId;
+    }
+
+    public void setIndustryId(String industryId) {
+        this.industryId = industryId;
+    }
+
+    public String getIndustrySubId() {
+        return industrySubId;
+    }
+
+    public void setIndustrySubId(String industrySubId) {
+        this.industrySubId = industrySubId;
+    }
+
+    public String getSpecializationId() {
+        return specializationId;
+    }
+
+    public void setSpecializationId(String specializationId) {
+        this.specializationId = specializationId;
+    }
+
+    public String getSpecializationSubId() {
+        return specializationSubId;
+    }
+
+    public void setSpecializationSubId(String specializationSubId) {
+        this.specializationSubId = specializationSubId;
     }
 }

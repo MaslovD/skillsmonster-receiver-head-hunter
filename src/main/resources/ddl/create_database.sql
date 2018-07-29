@@ -1,0 +1,47 @@
+create table if not exists vacancy
+(
+  id                     bigserial not null
+    constraint vacancy_id_pk
+    primary key,
+
+  vacancy_id             varchar(200),
+  created_at             timestamp,
+  published_at           timestamp,
+  name                   varchar,
+  emp_name               varchar,
+  area_name              varchar,
+  salary_from            double precision,
+  salary_to              double precision,
+  salary_gross           boolean,
+  salary_currency        varchar,
+  snippet_requirement    varchar,
+  snippet_responsibility varchar,
+  archived               boolean,
+  premium                boolean,
+  source                 varchar,
+  url                    varchar,
+  alternate_url          varchar,
+  apply_alternate_url    varchar,
+  address                varchar,
+  department_id          varchar,
+  department_name        varchar,
+  sort_point_distance    varchar,
+  emp_id                 varchar,
+  area_url               varchar,
+  emp_url                varchar,
+  status                 varchar,
+  type_id                varchar,
+  type_name              varchar,
+  area_id                varchar,
+  industryId             varchar,
+  industrySubId          varchar,
+  specializationId       varchar,
+  specializationSubId    varchar,
+  raw_data               jsonb,
+  load_date_time         timestamp,
+  industry_id            varchar,
+  industry_sub_id        varchar,
+  specialization_id      varchar,
+  specialization_sub_id  varchar
+);
+

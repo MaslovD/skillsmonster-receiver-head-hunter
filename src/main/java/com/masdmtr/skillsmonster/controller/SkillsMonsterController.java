@@ -58,7 +58,6 @@ public class SkillsMonsterController {
         country.setAlpha2(cnt.getAlpha2());
         country.setAlpha3(cnt.getAlpha3());
 
-        map.put("test", "TEST");
         //country.setRawJson("{\"alpha2\":\"US\",\"shortName\":\"United States\",\"fullName\":\"Unites States of America\",\"alpha3\":\"USA\",\"numCode\":840}");
 
         String jsonString = restTemplate.getForObject("https://api.hh.ru/vacancies?area=1&text=java&inductries=7.540&date_from=2017-07-17&date_to=2017-07-17&per_page=500", String.class);

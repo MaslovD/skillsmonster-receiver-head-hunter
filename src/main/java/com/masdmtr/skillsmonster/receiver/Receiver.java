@@ -1,6 +1,6 @@
 package com.masdmtr.skillsmonster.receiver;
 
-import com.masdmtr.skillsmonster.dto.VacancyDto;
+import com.masdmtr.skillsmonster.dto.SearchResultDto;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,7 +12,7 @@ public interface Receiver {
 
     //void loadVacancyDetailes();
 
-    void loadVacancyDetailsMq(VacancyDto processingQueueItem);
+    void loadVacancyDetails(SearchResultDto processingQueueItem);
 
     //  void updateProcessingQueue();
 

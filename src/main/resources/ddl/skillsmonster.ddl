@@ -88,7 +88,7 @@ create table vacancy
 
 
 create unique index vacancy_id_uindex
-	on vacancy (id)
+	on remove_vacancy (id)
 ;
 
 create table dictionary_hh
@@ -292,7 +292,7 @@ CREATE VIEW all_vacancies AS SELECT i.id,
 
 CREATE VIEW all_key_skills AS SELECT i.name,
     count(i.name) AS count
-   FROM (vacancy vl
+   FROM (remove_vacancy vl
      CROSS JOIN LATERAL jsonb_to_recordset((vl.raw_data #> '{key_skills}'::text[])) i(name text))
   GROUP BY i.name
   ORDER BY (count(i.name)) DESC
@@ -301,7 +301,7 @@ CREATE VIEW all_key_skills AS SELECT i.name,
 CREATE VIEW all_key_skills_by_date AS SELECT ((vl.raw_data ->> 'published_at'::text))::timestamp with time zone AS published,
     i.name,
     count(*) AS count
-   FROM (vacancy vl
+   FROM (remove_vacancy vl
      CROSS JOIN LATERAL jsonb_to_recordset((vl.raw_data #> '{key_skills}'::text[])) i(name text))
   GROUP BY ((vl.raw_data ->> 'published_at'::text))::timestamp with time zone, i.name
 ;
@@ -314,41 +314,41 @@ CREATE VIEW vacancy_to_load_hh AS SELECT i.id,
     (i.salary -> 'to'::text) AS salary_to
    FROM (search_result sr
      CROSS JOIN LATERAL jsonb_to_recordset((sr.raw_response #> '{items}'::text[])) i(id text, name text, url text, created_at timestamp without time zone, employer jsonb, address jsonb, salary jsonb))
-  WHERE (NOT (i.id IN ( SELECT (vacancy.vacancy_id)::text AS id
-           FROM vacancy)))
+  WHERE (NOT (i.id IN ( SELECT (remove_vacancy.vacancy_id)::text AS id
+           FROM remove_vacancy)))
 ;
 
-CREATE VIEW all_vacancies_hh AS SELECT (vacancy.raw_data ->> 'id'::text) AS id,
-    (vacancy.raw_data ->> 'name'::text) AS name,
-    ((vacancy.raw_data -> 'area'::text) ->> 'name'::text) AS city,
-    ((vacancy.raw_data ->> 'created_at'::text))::date AS created,
-    (vacancy.raw_data ->> 'description'::text) AS description,
-    ((vacancy.raw_data -> 'employer'::text) ->> 'name'::text) AS employer,
-    ((vacancy.raw_data -> 'billing_type'::text) ->> 'name'::text) AS billing
-   FROM vacancy
+CREATE VIEW all_vacancies_hh AS SELECT (remove_vacancy.raw_data ->> 'id'::text) AS id,
+    (remove_vacancy.raw_data ->> 'name'::text) AS name,
+    ((remove_vacancy.raw_data -> 'area'::text) ->> 'name'::text) AS city,
+    ((remove_vacancy.raw_data ->> 'created_at'::text))::date AS created,
+    (remove_vacancy.raw_data ->> 'description'::text) AS description,
+    ((remove_vacancy.raw_data -> 'employer'::text) ->> 'name'::text) AS employer,
+    ((remove_vacancy.raw_data -> 'billing_type'::text) ->> 'name'::text) AS billing
+   FROM remove_vacancy
 ;
 
 CREATE VIEW all_key_skills_hh AS SELECT s.name AS skill,
     count(1) AS cnt
-   FROM (vacancy
-     CROSS JOIN LATERAL jsonb_to_recordset((vacancy.raw_data #> '{key_skills}'::text[])) s(name text))
+   FROM (remove_vacancy
+     CROSS JOIN LATERAL jsonb_to_recordset((remove_vacancy.raw_data #> '{key_skills}'::text[])) s(name text))
   WHERE (s.name IS NOT NULL)
   GROUP BY s.name
   ORDER BY (count(1)) DESC
 ;
 
-CREATE VIEW salary_rating_hh AS SELECT (vacancy.raw_data ->> 'id'::text) AS id,
-    (vacancy.raw_data ->> 'name'::text) AS name,
-    ((vacancy.raw_data -> 'salary'::text) ->> 'currency'::text) AS cur,
-    (((vacancy.raw_data -> 'salary'::text) ->> 'to'::text))::double precision AS sto
-   FROM vacancy
-  WHERE ((((vacancy.raw_data -> 'salary'::text) ->> 'to'::text) IS NOT NULL) AND (((vacancy.raw_data -> 'salary'::text) ->> 'currency'::text) = 'RUR'::text))
-  ORDER BY (((vacancy.raw_data -> 'salary'::text) ->> 'to'::text))::double precision DESC
+CREATE VIEW salary_rating_hh AS SELECT (remove_vacancy.raw_data ->> 'id'::text) AS id,
+    (remove_vacancy.raw_data ->> 'name'::text) AS name,
+    ((remove_vacancy.raw_data -> 'salary'::text) ->> 'currency'::text) AS cur,
+    (((remove_vacancy.raw_data -> 'salary'::text) ->> 'to'::text))::double precision AS sto
+   FROM remove_vacancy
+  WHERE ((((remove_vacancy.raw_data -> 'salary'::text) ->> 'to'::text) IS NOT NULL) AND (((remove_vacancy.raw_data -> 'salary'::text) ->> 'currency'::text) = 'RUR'::text))
+  ORDER BY (((vacancyq.raw_data -> 'salary'::text) ->> 'to'::text))::double precision DESC
 ;
 
 CREATE VIEW top_20_key_skills AS SELECT i.name,
     count(1) AS cnt
-   FROM (vacancy vl
+   FROM (remove_vacancy vl
      CROSS JOIN LATERAL jsonb_to_recordset((vl.raw_data #> '{key_skills}'::text[])) i(name text))
   GROUP BY i.name
   ORDER BY (count(1)) DESC
@@ -357,28 +357,28 @@ CREATE VIEW top_20_key_skills AS SELECT i.name,
 
 CREATE VIEW all_skills_by_date AS SELECT ((vl.raw_data ->> 'created_at'::text))::date AS created,
     i.name
-   FROM (vacancy vl
+   FROM (remove_vacancy vl
      CROSS JOIN LATERAL jsonb_to_recordset((vl.raw_data #> '{key_skills}'::text[])) i(name text))
   ORDER BY i.name DESC
 ;
 
-CREATE VIEW all_by_employer_hh AS SELECT ((vacancy.raw_data -> 'employer'::text) ->> 'name'::text) AS employer
-   FROM vacancy
+CREATE VIEW all_by_employer_hh AS SELECT ((remove_vacancy.raw_data -> 'employer'::text) ->> 'name'::text) AS employer
+   FROM remove_vacancy
 ;
 
-CREATE VIEW top_25_employers_hh AS SELECT ((vacancy.raw_data -> 'employer'::text) ->> 'name'::text) AS employer,
+CREATE VIEW top_25_employers_hh AS SELECT ((remove_vacancy.raw_data -> 'employer'::text) ->> 'name'::text) AS employer,
     count(1) AS cnt
-   FROM vacancy
-  GROUP BY ((vacancy.raw_data -> 'employer'::text) ->> 'name'::text)
+   FROM remove_vacancy
+  GROUP BY ((remove_vacancy.raw_data -> 'employer'::text) ->> 'name'::text)
   ORDER BY (count(1)) DESC
  LIMIT 25
 ;
 
-CREATE VIEW prog_lang_hh AS SELECT ((vacancy.raw_data ->> 'created_at'::text))::date AS created,
+CREATE VIEW prog_lang_hh AS SELECT ((remove_vacancy.raw_data ->> 'created_at'::text))::date AS created,
     s.name AS skill,
     sg.name AS sgroup
-   FROM ((vacancy
-     CROSS JOIN LATERAL jsonb_to_recordset((vacancy.raw_data #> '{key_skills}'::text[])) s(name text))
+   FROM ((remove_vacancy
+     CROSS JOIN LATERAL jsonb_to_recordset((remove_vacancy.raw_data #> '{key_skills}'::text[])) s(name text))
      LEFT JOIN skill_group sg ON ((s.name = (sg.skill)::text)))
   WHERE ((s.name IS NOT NULL) AND ((sg.name)::text = 'Programming Language'::text))
 ;
@@ -416,27 +416,27 @@ CREATE VIEW all_specializations_hh AS SELECT (ar.value ->> 'id'::text) AS id,
 
 CREATE VIEW key_skills AS SELECT vl.vacancy_id,
     i.name
-   FROM (vacancy vl
+   FROM (remove_vacancy vl
      CROSS JOIN LATERAL jsonb_to_recordset((vl.raw_data #> '{key_skills}'::text[])) i(name text))
 ;
 
 CREATE MATERIALIZED VIEW mv_top_skills_by_month_ru_hh AS SELECT row_number() OVER () AS id,
-																																date_trunc('MONTH'::text, ((vacancy.raw_data ->> 'created_at'::text))::timestamp without time zone) AS month,
+																																date_trunc('MONTH'::text, ((remove_vacancy.raw_data ->> 'created_at'::text))::timestamp without time zone) AS month,
 																																s.name AS skill,
 																																count(1) AS score
-																												 FROM ((vacancy
-																													 CROSS JOIN LATERAL jsonb_to_recordset((vacancy.raw_data #> '{key_skills}'::text[])) s(name text))
+																												 FROM ((remove_vacancy
+																													 CROSS JOIN LATERAL jsonb_to_recordset((remove_vacancy.raw_data #> '{key_skills}'::text[])) s(name text))
 																													 LEFT JOIN skill_group sg ON ((s.name = (sg.skill)::text)))
 																												 WHERE ((s.name IS NOT NULL) AND ((sg.name)::text = 'Programming Language'::text))
-																												 GROUP BY (date_trunc('MONTH'::text, ((vacancy.raw_data ->> 'created_at'::text))::timestamp without time zone)), s.name
-																												 ORDER BY (date_trunc('MONTH'::text, ((vacancy.raw_data ->> 'created_at'::text))::timestamp without time zone)), (count(1)) DESC;
+																												 GROUP BY (date_trunc('MONTH'::text, ((remove_vacancy.raw_data ->> 'created_at'::text))::timestamp without time zone)), s.name
+																												 ORDER BY (date_trunc('MONTH'::text, ((vacancyq.raw_data ->> 'created_at'::text))::timestamp without time zone)), (count(1)) DESC;
 CREATE UNIQUE INDEX mv_top_skills_by_month_ru_hh_id_idx
 	ON mv_top_skills_by_month_ru_hh (id);
 
 create function is_vacancy_loaded(vac_id character varying) returns boolean
 	language sql
 as $$
-SELECT exists(SELECT 1 FROM vacancy WHERE id = vac_id)
+SELECT exists(SELECT 1 FROM remove_vacancy WHERE id = vac_id)
 $$
 ;
 

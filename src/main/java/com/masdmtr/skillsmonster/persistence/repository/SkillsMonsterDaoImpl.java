@@ -224,15 +224,11 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
     @Override
     public void addVacancy(Vacancy vacancy) {
 
-        Session session = sessionFactory.openSession();
-        try {
+        try (Session session = sessionFactory.openSession()) {
             Transaction tx1 = session.beginTransaction();
             session.save(vacancy);
             tx1.commit();
             session.flush();
-        } finally {
-            session.close();
         }
     }
-
 }

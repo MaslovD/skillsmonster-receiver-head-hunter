@@ -3,9 +3,7 @@ package com.masdmtr.skillsmonster.loader;
 
 import com.masdmtr.skillsmonster.receiver.Receiver;
 import org.slf4j.Logger;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -22,15 +20,16 @@ import java.util.List;
 @Scope("singleton")
 public class LoaderController {
 
-    @Autowired
-    @Qualifier("HeadHunter")
-    Receiver receiver;
+    private Receiver receiver;
+    private Logger logger;
+
 
     @Autowired
-    Logger logger;
+    public LoaderController(Receiver receiver, Logger logger) {
+        this.receiver = receiver;
+        this.logger = logger;
+    }
 
-    @Autowired
-    BeanFactory beans;
 
     @PostConstruct
     private void initController() {

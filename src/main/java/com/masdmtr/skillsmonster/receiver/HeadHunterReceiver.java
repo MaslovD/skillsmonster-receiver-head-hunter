@@ -5,7 +5,7 @@ import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 import com.masdmtr.skillsmonster.config.DateFormatter;
 import com.masdmtr.skillsmonster.config.RabbitConfig;
-import com.masdmtr.skillsmonster.dto.VacancyDto;
+import com.masdmtr.skillsmonster.dto.SearchResultDto;
 import com.masdmtr.skillsmonster.persistence.model.Area;
 import com.masdmtr.skillsmonster.persistence.model.Specialization;
 import com.masdmtr.skillsmonster.persistence.model.Vacancy;
@@ -13,21 +13,23 @@ import com.masdmtr.skillsmonster.rabbitmq.Producer;
 import com.masdmtr.skillsmonster.service.SkillsMonsterService;
 import com.rabbitmq.client.Consumer;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.postgresql.util.PSQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityManager;
+import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.util.*;
 
 /**
  * Created by dmaslov on 7/17/17.
@@ -168,77 +170,76 @@ public class HeadHunterReceiver extends ReceiverImpl {
 
                 ((ArrayList) res.get("items")).forEach(
                         elem -> {
-                            VacancyDto processingQueueItem = new VacancyDto();
-                            processingQueueItem.setVacancyId((String) ((LinkedTreeMap) elem).get("id"));
-                            processingQueueItem.setName((String) ((LinkedTreeMap) elem).get("name"));
+                            SearchResultDto searchResultDto = new SearchResultDto();
+                            searchResultDto.setVacancyId((String) ((LinkedTreeMap) elem).get("id"));
+                            searchResultDto.setName((String) ((LinkedTreeMap) elem).get("name"));
 
-                            processingQueueItem.setSalaryFrom(((LinkedTreeMap) elem).get("salary") != null ?
+                            searchResultDto.setSalaryFrom(((LinkedTreeMap) elem).get("salary") != null ?
                                     (Double) ((LinkedTreeMap) elem).get("from") : null);
 
-                            processingQueueItem.setSalaryTo(((LinkedTreeMap) elem).get("salary") != null ?
+                            searchResultDto.setSalaryTo(((LinkedTreeMap) elem).get("salary") != null ?
                                     (Double) ((LinkedTreeMap) ((LinkedTreeMap) elem).get("salary")).get("to") : null);
 
-                            processingQueueItem.setSalaryCurrency(((LinkedTreeMap) elem).get("salary") != null ?
+                            searchResultDto.setSalaryCurrency(((LinkedTreeMap) elem).get("salary") != null ?
                                     (String) ((LinkedTreeMap) ((LinkedTreeMap) elem).get("salary")).get("currency") : null);
 
-                            processingQueueItem.setSalaryGross(((LinkedTreeMap) elem).get("salary") != null ?
+                            searchResultDto.setSalaryGross(((LinkedTreeMap) elem).get("salary") != null ?
                                     (Boolean) ((LinkedTreeMap) ((LinkedTreeMap) elem).get("salary")).get("gross") : null);
 
-                            processingQueueItem.setAreaId(((LinkedTreeMap) elem).get("area") != null ?
+                            searchResultDto.setAreaId(((LinkedTreeMap) elem).get("area") != null ?
                                     (String) ((LinkedTreeMap) ((LinkedTreeMap) elem).get("area")).get("id") : null);
 
-                            processingQueueItem.setAreaName(((LinkedTreeMap) elem).get("area") != null ?
+                            searchResultDto.setAreaName(((LinkedTreeMap) elem).get("area") != null ?
                                     (String) ((LinkedTreeMap) ((LinkedTreeMap) elem).get("area")).get("name") : null);
 
-                            processingQueueItem.setAreaUrl(((LinkedTreeMap) elem).get("area") != null ?
+                            searchResultDto.setAreaUrl(((LinkedTreeMap) elem).get("area") != null ?
                                     (String) ((LinkedTreeMap) ((LinkedTreeMap) elem).get("area")).get("url") : null);
 
-                            processingQueueItem.setSnippetRequirement(((LinkedTreeMap) elem).get("snippet") != null ?
+                            searchResultDto.setSnippetRequirement(((LinkedTreeMap) elem).get("snippet") != null ?
                                     (String) ((LinkedTreeMap) ((LinkedTreeMap) elem).get("snippet")).get("requirement") : null);
 
-                            processingQueueItem.setSnippetResponsibility(((LinkedTreeMap) elem).get("snippet") != null ?
+                            searchResultDto.setSnippetResponsibility(((LinkedTreeMap) elem).get("snippet") != null ?
                                     (String) ((LinkedTreeMap) ((LinkedTreeMap) elem).get("snippet")).get("responsibility") : null);
 
-                            processingQueueItem.setArchived((Boolean) ((LinkedTreeMap) elem).get("archived"));
-                            processingQueueItem.setPremium((Boolean) ((LinkedTreeMap) elem).get("premium"));
-                            processingQueueItem.setSource((String) ((LinkedTreeMap) elem).get("source"));
-                            processingQueueItem.setUrl((String) ((LinkedTreeMap) elem).get("url"));
-                            processingQueueItem.setAlternateUrl((String) ((LinkedTreeMap) elem).get("alternateUrl"));
-                            processingQueueItem.setApplyAlternateUrl((String) ((LinkedTreeMap) elem).get("applyAlternateUrl"));
+                            searchResultDto.setArchived((Boolean) ((LinkedTreeMap) elem).get("archived"));
+                            searchResultDto.setPremium((Boolean) ((LinkedTreeMap) elem).get("premium"));
+                            searchResultDto.setSource((String) ((LinkedTreeMap) elem).get("source"));
+                            searchResultDto.setUrl((String) ((LinkedTreeMap) elem).get("url"));
+                            searchResultDto.setAlternateUrl((String) ((LinkedTreeMap) elem).get("alternateUrl"));
+                            searchResultDto.setApplyAlternateUrl((String) ((LinkedTreeMap) elem).get("applyAlternateUrl"));
 
                             //TODO Add "street": "lat": , "lng"
-                            processingQueueItem.setAddress(((LinkedTreeMap) elem).get("address") != null ?
+                            searchResultDto.setAddress(((LinkedTreeMap) elem).get("address") != null ?
                                     (String) ((LinkedTreeMap) ((LinkedTreeMap) elem).get("address")).get("id") : null);
 
-                            processingQueueItem.setDepartmentId(((LinkedTreeMap) elem).get("department") != null ?
+                            searchResultDto.setDepartmentId(((LinkedTreeMap) elem).get("department") != null ?
                                     (String) ((LinkedTreeMap) ((LinkedTreeMap) elem).get("department")).get("id") : null);
 
-                            processingQueueItem.setDepartmentName(((LinkedTreeMap) elem).get("department") != null ?
+                            searchResultDto.setDepartmentName(((LinkedTreeMap) elem).get("department") != null ?
                                     (String) ((LinkedTreeMap) ((LinkedTreeMap) elem).get("department")).get("name") : null);
 
                             //TODO
                             // processingQueueItem.setSortPointDistance((String) ((LinkedTreeMap) elem).get("sortPointDistance"));
-                            processingQueueItem.setCreatedAt(
+                            searchResultDto.setCreatedAt(
                                     (String) ((LinkedTreeMap) elem).get("created_at"));
-                            processingQueueItem.setPublishedAt(
+                            searchResultDto.setPublishedAt(
                                     (String) ((LinkedTreeMap) elem).get("published_at"));
 
-                            processingQueueItem.setEmpId(((LinkedTreeMap) elem).get("employer") != null ?
+                            searchResultDto.setEmpId(((LinkedTreeMap) elem).get("employer") != null ?
                                     (String) ((LinkedTreeMap) ((LinkedTreeMap) elem).get("employer")).get("id") : null);
 
-                            processingQueueItem.setEmpName(((LinkedTreeMap) elem).get("employer") != null ?
+                            searchResultDto.setEmpName(((LinkedTreeMap) elem).get("employer") != null ?
                                     (String) ((LinkedTreeMap) ((LinkedTreeMap) elem).get("employer")).get("name") : null);
 
-                            processingQueueItem.setEmpUrl(((LinkedTreeMap) elem).get("employer") != null ?
+                            searchResultDto.setEmpUrl(((LinkedTreeMap) elem).get("employer") != null ?
                                     (String) ((LinkedTreeMap) ((LinkedTreeMap) elem).get("employer")).get("url") : null);
 
-                            processingQueueItem.setEmpUrl(((LinkedTreeMap) elem).get("type") != null ?
+                            searchResultDto.setEmpUrl(((LinkedTreeMap) elem).get("type") != null ?
                                     (String) ((LinkedTreeMap) ((LinkedTreeMap) elem).get("type")).get("id") : null);
 
-                            producer.sendMessage(processingQueueItem);
+                            producer.sendMessage(searchResultDto);
 
                         });
-
             });
 
         } catch (Exception e) {
@@ -280,7 +281,6 @@ public class HeadHunterReceiver extends ReceiverImpl {
             if (found > MAX_RESPOSE_SIZE) {
                 break;
             }
-
         }
         return retArray;
     }
@@ -324,13 +324,15 @@ public class HeadHunterReceiver extends ReceiverImpl {
 //    }
 
     @Override
-    public void loadVacancyDetailsMq(VacancyDto processingQueueItem) {
+    public void loadVacancyDetails(SearchResultDto searchResultDto) {
 
 
-        String vacId = processingQueueItem.getVacancyId();
+        //String vacId = searchResultDto.getVacancyId();
+        String vacId = "26843888";
 
         try {
-            logger.debug("Vacancy ID: {} Created: {}", vacId, processingQueueItem.getPublishedAt());
+            logger.debug("Vacancy ID: {} Created: {}", vacId, searchResultDto.getPublishedAt());
+            //String reqString = apiHost.concat("vacancies/").concat(vacId);
             String reqString = apiHost.concat("vacancies/").concat(vacId);
             String jsonString = restTemplate.getForObject(reqString, String.class);
 
@@ -343,57 +345,56 @@ public class HeadHunterReceiver extends ReceiverImpl {
             Vacancy vacancy = new Vacancy();
             vacancy.setVacancyId(vacId);
             vacancy.setRawData(retMap);
-            vacancy.setAddress(processingQueueItem.getAddress());
-            vacancy.setAlternateUrl(processingQueueItem.getAlternateUrl());
-            vacancy.setApplyAlternateUrl(processingQueueItem.getApplyAlternateUrl());
-            vacancy.setArchived(processingQueueItem.getArchived());
+            vacancy.setAddress(searchResultDto.getAddress());
+            vacancy.setAlternateUrl(searchResultDto.getAlternateUrl());
+            vacancy.setApplyAlternateUrl(searchResultDto.getApplyAlternateUrl());
+            vacancy.setArchived(searchResultDto.getArchived());
 
 
-            vacancy.setName(processingQueueItem.getName());
-            vacancy.setAreaUrl(processingQueueItem.getAreaUrl());
-            vacancy.setAreaId(processingQueueItem.getAreaId());
-            vacancy.setAreaName(processingQueueItem.getAreaName());
-            vacancy.setSalaryFrom(processingQueueItem.getSalaryFrom());
-            vacancy.setSalaryTo(processingQueueItem.getSalaryTo());
-            vacancy.setSalaryGross(processingQueueItem.getSalaryGross());
-            vacancy.setSalaryCurrency(processingQueueItem.getSalaryCurrency());
-            vacancy.setSnippetRequirement(processingQueueItem.getSnippetRequirement());
-            vacancy.setSnippetResponsibility(processingQueueItem.getSnippetResponsibility());
-            vacancy.setArchived(processingQueueItem.getArchived());
-            vacancy.setPremium(processingQueueItem.getPremium());
-            vacancy.setSource(processingQueueItem.getSource());
-            //vacancy.setCreatedAt(processingQueueItem.getCreatedAt());
-            //vacancy.setPublishedAt(processingQueueItem.getPublishedAt());
-            vacancy.setUrl(processingQueueItem.getUrl());
-            vacancy.setAlternateUrl(processingQueueItem.getAlternateUrl());
-            vacancy.setApplyAlternateUrl(processingQueueItem.getApplyAlternateUrl());
-            vacancy.setAddress(processingQueueItem.getAddress());
-            vacancy.setDepartmentId(processingQueueItem.getDepartmentId());
-            vacancy.setDepartmentName(processingQueueItem.getDepartmentName());
-            vacancy.setSortPointDistance(processingQueueItem.getSortPointDistance());
-            vacancy.setEmpId(processingQueueItem.getEmpId());
-            vacancy.setEmpName(processingQueueItem.getEmpName());
-            vacancy.setEmpUrl(processingQueueItem.getEmpUrl());
-            vacancy.setStatus(processingQueueItem.getStatus());
-            vacancy.setTypeId(processingQueueItem.getTypeId());
-            vacancy.setTypeName(processingQueueItem.getTypeName());
+            vacancy.setName(searchResultDto.getName());
+            vacancy.setAreaUrl(searchResultDto.getAreaUrl());
+            vacancy.setAreaId(searchResultDto.getAreaId());
+            vacancy.setAreaName(searchResultDto.getAreaName());
+            vacancy.setSalaryFrom(searchResultDto.getSalaryFrom());
+            vacancy.setSalaryTo(searchResultDto.getSalaryTo());
+            vacancy.setSalaryGross(searchResultDto.getSalaryGross());
+            vacancy.setSalaryCurrency(searchResultDto.getSalaryCurrency());
+            vacancy.setSnippetRequirement(searchResultDto.getSnippetRequirement());
+            vacancy.setSnippetResponsibility(searchResultDto.getSnippetResponsibility());
+            vacancy.setArchived(searchResultDto.getArchived());
+            vacancy.setPremium(searchResultDto.getPremium());
+            vacancy.setSource(searchResultDto.getSource());
+            //vacancy.setCreatedAt(OffsetDateTime.parse(searchResultDto.getCreatedAt(), dateFormatter.getFormatter()));
+            vacancy.setCreatedAt(OffsetDateTime.parse((String) (retMap).get("created_at"), dateFormatter.getFormatter()));
+            //vacancy.setPublishedAt(OffsetDateTime.parse(searchResultDto.getPublishedAt(), dateFormatter.getFormatter()));
+            vacancy.setPublishedAt(OffsetDateTime.parse((String) (retMap).get("published_at"), dateFormatter.getFormatter()));
+            vacancy.setUrl(searchResultDto.getUrl());
+            vacancy.setAlternateUrl(searchResultDto.getAlternateUrl());
+            vacancy.setApplyAlternateUrl(searchResultDto.getApplyAlternateUrl());
+            vacancy.setAddress(searchResultDto.getAddress());
+            vacancy.setDepartmentId(searchResultDto.getDepartmentId());
+            vacancy.setDepartmentName(searchResultDto.getDepartmentName());
+            vacancy.setSortPointDistance(searchResultDto.getSortPointDistance());
+            vacancy.setEmpId(searchResultDto.getEmpId());
+            vacancy.setEmpName(searchResultDto.getEmpName());
+            vacancy.setEmpUrl(searchResultDto.getEmpUrl());
+            vacancy.setStatus(searchResultDto.getStatus());
+            vacancy.setTypeId(searchResultDto.getTypeId());
+            vacancy.setTypeName(searchResultDto.getTypeName());
 
-//            vacancy.setLoadDateTime(new Timestamp(System.currentTimeMillis()));
+            vacancy.setLoadDateTime(new Date());
             skillsMonsterService.addVacancy(vacancy);
 
-            System.out.println("");
-        } catch
-                (HttpClientErrorException
-                        ex) {
+        } catch (HttpClientErrorException ex) {
             logger.error("Error loading info from hh.ru ID: {}", vacId);
             //    processingQueueItem.setProcessedAt(new Timestamp(System.currentTimeMillis()));
-            processingQueueItem.setStatus("ERROR");
+            searchResultDto.setStatus("ERROR");
             //    skillsMonsterService.updateProcessingQueue(processingQueueItem);
 
             logger.error(ExceptionUtils.getMessage(ex));
+        } catch (JpaSystemException jpaSystemException) {
+            logger.error("Duplicate key value violates unique constraint", vacId);
         }
-
-
     }
 
 //    @Override
