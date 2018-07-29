@@ -26,46 +26,41 @@ import java.util.List;
 @Component
 public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
 
-    @Autowired
+
     private SessionFactory sessionFactory;
+    private EntityManager entityManager;
 
     @Autowired
-    EntityManager em;
+    public SkillsMonsterDaoImpl(SessionFactory sessionFactory, EntityManager entityManager) {
+        this.sessionFactory = sessionFactory;
+        this.entityManager = entityManager;
+    }
 
     @Override
     public List<Country> getCountryList() {
-        Session session = sessionFactory.openSession();
-        try {
+        try (Session session = sessionFactory.openSession()) {
             Criteria criteria = session.createCriteria(Country.class);
             //List tmpList = criteria.list();
             return criteria.list();
-        } finally {
-            session.close();
         }
     }
 
     @Override
     public ArrayList<Specialization> getSpecializationList() {
-        Session session = sessionFactory.openSession();
-        try {
+        try (Session session = sessionFactory.openSession()) {
             Criteria criteria = sessionFactory.openSession().createCriteria(Specialization.class);
 
             // criteria.add(Restrictions.ilike("subId","1.%"));
             return new ArrayList<Specialization>(criteria.list());
-        } finally {
-            session.close();
         }
     }
 
     @Override
     public ArrayList<Area> getAreaList() {
-        Session session = sessionFactory.openSession();
-        try {
+        try (Session session = sessionFactory.openSession()) {
             Criteria criteria = sessionFactory.openSession().createCriteria(Area.class);
             // criteria.add(Restrictions.ilike("subId","1.%"));
             return new ArrayList<Area>(criteria.list());
-        } finally {
-            session.close();
         }
 
     }
@@ -73,7 +68,7 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
     @Override
     @Transactional
     public void getVacancyDetailes() {
-        StoredProcedureQuery sp = em.createStoredProcedureQuery("public.add_vacancy_to_queue");
+        StoredProcedureQuery sp = entityManager.createStoredProcedureQuery("public.add_vacancy_to_queue");
         sp.getResultList();
     }
 
@@ -94,42 +89,35 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
 
     @Override
     public void getAreaChildren(Area area) {
-        Session session = sessionFactory.openSession();
 
-        try {
+        try (Session session = sessionFactory.openSession()) {
             Criteria criteria = session.createCriteria(Area.class);
             List tmpList = criteria.list();
 
             //return criteria.list();
-        } finally {
-            session.close();
         }
     }
 
     @Override
     public ArrayList<Integer> getAreaCountryList() {
-        Session session = sessionFactory.openSession();
 
-        try {
+        try (Session session = sessionFactory.openSession()) {
             Criteria criteria = session.createCriteria(Area.class)
                     .setProjection(Projections.projectionList()
                             .add(Projections.groupProperty("countryId")));
             return (ArrayList) criteria.list();
 
-        } finally {
-            session.close();
         }
     }
 
     @Override
     public ArrayList<Area> getAreaByCountryId(Integer countryId) {
-        Session session = sessionFactory.openSession();
-        try {
-            ArrayList<Area> areas = (ArrayList) session.createCriteria(Area.class).add(Restrictions.eq("countryId", countryId))
+
+        try (Session session = sessionFactory.openSession()) {
+            ArrayList<Area> areas = (ArrayList) session.createCriteria(Area.class)
+                    .add(Restrictions.eq("countryId", countryId))
                     .list();
             return areas;
-        } finally {
-            session.close();
         }
 
     }
@@ -137,88 +125,65 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
     @Override
     public void addCountry(Country country) {
 
-        Session session = sessionFactory.openSession();
-        try {
+        try (Session session = sessionFactory.openSession()) {
             Transaction tx1 = session.beginTransaction();
             session.save(country);
             tx1.commit();
             session.flush();
-        } finally {
-            session.close();
         }
 
-        session.close();
     }
 
     @Override
     public Area getAreaById(int id) {
-        Session session = sessionFactory.openSession();
-        try {
+        try (Session session = sessionFactory.openSession()) {
             Area area = (Area) session.get(Area.class, id);
             return area;
-        } finally {
-            session.close();
         }
 
     }
 
     @Override
     public SourceSite getSourceSiteById(int id) {
-        Session session = sessionFactory.openSession();
-        try {
+        try (Session session = sessionFactory.openSession()) {
             SourceSite sourceSite = (SourceSite) session.get(SourceSite.class, id);
             return sourceSite;
-        } finally {
-            session.close();
         }
     }
 
     @Override
     public void addSearchResult(SearchResult searchResult) {
-        Session session = sessionFactory.openSession();
-        try {
+        try (Session session = sessionFactory.openSession()) {
             Transaction tx1 = session.beginTransaction();
             session.save(searchResult);
             tx1.commit();
             session.flush();
-        } finally {
-            session.close();
         }
 
     }
 
     @Override
     public ArrayList getListToLoadFromHh() {
-        Session session = sessionFactory.openSession();
 
-        try {
+        try (Session session = sessionFactory.openSession()) {
             Criteria criteria = session.createCriteria(ProcessingQueue.class);
             criteria.addOrder(Order.asc("createdAt"));
             criteria.add(Restrictions.eq("status", "NEW"));
             criteria.setMaxResults(1000);
             ArrayList<ProcessingQueue> processingQueue = new ArrayList<ProcessingQueue>(criteria.list());
             return processingQueue;
-        } finally {
-            session.close();
         }
     }
 
     @Override
     public ArrayList getMenu() {
 
-        Session session = sessionFactory.openSession();
-//        try {
-
-        Criteria criteria = session.createCriteria(Menu.class);
-
-        criteria.add(Restrictions.isNull("parent"));
-        criteria.addOrder(Order.asc("order"));
-        return new ArrayList<Menu>(criteria.list());
-//        } finally {
-//            session.close();
-//        }
-
-
+        try (Session session = sessionFactory.openSession()) {
+            Criteria criteria = session.createCriteria(Menu.class);
+            criteria.add(Restrictions.isNull("parent"));
+            criteria.addOrder(Order.asc("order"));
+            return new ArrayList<Menu>(criteria.list());
+        }
     }
 
     @Override

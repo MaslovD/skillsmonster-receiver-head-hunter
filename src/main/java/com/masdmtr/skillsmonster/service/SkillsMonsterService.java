@@ -33,7 +33,6 @@ public interface SkillsMonsterService {
 
     void getVacancyDetailes();
 
-    void updateProcessingQueue(ProcessingQueue processingQueueItem);
 
     List<Integer> getAreaCountryList();
 

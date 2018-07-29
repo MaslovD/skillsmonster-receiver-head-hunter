@@ -326,9 +326,8 @@ public class HeadHunterReceiver extends ReceiverImpl {
     @Override
     public void loadVacancyDetails(SearchResultDto searchResultDto) {
 
-
-        //String vacId = searchResultDto.getVacancyId();
-        String vacId = "26843888";
+        String vacId = searchResultDto.getVacancyId();
+        // String vacId = "26843888";
 
         try {
             logger.debug("Vacancy ID: {} Created: {}", vacId, searchResultDto.getPublishedAt());

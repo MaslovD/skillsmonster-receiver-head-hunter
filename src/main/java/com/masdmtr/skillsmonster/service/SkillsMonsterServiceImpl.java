@@ -56,7 +56,6 @@ public class SkillsMonsterServiceImpl implements SkillsMonsterService {
     }
 
 
-
     @Override
     public ArrayList<Specialization> getSpecializationList() {
         ArrayList tmp = dao.getSpecializationList();
@@ -72,11 +71,6 @@ public class SkillsMonsterServiceImpl implements SkillsMonsterService {
     @Override
     public void getVacancyDetailes() {
         dao.getVacancyDetailes();
-    }
-
-    @Override
-    public void updateProcessingQueue(ProcessingQueue processingQueueItem) {
-        dao.updateProcessingQueueItem(processingQueueItem);
     }
 
     @Override
