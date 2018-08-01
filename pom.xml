@@ -22,8 +22,6 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-cloud.version>Dalston.SR4</spring-cloud.version>
         <java.version>1.8</java.version>
-        <docker.repo.user>skillsmonster</docker.repo.user>
-        <!--<docker.repo.password></docker.repo.password>-->
         <profile.name>prod</profile.name>
     </properties>
 
@@ -94,93 +92,11 @@
 
 
     </dependencies>
-    <distributionManagement>
-        <repository>
-            <id>eureka-service-discovery</id>
-            <!--<name>masdmtr/eureka-service-discovery</name>-->
-            <!--<url>https://docker.io/masdmtr/eureka-registartion-core</url>-->
-        </repository>
-    </distributionManagement>
     <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>0.23.0</version>
-                <executions>
-                    <execution>
-                        <id>Build docker container</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>Push docker container</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>push</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <!--<registry>${project.registry}</registry>-->
-                    <!--<authConfig>-->
-                    <!--<username>${docker.repo.user}</username>-->
-                    <!--<password>${docker.repo.password}</password>-->
-                    <!--</authConfig>-->
-                    <images>
-                        <image>
-                            <alias>${project.name}</alias>
-                            <name>${docker.repo.user}/${project.name}:${project.version}</name>
-                            <build>
-                                <from>openjdk</from>
-                                <maintainer>Dmitry Maslov</maintainer>
-                                <tags>
-                                    <tag>${project.version}</tag>
-                                    <tag>latest</tag>
-                                </tags>
-
-                                <cmd>
-                                    <shell>java -Dspring.profiles.active=${profile.name} -jar
-                                        /jars/${project.build.finalName}.jar
-                                    </shell>
-                                </cmd>
-                                <assembly>
-                                    <basedir>/</basedir>
-                                    <inline>
-                                        <dependencySet>
-                                            <outputDirectory>jars</outputDirectory>
-                                        </dependencySet>
-                                        <files>
-                                            <file>
-                                                <source>${project.build.directory}/${project.build.finalName}.jar
-                                                </source>
-                                                <outputDirectory>jars</outputDirectory>
-                                            </file>
-                                            <file>
-                                                <source>${project.basedir}/src/main/resources/bootstrap.properties
-                                                </source>
-                                                <outputDirectory>/</outputDirectory>
-                                            </file>
-                                        </files>
-                                    </inline>
-                                </assembly>
-                            </build>
-                            <run>
-                                <ports>
-                                    <port>8761:8761</port>
-                                </ports>
-                            </run>
-                        </image>
-                    </images>
-                    <dockerHost>http://192.168.1.51:2376</dockerHost>
-                    <useColor>true</useColor>
-                </configuration>
             </plugin>
         </plugins>
     </build>
