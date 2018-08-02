@@ -6,6 +6,8 @@ ENV app_version @version@
 
 RUN echo "Europe/Moscow" > /etc/timezone
 
+RUN rm /etc/localtime
+
 RUN dpkg-reconfigure -f noninteractive tzdata
 
 COPY ./target/receiver-head-hunter-@version@.jar /jars/receiver-head-hunter-@version@.jar
