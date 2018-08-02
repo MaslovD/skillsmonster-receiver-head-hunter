@@ -1,4 +1,4 @@
-FROM openjdk
+FROM openjdk:8u171
 
 MAINTAINER Dmitry Maslov
 
