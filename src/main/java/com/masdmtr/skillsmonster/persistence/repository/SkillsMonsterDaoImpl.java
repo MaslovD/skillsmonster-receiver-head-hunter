@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.StoredProcedureQuery;
 import javax.validation.ConstraintViolationException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -199,6 +200,14 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
             session.flush();
             //tx1.commit();
             //session.flush();
+        } catch (RuntimeException e) {
+            Throwable rootCause = com.google.common.base.Throwables.getRootCause(e);
+            if (rootCause instanceof SQLException) {
+                if ("23505".equals(((SQLException) rootCause).getSQLState())) {
+                    System.out.println("dsdsd");
+                }
+            }
+
         }
     }
 }

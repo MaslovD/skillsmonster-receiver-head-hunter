@@ -1,56 +1,48 @@
 package com.masdmtr.skillsmonster.persistence.model;
 
 import javax.persistence.*;
+import java.time.OffsetDateTime;
+import java.util.Objects;
 
 /**
  * Created by dmaslov on 7/26/17.
  */
 @Entity
 public class Skill {
-    private int id;
-    private String code;
-    private Integer collectionId;
-    private Boolean keySkill;
+    private Long id;
+    private String skill_group;
     private String name;
+    private Vacancy vacancy;
+    private OffsetDateTime dateTime;
+
+    public Skill(String keySkillName, Vacancy vacancy) {
+        this.name = keySkillName;
+        this.vacancy = vacancy;
+        this.dateTime = vacancy.getCreatedAt();
+    }
+
+    public Skill() {
+    }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     @Basic
-    @Column(name = "code", nullable = true, length = 50)
-    public String getCode() {
-        return code;
+    @Column(name = "skill_group", nullable = true, length = 50)
+    public String getSkill_group() {
+        return skill_group;
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    @Basic
-    @Column(name = "collection_id", nullable = true)
-    public Integer getCollectionId() {
-        return collectionId;
-    }
-
-    public void setCollectionId(Integer collectionId) {
-        this.collectionId = collectionId;
-    }
-
-    @Basic
-    @Column(name = "key_skill", nullable = true)
-    public Boolean getKeySkill() {
-        return keySkill;
-    }
-
-    public void setKeySkill(Boolean keySkill) {
-        this.keySkill = keySkill;
+    public void setSkill_group(String code) {
+        this.skill_group = code;
     }
 
     @Basic
@@ -63,29 +55,37 @@ public class Skill {
         this.name = name;
     }
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vacancy")
+    public Vacancy getVacancy() {
+        return vacancy;
+    }
+
+    public void setVacancy(Vacancy vacancy) {
+        this.vacancy = vacancy;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Skill skill = (Skill) o;
-
-        if (id != skill.id) return false;
-        if (code != null ? !code.equals(skill.code) : skill.code != null) return false;
-        if (collectionId != null ? !collectionId.equals(skill.collectionId) : skill.collectionId != null) return false;
-        if (keySkill != null ? !keySkill.equals(skill.keySkill) : skill.keySkill != null) return false;
-        if (name != null ? !name.equals(skill.name) : skill.name != null) return false;
-
-        return true;
+        return Objects.equals(id, skill.id) &&
+                Objects.equals(skill_group, skill.skill_group) &&
+                Objects.equals(name, skill.name) &&
+                Objects.equals(vacancy, skill.vacancy);
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + (code != null ? code.hashCode() : 0);
-        result = 31 * result + (collectionId != null ? collectionId.hashCode() : 0);
-        result = 31 * result + (keySkill != null ? keySkill.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        return result;
+        return Objects.hash(id, skill_group, name, vacancy);
+    }
+
+    public OffsetDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(OffsetDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 }

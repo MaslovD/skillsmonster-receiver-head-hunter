@@ -7,13 +7,13 @@ import com.masdmtr.skillsmonster.config.DateFormatter;
 import com.masdmtr.skillsmonster.config.RabbitConfig;
 import com.masdmtr.skillsmonster.dto.SearchResultDto;
 import com.masdmtr.skillsmonster.persistence.model.Area;
+import com.masdmtr.skillsmonster.persistence.model.Skill;
 import com.masdmtr.skillsmonster.persistence.model.Specialization;
 import com.masdmtr.skillsmonster.persistence.model.Vacancy;
 import com.masdmtr.skillsmonster.rabbitmq.Producer;
 import com.masdmtr.skillsmonster.service.SkillsMonsterService;
 import com.rabbitmq.client.Consumer;
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.postgresql.util.PSQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +25,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityManager;
-import javax.validation.ConstraintViolationException;
-import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.*;
 
@@ -143,7 +140,7 @@ public class HeadHunterReceiver extends ReceiverImpl {
                         vacancyListToAdd.addAll(vacancyList);
                         logger.info("\t\t Date: {}, Area: {}, Found: {}", publDate.toString(), ar.getId().toString(), found);
                         addSearchResult(vacancyList);
-                        vacancyListToAdd.clear();
+                        vacancyList.clear();
                     }
 
                 } else {
@@ -288,45 +285,9 @@ public class HeadHunterReceiver extends ReceiverImpl {
         return retArray;
     }
 
-//    @Override
-//    public void loadVacancyDetailes() {
-//
-//        RestTemplate restTemplate = new RestTemplate();
-//
-//        skillsMonsterService.getProcessingQueue()
-//                //.stream()
-//                .parallelStream()
-//                .forEach(processingQueueItem -> {
-//                    String vacId = processingQueueItem.getVacancyId();
-//
-//                    try {
-//                        logger.debug("Vacancy ID: {} Created: {}", vacId, processingQueueItem.getCreatedAt());
-//                        String reqString = apiHost.concat("vacancies/").concat(vacId);
-//                        String jsonString = restTemplate.getForObject(reqString, String.class);
-//                        Map<String, Object> retMap = new Gson().fromJson(jsonString, new TypeToken<HashMap<String, Object>>() {
-//                        }.getType());
-//                        Vacancy vacancy = new Vacancy();
-//                        vacancy.setVacancyId(vacId);
-//                        vacancy.setRawData(retMap);
-//
-//                        vacancy.setLoadDateTime(new Timestamp(System.currentTimeMillis()));
-//                        skillsMonsterService.addVacancy(vacancy);
-//                        processingQueueItem.setProcessedAt(new Timestamp(System.currentTimeMillis()));
-//                        processingQueueItem.setStatus("LOADED");
-//                        skillsMonsterService.updateProcessingQueue(processingQueueItem);
-//
-//                    } catch (HttpClientErrorException ex) {
-//                        logger.error("Error loading info from hh.ru ID: {} Created: {}", vacId, processingQueueItem.getCreatedAt());
-//                        processingQueueItem.setProcessedAt(new Timestamp(System.currentTimeMillis()));
-//                        processingQueueItem.setStatus("ERROR");
-//                        skillsMonsterService.updateProcessingQueue(processingQueueItem);
-//
-//                        logger.error(ExceptionUtils.getMessage(ex));
-//                    }
-//                });
-//    }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void loadVacancyDetails(SearchResultDto searchResultDto) {
 
         String vacId = searchResultDto.getVacancyId();
@@ -383,6 +344,17 @@ public class HeadHunterReceiver extends ReceiverImpl {
             vacancy.setStatus(searchResultDto.getStatus());
             vacancy.setTypeId(searchResultDto.getTypeId());
             vacancy.setTypeName(searchResultDto.getTypeName());
+            //   ArrayList skills = (ArrayList) ((retMap).get("key_skills"));
+
+
+            ((ArrayList) retMap.get("key_skills")).forEach(keySkill -> {
+                String keySkillName = ((String) ((LinkedTreeMap) keySkill).get("name"));
+
+
+                vacancy.getSkills().add(new Skill(keySkillName, vacancy));
+
+
+            });
 
             vacancy.setLoadDateTime(new Date());
             skillsMonsterService.addVacancy(vacancy);

@@ -15,9 +15,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.interceptor.RetryOperationsInterceptor;
 
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-
 /**
  * Proudly created by dmaslov on 02/01/2018.
  */
@@ -41,9 +38,13 @@ public class RabbitConfig {
     private Integer maxConcurrentConsumers;
 
     @Value("${spring.rabbitmq.skillsmonster.exchange}")
-    private String dataLoaderSkillsmonsterExchange;
+    private String dataLoaderSkillsMonsterExchange;
     @Value("${spring.rabbitmq.skillsmonster.queue.searchResults}")
-    public String dataLoaderSkillsmonsterSearchResultsQueue;
+    public String dataLoaderSkillsMonsterSearchResultsQueue;
+
+    @Value("${spring.rabbitmq.skillsmonster.queue.serialLoader}")
+    public String dataLoaderSkillsMonsterSerialLoaderQueue;
+
     @Value("${spring.rabbitmq.skillsmonster.routingKey}")
     public String dataLoaderSkillsmonsterRoutingKey;
     @Value("${spring.rabbitmq.skillsmonster.deadLetterQueue}")
@@ -64,12 +65,20 @@ public class RabbitConfig {
 
     @Bean
     public TopicExchange exchange() {
-        return new TopicExchange(dataLoaderSkillsmonsterExchange);
+        return new TopicExchange(dataLoaderSkillsMonsterExchange);
     }
 
     @Bean
-    public Queue dataLoaderSparkQueue() {
-        return QueueBuilder.durable(dataLoaderSkillsmonsterSearchResultsQueue)
+    public Queue skillsMonsterSearchResultsQueue() {
+        return QueueBuilder.durable(dataLoaderSkillsMonsterSearchResultsQueue)
+                .withArgument("x-dead-letter-exchange", dataLoaderSkillsMonsterDeadLetterExchange)
+                // .withArgument("x-dead-letter-routing-key", dataLoaderSkillsmonsterDeadLetterQueue)
+                .build();
+    }
+
+    @Bean
+    public Queue skillsMonsterSerialLoaderQueue() {
+        return QueueBuilder.durable(dataLoaderSkillsMonsterSerialLoaderQueue)
                 .withArgument("x-dead-letter-exchange", dataLoaderSkillsMonsterDeadLetterExchange)
                 // .withArgument("x-dead-letter-routing-key", dataLoaderSkillsmonsterDeadLetterQueue)
                 .build();
@@ -77,7 +86,7 @@ public class RabbitConfig {
 
     @Bean
     public Binding declareBindingGeneric() {
-        return BindingBuilder.bind(dataLoaderSparkQueue()).to(exchange()).with(dataLoaderSkillsmonsterRoutingKey);
+        return BindingBuilder.bind(skillsMonsterSearchResultsQueue()).to(exchange()).with(dataLoaderSkillsmonsterRoutingKey);
 
 
     }
@@ -87,29 +96,6 @@ public class RabbitConfig {
         return QueueBuilder.durable(dataLoaderSkillsmonsterDeadLetterQueue).build();
     }
 
-//    @Bean
-//    Queue dataLoaderSparkLevel2Queue() {
-//       // return QueueBuilder.durable("data-loader-spark-level-2.queue").build();
-//
-//        return QueueBuilder.durable("skillsmonster-search-results.queue")
-//                .withArgument("x-dead-letter-exchange", dataLoaderSkillsMonsterDeadLetterExchange)
-//                // .withArgument("x-dead-letter-routing-key", dataLoaderSkillsmonsterDeadLetterQueue)
-//                .build();
-//
-//    }
-
-    /**
-     * Creates an interceptor that is can be attached to queues that will try to requeue a failed message a number of
-     * times and then it will place on the deadletter queue.
-     */
-//    @Bean
-//    RetryOperationsInterceptor deadLetterInterceptor() {
-//
-//        return RetryInterceptorBuilder.stateless().maxAttempts(5).recoverer(
-//                new RepublishMessageRecoverer(rabbitTemplate(), dataLoaderSkillsMonsterDeadLetterExchange,
-//                        dataLoaderSkillsmonsterDeadLetterQueue))
-//                .backOffPolicy(exponentialBackOffPolicy()).build();
-//    }
     @Bean
     public RetryOperationsInterceptor rabbitSourceRetryInterceptor() {
         return RetryInterceptorBuilder.stateless()

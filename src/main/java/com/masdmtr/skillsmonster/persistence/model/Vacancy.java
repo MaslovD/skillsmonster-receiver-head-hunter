@@ -1,12 +1,12 @@
 package com.masdmtr.skillsmonster.persistence.model;
 
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by dmaslov on 7/26/17.
@@ -50,8 +50,10 @@ public class Vacancy {
     private String industrySubId;
     private String specializationId;
     private String specializationSubId;
+    private Collection<Skill> skills;
 
     public Vacancy() {
+        this.skills = new ArrayList<>();
     }
 
     @Id
@@ -90,6 +92,16 @@ public class Vacancy {
     @Column(name = "load_date_time", columnDefinition = "DATE")
     public Date getLoadDateTime() {
         return loadDateTime;
+    }
+
+    @OneToMany(mappedBy = "vacancy")
+    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    public Collection<Skill> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<Skill> skills) {
+        this.skills = skills;
     }
 
     public void setLoadDateTime(Date loadDateTime) {
@@ -351,4 +363,5 @@ public class Vacancy {
     public void setSpecializationSubId(String specializationSubId) {
         this.specializationSubId = specializationSubId;
     }
+
 }
