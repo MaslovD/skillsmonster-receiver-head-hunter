@@ -4,8 +4,10 @@ import com.masdmtr.skillsmonster.persistence.repository.SkillsMonsterDao;
 import com.masdmtr.skillsmonster.persistence.model.ui.Menu;
 import com.masdmtr.skillsmonster.persistence.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
 
+import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +53,7 @@ public class SkillsMonsterServiceImpl implements SkillsMonsterService {
     }
 
     @Override
-    public void addVacancy(Vacancy vacancy) {
+    public void addVacancy(Vacancy vacancy) throws ConstraintViolationException, JpaSystemException {
         dao.addVacancy(vacancy);
     }
 

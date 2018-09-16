@@ -27,10 +27,10 @@ public class LoaderCore {
     }
 
     @Scheduled(cron = "${spring.skillsmonster.schedule.vacancy_searcher}")
-    //@Scheduled(fixedDelay = 86400)
+    //@Scheduled(fixedDelay = 86400000)
     public void search() {
-        logger.info("vacancy searcher started");
+        logger.info("Vacancy searcher started");
         loaderController.getReceivers().forEach(Receiver::searchVacancy);
-        logger.info("vacancy searcher finished");
+        logger.info("Vacancy searcher finished");
     }
 }

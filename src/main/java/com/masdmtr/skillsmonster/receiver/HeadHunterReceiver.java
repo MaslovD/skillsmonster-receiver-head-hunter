@@ -25,6 +25,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityManager;
+import javax.validation.ConstraintViolationException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -136,11 +137,13 @@ public class HeadHunterReceiver extends ReceiverImpl {
                                 logger.info("\t\t\t Date: {}, Specialization: {}, Area: {}, Found: {}", publDate.toString(), spec.getSubId(), ar.getId().toString(), found);
                             }
                             addSearchResult(vacancyList);
+                            vacancyListToAdd.clear();
                         }
 
                         vacancyListToAdd.addAll(vacancyList);
                         logger.info("\t\t Date: {}, Area: {}, Found: {}", publDate.toString(), ar.getId().toString(), found);
                         addSearchResult(vacancyList);
+                        vacancyListToAdd.clear();
                     }
 
                 } else {
@@ -160,7 +163,7 @@ public class HeadHunterReceiver extends ReceiverImpl {
         logger.info("Head Hunter Receiver Finished");
     }
 
-    public void addSearchResult(ArrayList<Map<String, Object>> searchResults) {
+    private void addSearchResult(ArrayList<Map<String, Object>> searchResults) {
 
         //logger.info("Savind {} vacancies", searchResults.size());
 
@@ -383,14 +386,15 @@ public class HeadHunterReceiver extends ReceiverImpl {
 
             vacancy.setLoadDateTime(new Date());
             skillsMonsterService.addVacancy(vacancy);
+            logger.debug("Vacancy with ID {} saved", vacId);
 
         } catch (HttpClientErrorException ex) {
             logger.error("Error loading info from hh.ru ID: {}", vacId);
             //    processingQueueItem.setProcessedAt(new Timestamp(System.currentTimeMillis()));
-            searchResultDto.setStatus("ERROR");
+            //searchResultDto.setStatus("ERROR");
             //    skillsMonsterService.updateProcessingQueue(processingQueueItem);
 
-            logger.error(ExceptionUtils.getMessage(ex));
+            //logger.error(ExceptionUtils.getMessage(ex));
         } catch (JpaSystemException jpaSystemException) {
             logger.error("Duplicate key value violates unique constraint", vacId);
         }

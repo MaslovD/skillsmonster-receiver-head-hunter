@@ -6,7 +6,9 @@ import org.hibernate.*;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.StoredProcedureQuery;
+import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -187,13 +190,15 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
     }
 
     @Override
-    public void addVacancy(Vacancy vacancy) {
+    public void addVacancy(Vacancy vacancy) throws ConstraintViolationException, JpaSystemException {
 
         try (Session session = sessionFactory.openSession()) {
-            Transaction tx1 = session.beginTransaction();
-            session.save(vacancy);
-            tx1.commit();
+            //Transaction tx1 = session.beginTransaction();
+
+            session.persist(vacancy);
             session.flush();
+            //tx1.commit();
+            //session.flush();
         }
     }
 }
