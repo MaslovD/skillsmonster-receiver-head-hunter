@@ -5,6 +5,7 @@ import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 import com.masdmtr.skillsmonster.config.DateFormatter;
 import com.masdmtr.skillsmonster.config.RabbitConfig;
+import com.masdmtr.skillsmonster.dto.SearchRequestDto;
 import com.masdmtr.skillsmonster.dto.SearchResultDto;
 import com.masdmtr.skillsmonster.persistence.model.Area;
 import com.masdmtr.skillsmonster.persistence.model.Skill;
@@ -370,6 +371,22 @@ public class HeadHunterReceiver extends ReceiverImpl {
         } catch (JpaSystemException jpaSystemException) {
             logger.error("Duplicate key value violates unique constraint", vacId);
         }
+    }
+
+    @Override
+    public void loadVacancyDetails(SearchRequestDto searchRequestDto) {
+        logger.debug("Vacancy ID: {} Created: {}", searchRequestDto.getVacancyId());
+
+        String reqString = apiHost.concat("vacancies/").concat(searchRequestDto.getVacancyId());
+
+        String jsonString = restTemplate.getForObject(reqString, String.class);
+
+        Map<String, Object> retMap = new Gson().fromJson(
+                jsonString,
+                new TypeToken<HashMap<String, Object>>() {
+                }.getType()
+        );
+
     }
 
 //    @Override

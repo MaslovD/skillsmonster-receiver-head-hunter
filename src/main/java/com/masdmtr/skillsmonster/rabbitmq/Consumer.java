@@ -1,5 +1,6 @@
 package com.masdmtr.skillsmonster.rabbitmq;
 
+import com.masdmtr.skillsmonster.dto.SearchRequestDto;
 import com.masdmtr.skillsmonster.dto.SearchResultDto;
 import com.masdmtr.skillsmonster.receiver.Receiver;
 import org.slf4j.Logger;
@@ -25,5 +26,10 @@ public class Consumer {
     @RabbitListener(queues = "${spring.rabbitmq.skillsmonster.queue.searchResults}")
     public void receiveProcessingQueueItem(final SearchResultDto processingQueueItem) {
         receiver.loadVacancyDetails(processingQueueItem);
+    }
+
+    @RabbitListener(queues = "${spring.rabbitmq.skillsmonster.queue.serialLoader}")
+    public void receiveProcessingQueueSerialItem(final SearchRequestDto searchRequestDto) {
+        receiver.loadVacancyDetails(searchRequestDto);
     }
 }
