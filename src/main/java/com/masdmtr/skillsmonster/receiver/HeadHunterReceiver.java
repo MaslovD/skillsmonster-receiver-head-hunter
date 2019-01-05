@@ -1,6 +1,7 @@
 package com.masdmtr.skillsmonster.receiver;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.reflect.TypeToken;
 import com.masdmtr.skillsmonster.config.DateFormatter;
@@ -12,6 +13,7 @@ import com.masdmtr.skillsmonster.persistence.model.Skill;
 import com.masdmtr.skillsmonster.persistence.model.Specialization;
 import com.masdmtr.skillsmonster.persistence.model.Vacancy;
 import com.masdmtr.skillsmonster.rabbitmq.Producer;
+import com.masdmtr.skillsmonster.receiver.hh.VacancyDto;
 import com.masdmtr.skillsmonster.service.SkillsMonsterService;
 import com.rabbitmq.client.Consumer;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -26,6 +28,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.persistence.EntityManager;
+import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -47,6 +50,9 @@ public class HeadHunterReceiver extends ReceiverImpl {
     private static final Logger logger = LoggerFactory.getLogger(Consumer.class);
     private RabbitConfig rabbitConfig;
     private DateFormatter dateFormatter;
+    private Gson gson;
+
+
     @Value("${spring.skillsmonster.host}")
     String apiHost;
 
@@ -56,7 +62,8 @@ public class HeadHunterReceiver extends ReceiverImpl {
                               Producer producer,
                               RestTemplate restTemplate,
                               RabbitConfig rabbitConfig,
-                              DateFormatter dateFormatter
+                              DateFormatter dateFormatter,
+                              Gson gson
     ) {
         this.entityManager = entityManager;
         this.skillsMonsterService = skillsMonsterService;
@@ -64,6 +71,7 @@ public class HeadHunterReceiver extends ReceiverImpl {
         this.restTemplate = restTemplate;
         this.rabbitConfig = rabbitConfig;
         this.dateFormatter = dateFormatter;
+        this.gson = gson;
     }
 
     @Override
@@ -375,17 +383,103 @@ public class HeadHunterReceiver extends ReceiverImpl {
 
     @Override
     public void loadVacancyDetails(SearchRequestDto searchRequestDto) {
-        logger.debug("Vacancy ID: {} Created: {}", searchRequestDto.getVacancyId());
 
-        String reqString = apiHost.concat("vacancies/").concat(searchRequestDto.getVacancyId());
+        String vacancyId = searchRequestDto.getVacancyId();
 
-        String jsonString = restTemplate.getForObject(reqString, String.class);
+        logger.debug("Vacancy ID: {} Created: {}", vacancyId);
+        try {
+            String reqString = apiHost.concat("vacancies/").concat(vacancyId);
 
-        Map<String, Object> retMap = new Gson().fromJson(
-                jsonString,
-                new TypeToken<HashMap<String, Object>>() {
-                }.getType()
-        );
+            String jsonString = restTemplate.getForObject(reqString, String.class);
+
+//            Map<String, Object> retMap = new Gson().fromJson(
+//                    jsonString,
+//                    new TypeToken<HashMap<String, Object>>() {
+//                    }.getType()
+//            );
+
+
+            VacancyDto vacancyDto = gson.fromJson(
+                    jsonString,
+                    VacancyDto.class
+            );
+
+            Vacancy vacancy = new Vacancy();
+            vacancy.setVacancyId(vacancyId);
+            //vacancy.setRawData(jsonString);
+            vacancy.setName(vacancyDto.getName());
+            vacancy.setAddress(vacancyDto.getAddress() != null ? vacancyDto.getAddress().getRaw() : null);
+            vacancy.setAlternateUrl(vacancyDto.getAlternateUrl());
+            vacancy.setApplyAlternateUrl(vacancyDto.getApplyAlternateUrl());
+            vacancy.setArchived(vacancyDto.getArchived());
+            vacancy.setPremium(vacancyDto.getPremium());
+            vacancy.setAlternateUrl(vacancyDto.getAlternateUrl());
+            vacancy.setCreatedAt(vacancyDto.getCreatedAt());
+            vacancy.setPublishedAt(vacancyDto.getPublishedAt());
+
+            //Area
+            if (vacancyDto.getArea() != null) {
+                vacancy.setAreaUrl(vacancyDto.getArea().getUrl());
+                vacancy.setAreaId(vacancyDto.getArea().getId());
+                vacancy.setAreaName(vacancyDto.getArea().getName());
+
+            }
+
+
+            //Employer
+            if (vacancyDto.getEmployer() != null) {
+                vacancy.setEmpId(vacancyDto.getEmployer().getId());
+                vacancy.setEmpName(vacancyDto.getEmployer().getName());
+                vacancy.setEmpUrl(vacancyDto.getEmployer().getUrl());
+            }
+
+
+            //Salary
+            if (vacancyDto.getSalary() != null) {
+                Integer salaryFrom = vacancyDto.getSalary().getFrom();
+                Integer salaryTo = vacancyDto.getSalary().getTo();
+
+                vacancy.setSalaryFrom(salaryFrom != null ? salaryFrom.doubleValue() : null);
+                vacancy.setSalaryTo(salaryTo != null ? salaryTo.doubleValue() : null);
+                vacancy.setSalaryGross(vacancyDto.getSalary().getGross());
+                vacancy.setSalaryCurrency(vacancyDto.getSalary().getCurrency());
+            }
+
+            //Department
+            if (vacancyDto.getDepartment() != null) {
+                vacancy.setDepartmentId(vacancyDto.getDepartment().getId());
+                vacancy.setDepartmentName(vacancyDto.getDepartment().getName());
+            }
+
+            // Type
+            if (vacancyDto.getType() != null) {
+                vacancy.setTypeId(vacancyDto.getType().getId());
+                vacancy.setTypeName(vacancyDto.getType().getName());
+            }
+
+
+            vacancyDto.getKeySkills().forEach(keySkill -> {
+
+                String keySkillName = (keySkill.getName());
+                vacancy.getSkills().add(new Skill(keySkillName, vacancy));
+            });
+
+            vacancy.setLoadDateTime(new Date());
+
+            skillsMonsterService.addVacancy(vacancy);
+
+            logger.debug("Vacancy with ID {} saved", vacancyId);
+
+        } catch (HttpClientErrorException ex) {
+            logger.error("Error loading info from hh.ru ID: {}", vacancyId);
+
+        } catch (JpaSystemException jpaSystemException) {
+            logger.error("Duplicate key value violates unique constraint", vacancyId);
+
+        } catch (Throwable t) {
+            logger.error("Exception occurred during processing vacancy {}, reason: {}", vacancyId, t.getMessage());
+
+        }
 
     }
 

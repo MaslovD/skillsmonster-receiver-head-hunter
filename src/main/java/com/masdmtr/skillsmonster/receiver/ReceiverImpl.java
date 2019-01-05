@@ -1,5 +1,6 @@
 package com.masdmtr.skillsmonster.receiver;
 
+import com.masdmtr.skillsmonster.dto.SearchRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -13,4 +14,8 @@ public abstract class ReceiverImpl implements Receiver {
     Receiver receiver;
 
 
+    @Override
+    public void loadVacancyDetails(SearchRequestDto searchRequestDto) {
+
+    }
 }
