@@ -1,0 +1,981 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/root.json",
+  "type": "object",
+  "title": "The Root Schema",
+  "required": [
+    "id",
+    "premium",
+    "billing_type",
+    "relations",
+    "name",
+    "insider_interview",
+    "response_letter_required",
+    "area",
+    "salary",
+    "type",
+    "address",
+    "allow_messages",
+    "site",
+    "experience",
+    "schedule",
+    "employment",
+    "department",
+    "contacts",
+    "description",
+    "branded_description",
+    "key_skills",
+    "accept_handicapped",
+    "accept_kids",
+    "archived",
+    "response_url",
+    "specializations",
+    "code",
+    "hidden",
+    "quick_responses_allowed",
+    "driver_license_types",
+    "accept_incomplete_resumes",
+    "employer",
+    "published_at",
+    "created_at",
+    "negotiations_url",
+    "suitable_resumes_url",
+    "apply_alternate_url",
+    "has_test",
+    "test",
+    "alternate_url"
+  ],
+  "properties": {
+    "id": {
+      "$id": "#/properties/id",
+      "type": "string",
+      "title": "The Id Schema",
+      "default": "",
+      "examples": [
+        "8168127"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "premium": {
+      "$id": "#/properties/premium",
+      "type": "boolean",
+      "title": "The Premium Schema",
+      "default": false,
+      "examples": [
+        false
+      ]
+    },
+    "billing_type": {
+      "$id": "#/properties/billing_type",
+      "type": "object",
+      "title": "The Billing_type Schema",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "$id": "#/properties/billing_type/properties/id",
+          "type": "string",
+          "title": "The Id Schema",
+          "default": "",
+          "examples": [
+            "standard"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "name": {
+          "$id": "#/properties/billing_type/properties/name",
+          "type": "string",
+          "title": "The Name Schema",
+          "default": "",
+          "examples": [
+            "Стандарт"
+          ],
+          "pattern": "^(.*)$"
+        }
+      }
+    },
+    "relations": {
+      "$id": "#/properties/relations",
+      "type": "array",
+      "title": "The Relations Schema"
+    },
+    "name": {
+      "$id": "#/properties/name",
+      "type": "string",
+      "title": "The Name Schema",
+      "default": "",
+      "examples": [
+        "Middle веб-разработчик / Full-stack"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "insider_interview": {
+      "$id": "#/properties/insider_interview",
+      "type": "null",
+      "title": "The Insider_interview Schema",
+      "default": null,
+      "examples": [
+        null
+      ]
+    },
+    "response_letter_required": {
+      "$id": "#/properties/response_letter_required",
+      "type": "boolean",
+      "title": "The Response_letter_required Schema",
+      "default": false,
+      "examples": [
+        false
+      ]
+    },
+    "area": {
+      "$id": "#/properties/area",
+      "type": "object",
+      "title": "The Area Schema",
+      "required": [
+        "id",
+        "name",
+        "url"
+      ],
+      "properties": {
+        "id": {
+          "$id": "#/properties/area/properties/id",
+          "type": "string",
+          "title": "The Id Schema",
+          "default": "",
+          "examples": [
+            "92"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "name": {
+          "$id": "#/properties/area/properties/name",
+          "type": "string",
+          "title": "The Name Schema",
+          "default": "",
+          "examples": [
+            "Тула"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "url": {
+          "$id": "#/properties/area/properties/url",
+          "type": "string",
+          "title": "The Url Schema",
+          "default": "",
+          "examples": [
+            "https://api.hh.ru/areas/92"
+          ],
+          "pattern": "^(.*)$"
+        }
+      }
+    },
+    "salary": {
+      "$id": "#/properties/salary",
+      "type": "object",
+      "title": "The Salary Schema",
+      "required": [
+        "from",
+        "to",
+        "currency",
+        "gross"
+      ],
+      "properties": {
+        "from": {
+          "$id": "#/properties/salary/properties/from",
+          "type": "integer",
+          "title": "The From Schema",
+          "default": 0,
+          "examples": [
+            40000
+          ]
+        },
+        "to": {
+          "$id": "#/properties/salary/properties/to",
+          "type": "integer",
+          "title": "The To Schema",
+          "default": 0,
+          "examples": [
+            80000
+          ]
+        },
+        "currency": {
+          "$id": "#/properties/salary/properties/currency",
+          "type": "string",
+          "title": "The Currency Schema",
+          "default": "",
+          "examples": [
+            "RUR"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "gross": {
+          "$id": "#/properties/salary/properties/gross",
+          "type": "boolean",
+          "title": "The Gross Schema",
+          "default": false,
+          "examples": [
+            true
+          ]
+        }
+      }
+    },
+    "type": {
+      "$id": "#/properties/type",
+      "type": "object",
+      "title": "The Type Schema",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "$id": "#/properties/type/properties/id",
+          "type": "string",
+          "title": "The Id Schema",
+          "default": "",
+          "examples": [
+            "open"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "name": {
+          "$id": "#/properties/type/properties/name",
+          "type": "string",
+          "title": "The Name Schema",
+          "default": "",
+          "examples": [
+            "Открытая"
+          ],
+          "pattern": "^(.*)$"
+        }
+      }
+    },
+    "address": {
+      "$id": "#/properties/address",
+      "type": "object",
+      "title": "The Address Schema",
+      "required": [
+        "city",
+        "street",
+        "building",
+        "description",
+        "lat",
+        "lng",
+        "raw",
+        "metro",
+        "metro_stations"
+      ],
+      "properties": {
+        "city": {
+          "$id": "#/properties/address/properties/city",
+          "type": "null",
+          "title": "The City Schema",
+          "default": null,
+          "examples": [
+            null
+          ]
+        },
+        "street": {
+          "$id": "#/properties/address/properties/street",
+          "type": "null",
+          "title": "The Street Schema",
+          "default": null,
+          "examples": [
+            null
+          ]
+        },
+        "building": {
+          "$id": "#/properties/address/properties/building",
+          "type": "null",
+          "title": "The Building Schema",
+          "default": null,
+          "examples": [
+            null
+          ]
+        },
+        "description": {
+          "$id": "#/properties/address/properties/description",
+          "type": "null",
+          "title": "The Description Schema",
+          "default": null,
+          "examples": [
+            null
+          ]
+        },
+        "lat": {
+          "$id": "#/properties/address/properties/lat",
+          "type": "number",
+          "title": "The Lat Schema",
+          "default": 0,
+          "examples": [
+            0
+          ]
+        },
+        "lng": {
+          "$id": "#/properties/address/properties/lng",
+          "type": "number",
+          "title": "The Lng Schema",
+          "default": 0,
+          "examples": [
+            0
+          ]
+        },
+        "raw": {
+          "$id": "#/properties/address/properties/raw",
+          "type": "string",
+          "title": "The Raw Schema",
+          "default": "",
+          "examples": [
+            "Тула, ул. Ф. Смирнова,28"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "metro": {
+          "$id": "#/properties/address/properties/metro",
+          "type": "null",
+          "title": "The Metro Schema",
+          "default": null,
+          "examples": [
+            null
+          ]
+        },
+        "metro_stations": {
+          "$id": "#/properties/address/properties/metro_stations",
+          "type": "array",
+          "title": "The Metro_stations Schema"
+        }
+      }
+    },
+    "allow_messages": {
+      "$id": "#/properties/allow_messages",
+      "type": "boolean",
+      "title": "The Allow_messages Schema",
+      "default": false,
+      "examples": [
+        true
+      ]
+    },
+    "site": {
+      "$id": "#/properties/site",
+      "type": "object",
+      "title": "The Site Schema",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "$id": "#/properties/site/properties/id",
+          "type": "string",
+          "title": "The Id Schema",
+          "default": "",
+          "examples": [
+            "hh"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "name": {
+          "$id": "#/properties/site/properties/name",
+          "type": "string",
+          "title": "The Name Schema",
+          "default": "",
+          "examples": [
+            "hh.ru"
+          ],
+          "pattern": "^(.*)$"
+        }
+      }
+    },
+    "experience": {
+      "$id": "#/properties/experience",
+      "type": "object",
+      "title": "The Experience Schema",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "$id": "#/properties/experience/properties/id",
+          "type": "string",
+          "title": "The Id Schema",
+          "default": "",
+          "examples": [
+            "between1And3"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "name": {
+          "$id": "#/properties/experience/properties/name",
+          "type": "string",
+          "title": "The Name Schema",
+          "default": "",
+          "examples": [
+            "От 1 года до 3 лет"
+          ],
+          "pattern": "^(.*)$"
+        }
+      }
+    },
+    "schedule": {
+      "$id": "#/properties/schedule",
+      "type": "object",
+      "title": "The Schedule Schema",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "$id": "#/properties/schedule/properties/id",
+          "type": "string",
+          "title": "The Id Schema",
+          "default": "",
+          "examples": [
+            "fullDay"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "name": {
+          "$id": "#/properties/schedule/properties/name",
+          "type": "string",
+          "title": "The Name Schema",
+          "default": "",
+          "examples": [
+            "Полный день"
+          ],
+          "pattern": "^(.*)$"
+        }
+      }
+    },
+    "employment": {
+      "$id": "#/properties/employment",
+      "type": "object",
+      "title": "The Employment Schema",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "$id": "#/properties/employment/properties/id",
+          "type": "string",
+          "title": "The Id Schema",
+          "default": "",
+          "examples": [
+            "full"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "name": {
+          "$id": "#/properties/employment/properties/name",
+          "type": "string",
+          "title": "The Name Schema",
+          "default": "",
+          "examples": [
+            "Полная занятость"
+          ],
+          "pattern": "^(.*)$"
+        }
+      }
+    },
+    "department": {
+      "$id": "#/properties/department",
+      "type": "object",
+      "title": "The Department Schema",
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "$id": "#/properties/department/properties/id",
+          "type": "string",
+          "title": "The Id Schema",
+          "default": "",
+          "examples": [
+            "HH-1455-TECH"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "name": {
+          "$id": "#/properties/department/properties/name",
+          "type": "string",
+          "title": "The Name Schema",
+          "default": "",
+          "examples": [
+            "HeadHunter::Технический департамент"
+          ],
+          "pattern": "^(.*)$"
+        }
+      }
+    },
+    "contacts": {
+      "$id": "#/properties/contacts",
+      "type": "object",
+      "title": "The Contacts Schema",
+      "required": [
+        "name",
+        "email",
+        "phones"
+      ],
+      "properties": {
+        "name": {
+          "$id": "#/properties/contacts/properties/name",
+          "type": "string",
+          "title": "The Name Schema",
+          "default": "",
+          "examples": [
+            "Светлана Шурухнова"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "email": {
+          "$id": "#/properties/contacts/properties/email",
+          "type": "string",
+          "title": "The Email Schema",
+          "default": "",
+          "examples": [
+            "hr@techart.ru"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "phones": {
+          "$id": "#/properties/contacts/properties/phones",
+          "type": "array",
+          "title": "The Phones Schema",
+          "items": {
+            "$id": "#/properties/contacts/properties/phones/items",
+            "type": "object",
+            "title": "The Items Schema",
+            "required": [
+              "comment",
+              "city",
+              "number",
+              "country"
+            ],
+            "properties": {
+              "comment": {
+                "$id": "#/properties/contacts/properties/phones/items/properties/comment",
+                "type": "string",
+                "title": "The Comment Schema",
+                "default": "",
+                "examples": [
+                  "доб. 153"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "city": {
+                "$id": "#/properties/contacts/properties/phones/items/properties/city",
+                "type": "string",
+                "title": "The City Schema",
+                "default": "",
+                "examples": [
+                  "4872"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "number": {
+                "$id": "#/properties/contacts/properties/phones/items/properties/number",
+                "type": "string",
+                "title": "The Number Schema",
+                "default": "",
+                "examples": [
+                  "250450"
+                ],
+                "pattern": "^(.*)$"
+              },
+              "country": {
+                "$id": "#/properties/contacts/properties/phones/items/properties/country",
+                "type": "string",
+                "title": "The Country Schema",
+                "default": "",
+                "examples": [
+                  "7"
+                ],
+                "pattern": "^(.*)$"
+              }
+            }
+          }
+        }
+      }
+    },
+    "description": {
+      "$id": "#/properties/description",
+      "type": "string",
+      "title": "The Description Schema",
+      "default": "",
+      "examples": [
+        "<p><em>На рынке с 1999 года. В штате 170 сотрудников, из них 30 разработчиков. Делаем сайты любой сложности, интранет / экстранет-решения. В портфолио более 1000 проектов. Собcтвенная платформа TAO.CMS/CMF. Работаем с технологиями: PHP, MySQL, Git, Docker, JavaScript (ES6), Composer, npm, Webpack.</em></p> <p> </p> <p><strong>Почему у нас стоит работать:</strong></p> <ul> <li><strong>Мы входим в ТОП-100 лучших работодателей России и №1 в Туле по версии Headhunter!</strong></li> <li><strong>Лауреат в номинации «HR digital-решение года» (HR TECH AWARD 2018);</strong></li> <li>Мы оказываем качественные услуги, наши клиенты работают с нами долго и рекомендуют нас своим партнерам;</li> <li>Внутри компании принят демократичный стиль общения, нет барьеров между управляющей командой и другими сотрудниками, все открыты для диалога;</li> <li>Мы поощряем инициативных сотрудников;</li> <li>Карьерный и профессиональный рост - это реальность;</li> <li>Мы вкладываемся в обучение новичков и развитие опытных сотрудников. У нас есть собственные программы обучения. Наши сотрудники посещают все основные отраслевые конференции;</li> <li>Мы соблюдаем нормы ТК, оформляем официально с первого рабочего дня и своевременно выплачиваем зарплату;</li> <li>У нас комфортные рабочие места, на мини-кухнях всегда есть чай и кофе;</li> <li>У нас удобный график работы с 8-30 до 17-30, мы не стоим в пробках. У нас есть велопарковка;</li> <li>Мы регулярно проводим корпоративные мероприятия;</li> <li>Занимаемся активным туризмом, ходим в горы, пещеры, сплавляемся по рекам;</li> <li>Организуем для сотрудников групповые поездки в Европу;</li> <li>О нашем здоровье заботится корпоративный терапевт;</li> <li>Мы активно занимаемся спортом (вело, кроссфит);</li> <li>У нас есть курсы английского языка.</li> </ul> <p> </p> <p><strong>Требования:</strong></p> <ul> <li>PHP7;</li> <li>Знание принципов объектно-ориентированного программирования;</li> <li>Уверенное знание MySQL, HTML5, CSS, JavaScript, SQL;</li> <li>Опыт адаптивной верстки.</li> </ul> <p> </p> <p><strong>Будет плюсом:</strong></p> <ul> <li>Знакомство с Linux;</li> <li>Опыт работы с системами контроля версий;</li> <li>Базовые навыки настройки веб-серверов Apache. Nginx.</li> </ul> <p><br /><strong>Обязанности:</strong></p> <ul> <li>Разработка и поддержка веб-проектов;</li> <li>Создание и интеграция верстки;</li> <li>Разработка и поддержка компонентов и инструментов для внутреннего использования.</li> </ul>"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "branded_description": {
+      "$id": "#/properties/branded_description",
+      "type": "null",
+      "title": "The Branded_description Schema",
+      "default": null,
+      "examples": [
+        null
+      ]
+    },
+    "key_skills": {
+      "$id": "#/properties/key_skills",
+      "type": "array",
+      "title": "The Key_skills Schema",
+      "items": {
+        "$id": "#/properties/key_skills/items",
+        "type": "object",
+        "title": "The Items Schema",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "$id": "#/properties/key_skills/items/properties/name",
+            "type": "string",
+            "title": "The Name Schema",
+            "default": "",
+            "examples": [
+              "PHP7"
+            ],
+            "pattern": "^(.*)$"
+          }
+        }
+      }
+    },
+    "accept_handicapped": {
+      "$id": "#/properties/accept_handicapped",
+      "type": "boolean",
+      "title": "The Accept_handicapped Schema",
+      "default": false,
+      "examples": [
+        true
+      ]
+    },
+    "accept_kids": {
+      "$id": "#/properties/accept_kids",
+      "type": "boolean",
+      "title": "The Accept_kids Schema",
+      "default": false,
+      "examples": [
+        false
+      ]
+    },
+    "archived": {
+      "$id": "#/properties/archived",
+      "type": "boolean",
+      "title": "The Archived Schema",
+      "default": false,
+      "examples": [
+        false
+      ]
+    },
+    "response_url": {
+      "$id": "#/properties/response_url",
+      "type": "null",
+      "title": "The Response_url Schema",
+      "default": null,
+      "examples": [
+        null
+      ]
+    },
+    "specializations": {
+      "$id": "#/properties/specializations",
+      "type": "array",
+      "title": "The Specializations Schema",
+      "items": {
+        "$id": "#/properties/specializations/items",
+        "type": "object",
+        "title": "The Items Schema",
+        "required": [
+          "id",
+          "name",
+          "profarea_id",
+          "profarea_name"
+        ],
+        "properties": {
+          "id": {
+            "$id": "#/properties/specializations/items/properties/id",
+            "type": "string",
+            "title": "The Id Schema",
+            "default": "",
+            "examples": [
+              "1.221"
+            ],
+            "pattern": "^(.*)$"
+          },
+          "name": {
+            "$id": "#/properties/specializations/items/properties/name",
+            "type": "string",
+            "title": "The Name Schema",
+            "default": "",
+            "examples": [
+              "Программирование, Разработка"
+            ],
+            "pattern": "^(.*)$"
+          },
+          "profarea_id": {
+            "$id": "#/properties/specializations/items/properties/profarea_id",
+            "type": "string",
+            "title": "The Profarea_id Schema",
+            "default": "",
+            "examples": [
+              "1"
+            ],
+            "pattern": "^(.*)$"
+          },
+          "profarea_name": {
+            "$id": "#/properties/specializations/items/properties/profarea_name",
+            "type": "string",
+            "title": "The Profarea_name Schema",
+            "default": "",
+            "examples": [
+              "Информационные технологии, интернет, телеком"
+            ],
+            "pattern": "^(.*)$"
+          }
+        }
+      }
+    },
+    "code": {
+      "$id": "#/properties/code",
+      "type": "null",
+      "title": "The Code Schema",
+      "default": null,
+      "examples": [
+        null
+      ]
+    },
+    "hidden": {
+      "$id": "#/properties/hidden",
+      "type": "boolean",
+      "title": "The Hidden Schema",
+      "default": false,
+      "examples": [
+        false
+      ]
+    },
+    "quick_responses_allowed": {
+      "$id": "#/properties/quick_responses_allowed",
+      "type": "boolean",
+      "title": "The Quick_responses_allowed Schema",
+      "default": false,
+      "examples": [
+        false
+      ]
+    },
+    "driver_license_types": {
+      "$id": "#/properties/driver_license_types",
+      "type": "array",
+      "title": "The Driver_license_types Schema"
+    },
+    "accept_incomplete_resumes": {
+      "$id": "#/properties/accept_incomplete_resumes",
+      "type": "boolean",
+      "title": "The Accept_incomplete_resumes Schema",
+      "default": false,
+      "examples": [
+        false
+      ]
+    },
+    "employer": {
+      "$id": "#/properties/employer",
+      "type": "object",
+      "title": "The Employer Schema",
+      "required": [
+        "id",
+        "name",
+        "url",
+        "alternate_url",
+        "logo_urls",
+        "vacancies_url",
+        "trusted"
+      ],
+      "properties": {
+        "id": {
+          "$id": "#/properties/employer/properties/id",
+          "type": "string",
+          "title": "The Id Schema",
+          "default": "",
+          "examples": [
+            "71287"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "name": {
+          "$id": "#/properties/employer/properties/name",
+          "type": "string",
+          "title": "The Name Schema",
+          "default": "",
+          "examples": [
+            "Текарт, консалтинговая группа"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "url": {
+          "$id": "#/properties/employer/properties/url",
+          "type": "string",
+          "title": "The Url Schema",
+          "default": "",
+          "examples": [
+            "https://api.hh.ru/employers/71287"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "alternate_url": {
+          "$id": "#/properties/employer/properties/alternate_url",
+          "type": "string",
+          "title": "The Alternate_url Schema",
+          "default": "",
+          "examples": [
+            "https://hh.ru/employer/71287"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "logo_urls": {
+          "$id": "#/properties/employer/properties/logo_urls",
+          "type": "object",
+          "title": "The Logo_urls Schema",
+          "required": [
+            "90",
+            "240",
+            "original"
+          ],
+          "properties": {
+            "90": {
+              "$id": "#/properties/employer/properties/logo_urls/properties/90",
+              "type": "string",
+              "title": "The 90 Schema",
+              "default": "",
+              "examples": [
+                "https://hhcdn.ru/employer-logo/2809423.jpeg"
+              ],
+              "pattern": "^(.*)$"
+            },
+            "240": {
+              "$id": "#/properties/employer/properties/logo_urls/properties/240",
+              "type": "string",
+              "title": "The 240 Schema",
+              "default": "",
+              "examples": [
+                "https://hhcdn.ru/employer-logo/2809424.jpeg"
+              ],
+              "pattern": "^(.*)$"
+            },
+            "original": {
+              "$id": "#/properties/employer/properties/logo_urls/properties/original",
+              "type": "string",
+              "title": "The Original Schema",
+              "default": "",
+              "examples": [
+                "https://hhcdn.ru/employer-logo-original/592042.jpg"
+              ],
+              "pattern": "^(.*)$"
+            }
+          }
+        },
+        "vacancies_url": {
+          "$id": "#/properties/employer/properties/vacancies_url",
+          "type": "string",
+          "title": "The Vacancies_url Schema",
+          "default": "",
+          "examples": [
+            "https://api.hh.ru/vacancies?employer_id=71287"
+          ],
+          "pattern": "^(.*)$"
+        },
+        "trusted": {
+          "$id": "#/properties/employer/properties/trusted",
+          "type": "boolean",
+          "title": "The Trusted Schema",
+          "default": false,
+          "examples": [
+            true
+          ]
+        }
+      }
+    },
+    "published_at": {
+      "$id": "#/properties/published_at",
+      "type": "string",
+      "format": "date-time",
+      "title": "The Published_at Schema",
+      "default": "",
+      "examples": [
+        "2018-12-26T11:24:30+0300"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "created_at": {
+      "$id": "#/properties/created_at",
+      "type": "string",
+      "format": "date-time",
+      "title": "The Created_at Schema",
+      "default": "",
+      "examples": [
+        "2018-12-26T11:24:30+0300"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "negotiations_url": {
+      "$id": "#/properties/negotiations_url",
+      "type": "null",
+      "title": "The Negotiations_url Schema",
+      "default": null,
+      "examples": [
+        null
+      ]
+    },
+    "suitable_resumes_url": {
+      "$id": "#/properties/suitable_resumes_url",
+      "type": "null",
+      "title": "The Suitable_resumes_url Schema",
+      "default": null,
+      "examples": [
+        null
+      ]
+    },
+    "apply_alternate_url": {
+      "$id": "#/properties/apply_alternate_url",
+      "type": "string",
+      "title": "The Apply_alternate_url Schema",
+      "default": "",
+      "examples": [
+        "https://hh.ru/applicant/vacancy_response?vacancyId=8168127"
+      ],
+      "pattern": "^(.*)$"
+    },
+    "has_test": {
+      "$id": "#/properties/has_test",
+      "type": "boolean",
+      "title": "The Has_test Schema",
+      "default": false,
+      "examples": [
+        false
+      ]
+    },
+    "test": {
+      "$id": "#/properties/test",
+      "type": "null",
+      "title": "The Test Schema",
+      "default": null,
+      "examples": [
+        null
+      ]
+    },
+    "alternate_url": {
+      "$id": "#/properties/alternate_url",
+      "type": "string",
+      "title": "The Alternate_url Schema",
+      "default": "",
+      "examples": [
+        "https://hh.ru/vacancy/8168127"
+      ],
+      "pattern": "^(.*)$"
+    }
+  }
+}
