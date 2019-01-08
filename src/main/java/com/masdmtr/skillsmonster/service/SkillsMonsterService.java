@@ -29,6 +29,8 @@ public interface SkillsMonsterService {
 
     ArrayList<Specialization> getSpecializationList();
 
+    void saveVacancyFromArchToDatabase();
+
     ArrayList<Area> getAreaList();
 
     void getVacancyDetailes();
@@ -38,4 +40,5 @@ public interface SkillsMonsterService {
 
     ArrayList<Area> getAreaByCountryId(Integer countryId);
 
+    void loadFromHhByVacancyId();
 }

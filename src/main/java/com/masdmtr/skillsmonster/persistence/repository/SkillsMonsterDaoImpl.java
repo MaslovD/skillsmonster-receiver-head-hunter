@@ -1,24 +1,26 @@
 package com.masdmtr.skillsmonster.persistence.repository;
 
-import com.masdmtr.skillsmonster.persistence.model.ui.Menu;
 import com.masdmtr.skillsmonster.persistence.model.*;
-import org.hibernate.*;
+import com.masdmtr.skillsmonster.persistence.model.ui.Menu;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import javax.persistence.EntityManager;
 import javax.persistence.StoredProcedureQuery;
 import javax.validation.ConstraintViolationException;
-import java.sql.SQLException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -26,7 +28,7 @@ import java.util.List;
  */
 
 @Repository
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 @Component
 public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
 
@@ -56,6 +58,17 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
 
             // criteria.add(Restrictions.ilike("subId","1.%"));
             return new ArrayList<Specialization>(criteria.list());
+        }
+    }
+
+    @Override
+    public ArrayList<VacancyArch> getVacancyArchList(Long idStart, Long idEnd) {
+        try (Session session = sessionFactory.openSession()) {
+            Criteria criteria = session.createCriteria(VacancyArch.class);
+
+            criteria.add(Restrictions.between("id", idStart, idEnd));
+
+            return new ArrayList<VacancyArch>(criteria.list());
         }
     }
 
@@ -191,23 +204,17 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void addVacancy(Vacancy vacancy) throws ConstraintViolationException, JpaSystemException {
-
         try (Session session = sessionFactory.openSession()) {
-            //Transaction tx1 = session.beginTransaction();
 
             session.persist(vacancy);
+
             session.flush();
-            //tx1.commit();
+
             //session.flush();
-        } catch (RuntimeException e) {
-            Throwable rootCause = com.google.common.base.Throwables.getRootCause(e);
-            if (rootCause instanceof SQLException) {
-                if ("23505".equals(((SQLException) rootCause).getSQLState())) {
-                    System.out.println("dsdsd");
-                }
-            }
 
         }
+
     }
 }

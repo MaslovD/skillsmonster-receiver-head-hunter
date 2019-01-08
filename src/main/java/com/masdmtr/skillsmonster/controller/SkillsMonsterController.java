@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.masdmtr.skillsmonster.persistence.model.Country;
 import com.masdmtr.skillsmonster.persistence.model.SearchResult;
+import com.masdmtr.skillsmonster.persistence.model.VacancyArch;
 import com.masdmtr.skillsmonster.persistence.model.ui.Menu;
 import com.masdmtr.skillsmonster.service.SkillsMonsterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,12 +26,17 @@ import java.util.Map;
 @RequestMapping(value = "/api/")
 public class SkillsMonsterController {
     private final String apiVer = "v1";
-
-    @Autowired
     private SkillsMonsterService skillsMonsterService;
+    private RestTemplate restTemplate;
 
     @Autowired
-    private RestTemplate restTemplate;
+    public SkillsMonsterController(SkillsMonsterService skillsMonsterService,
+                                   RestTemplate restTemplate,
+                                   Gson gson) {
+        this.skillsMonsterService = skillsMonsterService;
+        this.restTemplate = restTemplate;
+    }
+
 
     @RequestMapping(value = apiVer + "/country/list", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public
@@ -38,7 +45,6 @@ public class SkillsMonsterController {
         List<Country> userDetails = skillsMonsterService.getCountryList();
         return userDetails;
     }
-
 
     @RequestMapping(value = apiVer + "/country/add", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -87,5 +93,22 @@ public class SkillsMonsterController {
 
         skillsMonsterService.getVacancyDetailes();
     }
+
+    @RequestMapping(value = apiVer + "/vacancy/archive/load", method = RequestMethod.GET)
+    public void loadFromArchive() {
+
+        skillsMonsterService.saveVacancyFromArchToDatabase();
+
+
+    }
+
+    @RequestMapping(value = apiVer + "/vacancy/archive/load-by-vacancy-id", method = RequestMethod.GET)
+    public void loadFromHhByVacancyId() {
+
+        skillsMonsterService.loadFromHhByVacancyId();
+
+
+    }
+
 
 }

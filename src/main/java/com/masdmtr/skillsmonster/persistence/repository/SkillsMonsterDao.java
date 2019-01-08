@@ -14,6 +14,8 @@ public interface SkillsMonsterDao {
 
     ArrayList<Specialization> getSpecializationList();
 
+    ArrayList<VacancyArch> getVacancyArchList(Long idStart, Long idEnd);
+
     void addCountry(Country country);
 
 

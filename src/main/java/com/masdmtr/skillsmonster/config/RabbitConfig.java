@@ -37,20 +37,20 @@ public class RabbitConfig {
     @Value("${spring.rabbitmq.maxConcurrentConsumers}")
     private Integer maxConcurrentConsumers;
 
-    @Value("${spring.rabbitmq.skillsmonster.exchange}")
-    private String dataLoaderSkillsMonsterExchange;
-    @Value("${spring.rabbitmq.skillsmonster.queue.searchResults}")
-    public String dataLoaderSkillsMonsterSearchResultsQueue;
 
-    @Value("${spring.rabbitmq.skillsmonster.queue.serialLoader}")
-    public String dataLoaderSkillsMonsterSerialLoaderQueue;
+    @Value("${spring.rabbitmq.skillsmonster.queue.loadVacancyDetailsRequest}")
+    public String skillsMonsterLoadVacancyDetailsRequestQueue;
+    @Value("${spring.rabbitmq.skillsmonster.queue.loadVacancyDetailsRequestDeadLetter}")
+    public String skillsMonsterLoadVacancyDetailsRequestDeadLetterQueue;
 
-    @Value("${spring.rabbitmq.skillsmonster.routingKey}")
-    public String dataLoaderSkillsmonsterRoutingKey;
-    @Value("${spring.rabbitmq.skillsmonster.deadLetterQueue}")
-    public String dataLoaderSkillsmonsterDeadLetterQueue;
-    @Value("${spring.rabbitmq.skillsmonster.deadLetterExchange}")
-    public String dataLoaderSkillsMonsterDeadLetterExchange;
+    @Value("${spring.rabbitmq.skillsmonster.exchange.general}")
+    private String skillsMonsterGeneralExchange;
+    @Value("${spring.rabbitmq.skillsmonster.exchange.dlx}")
+    private String skillsMonsterDeadLetterExchange;
+
+    @Value("${spring.rabbitmq.skillsmonster.routingkey.loadVacancyDetailsRequest}")
+    public String skillsMonsterLoadVacancyDetailsRequestRoutingKey;
+
 
     @Bean
     public ConnectionFactory connectionFactory() {
@@ -63,47 +63,57 @@ public class RabbitConfig {
         return connectionFactory;
     }
 
-    @Bean
-    public TopicExchange exchange() {
-        return new TopicExchange(dataLoaderSkillsMonsterExchange);
-    }
 
     @Bean
-    public Queue skillsMonsterSearchResultsQueue() {
-        return QueueBuilder.durable(dataLoaderSkillsMonsterSearchResultsQueue)
-                .withArgument("x-dead-letter-exchange", dataLoaderSkillsMonsterDeadLetterExchange)
+    public Queue skillsMonsterLoadVacancyDetailsRequestQueue() {
+        return QueueBuilder.durable(skillsMonsterLoadVacancyDetailsRequestQueue)
+                .withArgument("x-dead-letter-exchange", skillsMonsterDeadLetterExchange)
                 // .withArgument("x-dead-letter-routing-key", dataLoaderSkillsmonsterDeadLetterQueue)
                 .build();
     }
 
     @Bean
-    public Queue skillsMonsterSerialLoaderQueue() {
-        return QueueBuilder.durable(dataLoaderSkillsMonsterSerialLoaderQueue)
-                .withArgument("x-dead-letter-exchange", dataLoaderSkillsMonsterDeadLetterExchange)
-                // .withArgument("x-dead-letter-routing-key", dataLoaderSkillsmonsterDeadLetterQueue)
+    Queue skillsMonsterLoadVacancyDetailsRequestDeadLetterQueue() {
+        return QueueBuilder
+                .durable(skillsMonsterLoadVacancyDetailsRequestDeadLetterQueue)
                 .build();
     }
 
     @Bean
-    public Binding declareBindingGeneric() {
-        return BindingBuilder.bind(skillsMonsterSearchResultsQueue()).to(exchange()).with(dataLoaderSkillsmonsterRoutingKey);
-
-
+    public TopicExchange skillsMonsterGeneralExchange() {
+        return new TopicExchange(skillsMonsterGeneralExchange);
     }
 
     @Bean
-    Queue deadLetterQueue() {
-        return QueueBuilder.durable(dataLoaderSkillsmonsterDeadLetterQueue).build();
+    public TopicExchange skillsMonsterDeadLetterExchange() {
+        return new TopicExchange(skillsMonsterDeadLetterExchange);
     }
+
+
+    @Bean
+    public Binding genericBinding() {
+        return BindingBuilder
+                .bind(skillsMonsterLoadVacancyDetailsRequestQueue())
+                .to(skillsMonsterGeneralExchange())
+                .with(skillsMonsterLoadVacancyDetailsRequestRoutingKey);
+    }
+
+    @Bean
+    public Binding deadLetterBinding() {
+        return BindingBuilder
+                .bind(skillsMonsterLoadVacancyDetailsRequestDeadLetterQueue())
+                .to(skillsMonsterDeadLetterExchange())
+                .with(skillsMonsterLoadVacancyDetailsRequestRoutingKey);
+    }
+
 
     @Bean
     public RetryOperationsInterceptor rabbitSourceRetryInterceptor() {
         return RetryInterceptorBuilder.stateless()
-                .maxAttempts(5)
+                .maxAttempts(2)
                 .recoverer(new RejectAndDontRequeueRecoverer())
                 .build();
     }
-
 
     @Bean
     public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory() {
@@ -134,12 +144,9 @@ public class RabbitConfig {
 
     @Bean
     public MessageConverter jsonConverter() {
-        Jackson2JsonMessageConverter jsonConverter = new Jackson2JsonMessageConverter();
-        //jsonConverter.setClassMapper(classMapper());
 
-        return jsonConverter;
+        return new Jackson2JsonMessageConverter();
     }
-
 
 
 }

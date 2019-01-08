@@ -4,9 +4,11 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by dmaslov on 7/26/17.
@@ -16,7 +18,7 @@ import java.util.*;
 public class Vacancy {
     private long id;
     private Date loadDateTime;
-    private Map<String, Object> rawData;
+    private String rawData;
     private String vacancyId;
     private String name;
     private String areaUrl;
@@ -80,12 +82,12 @@ public class Vacancy {
     @Basic
     @Type(type = "JsonDataUserType")
     @Column(name = "raw_data", nullable = true)
-    public Map<String, Object> getRawData() {
+    public String getRawData() {
         return rawData;
     }
 
-    public void setRawData(Map<String, Object> rawResponse) {
-        this.rawData = rawResponse;
+    public void setRawData(String rawData) {
+        this.rawData = rawData;
     }
 
     @Basic
@@ -94,8 +96,7 @@ public class Vacancy {
         return loadDateTime;
     }
 
-    @OneToMany(mappedBy = "vacancy")
-    @Cascade({org.hibernate.annotations.CascadeType.ALL})
+    @OneToMany(mappedBy = "vacancy", cascade = CascadeType.PERSIST)
     public Collection<Skill> getSkills() {
         return skills;
     }

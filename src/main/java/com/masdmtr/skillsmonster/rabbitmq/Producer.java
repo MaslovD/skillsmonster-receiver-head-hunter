@@ -4,20 +4,14 @@ package com.masdmtr.skillsmonster.rabbitmq;
  * Created by dmaslov on 22/07/2018.
  */
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.masdmtr.skillsmonster.dto.SearchResultDto;
+import com.masdmtr.skillsmonster.dto.SearchRequestDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessageBuilder;
-import org.springframework.amqp.core.MessagePropertiesBuilder;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import java.util.Objects;
 
 @Component
 public class Producer {
@@ -26,9 +20,9 @@ public class Producer {
     private final RabbitTemplate rabbitTemplate;
     private ObjectMapper jacksonObjectMapper;
 
-    @Value("${spring.rabbitmq.skillsmonster.exchange}")
+    @Value("${spring.rabbitmq.skillsmonster.exchange.general}")
     private String dataLoaderSparkExchange;
-    @Value("${spring.rabbitmq.skillsmonster.routingKey}")
+    @Value("${spring.rabbitmq.skillsmonster.routingkey.loadVacancyDetailsRequest}")
     public String dataLoaderSparkRoutingKey;
 
     @Autowired
@@ -37,27 +31,29 @@ public class Producer {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    private String itemMessageToJson(SearchResultDto processingQueueItem) {
+//    private String itemMessageToJson(SearchResultDto processingQueueItem) {
+//
+//        try {
+//            return jacksonObjectMapper.writeValueAsString(processingQueueItem);
+//
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
 
-        try {
-            return jacksonObjectMapper.writeValueAsString(processingQueueItem);
-
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public void sendMessage(SearchResultDto queueItem) {
+    public void sendMessage(SearchRequestDto queueItem) {
         logger.debug("Sending message...");
 
-        String jsonMsg = itemMessageToJson(queueItem);
-        Message jsonMessage = MessageBuilder.withBody(Objects.requireNonNull(jsonMsg).getBytes())
-                .andProperties(MessagePropertiesBuilder
-                        .newInstance().setContentType("application/json")
-                        .build()).build();
+//        String jsonMsg = itemMessageToJson(queueItem);
+//
+//        Message jsonMessage = MessageBuilder.withBody(Objects.requireNonNull(jsonMsg).getBytes())
+//                .andProperties(MessagePropertiesBuilder
+//                        .newInstance().setContentType("application/json")
+//                        .build())
+//                .build();
 
-        rabbitTemplate.convertAndSend(dataLoaderSparkExchange, dataLoaderSparkRoutingKey, jsonMessage);
+        rabbitTemplate.convertAndSend(dataLoaderSparkExchange, dataLoaderSparkRoutingKey, queueItem);
     }
 
 }

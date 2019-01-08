@@ -1,97 +1,181 @@
 package com.masdmtr.skillsmonster.service;
 
+import com.google.gson.Gson;
+import com.masdmtr.skillsmonster.dto.SearchRequestDto;
 import com.masdmtr.skillsmonster.persistence.repository.SkillsMonsterDao;
 import com.masdmtr.skillsmonster.persistence.model.ui.Menu;
 import com.masdmtr.skillsmonster.persistence.model.*;
+import com.masdmtr.skillsmonster.rabbitmq.Producer;
+import com.masdmtr.skillsmonster.receiver.Receiver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 
 /**
  * Created by dmaslov on 13/07/17.
  */
 
 @Service
+@Transactional
 public class SkillsMonsterServiceImpl implements SkillsMonsterService {
 
+
+    private SkillsMonsterDao skillsMonsterDao;
+    private Gson gson;
+    private Receiver receiver;
+    private static final Logger logger = LoggerFactory.getLogger(SkillsMonsterServiceImpl.class);
+    private Producer producer;
+
     @Autowired
-    private SkillsMonsterDao dao;
+    public SkillsMonsterServiceImpl(SkillsMonsterDao skillsMonsterDao,
+                                    Gson gson,
+                                    Producer producer) {
+        this.skillsMonsterDao = skillsMonsterDao;
+        this.gson = gson;
+        this.producer = producer;
+    }
 
     @Override
     public List<Country> getCountryList() {
-        return dao.getCountryList();
+        return skillsMonsterDao.getCountryList();
     }
 
     @Override
     public void addSearchResult(SearchResult searchResult) {
-        dao.addSearchResult(searchResult);
+        skillsMonsterDao.addSearchResult(searchResult);
     }
 
     @Override
     public Area getAreaById(int id) {
-        return dao.getAreaById(id);
+        return skillsMonsterDao.getAreaById(id);
     }
 
     @Override
     public SourceSite getSourceSite(int id) {
-        return dao.getSourceSiteById(id);
+        return skillsMonsterDao.getSourceSiteById(id);
     }
 
     @Override
     public ArrayList<ProcessingQueue> getProcessingQueue() {
-        return dao.getListToLoadFromHh();
+        return skillsMonsterDao.getListToLoadFromHh();
     }
 
     @Override
     public ArrayList<Menu> getMenu() {
-        ArrayList tmp = dao.getMenu();
+        ArrayList tmp = skillsMonsterDao.getMenu();
         return tmp;
     }
 
     @Override
     public void addVacancy(Vacancy vacancy) throws ConstraintViolationException, JpaSystemException {
-        dao.addVacancy(vacancy);
+        skillsMonsterDao.addVacancy(vacancy);
     }
 
 
     @Override
     public ArrayList<Specialization> getSpecializationList() {
-        ArrayList tmp = dao.getSpecializationList();
+        ArrayList tmp = skillsMonsterDao.getSpecializationList();
         return tmp;
     }
 
     @Override
+    public void saveVacancyFromArchToDatabase() {
+
+        // min id 180847
+        // max id 4708761
+
+        long index = 180847;
+
+
+        while (index <= 4708761) {
+
+            try {
+                ArrayList<VacancyArch> vacancyArchList = skillsMonsterDao.getVacancyArchList(index, index);
+
+                vacancyArchList.forEach(vacancyArch -> {
+
+                    Vacancy vacancy = receiver.vacancyJsonToVacancy(gson.toJson(vacancyArch.getRawData()));
+
+                    this.addVacancy(vacancy);
+
+                    logger.info("vacancy {} added from archive, skills added {}", vacancy.getVacancyId(), vacancy.getSkills().size());
+
+                });
+
+
+                index++;
+
+            } catch (Exception ex) {
+                logger.error("vacancy processing {} error!", ex.getMessage());
+            }
+        }
+        logger.info("vacancy processing finished!");
+    }
+
+    @Override
     public ArrayList<Area> getAreaList() {
-        ArrayList tmp = dao.getAreaList();
+        ArrayList tmp = skillsMonsterDao.getAreaList();
         return tmp;
     }
 
     @Override
     public void getVacancyDetailes() {
-        dao.getVacancyDetailes();
+        skillsMonsterDao.getVacancyDetailes();
     }
 
     @Override
     public void addCountry(Country country) {
-        dao.addCountry(country);
+        skillsMonsterDao.addCountry(country);
     }
 
     public void getAreaChildren() {
-        //   dao.getAreaChildren();
+        //   skillsMonsterDao.getAreaChildren();
     }
 
     public ArrayList<Integer> getAreaCountryList() {
-        return dao.getAreaCountryList();
+        return skillsMonsterDao.getAreaCountryList();
 
     }
 
     @Override
     public ArrayList<Area> getAreaByCountryId(Integer countryId) {
-        return dao.getAreaByCountryId(countryId);
+        return skillsMonsterDao.getAreaByCountryId(countryId);
 
+    }
+
+    @Override
+    public void loadFromHhByVacancyId() {
+
+        //long[] range = LongStream.iterate(1L, n -> n + 1L).limit(23471214L).toArray();
+
+        List<Long> vacancyIdList = LongStream.iterate(1, n -> n + 1).limit(23471214)
+                .boxed().collect(Collectors.toList());
+
+        Collections.shuffle(vacancyIdList);
+
+        vacancyIdList.forEach(sds -> {
+
+            SearchRequestDto searchRequestDto = new SearchRequestDto();
+
+            producer.sendMessage(searchRequestDto);
+
+        });
+
+
+    }
+
+    @Autowired
+    public void setReceiver(Receiver receiver) {
+        this.receiver = receiver;
     }
 }

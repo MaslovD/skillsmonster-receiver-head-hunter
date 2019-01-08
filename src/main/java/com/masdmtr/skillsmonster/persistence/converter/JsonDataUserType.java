@@ -4,6 +4,7 @@ package com.masdmtr.skillsmonster.persistence.converter;
  * Created by dmaslov on 13/07/17.
  */
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.hibernate.HibernateException;
@@ -13,6 +14,7 @@ import org.hibernate.usertype.UserType;
 import org.postgresql.util.PGobject;
 import org.springframework.util.ObjectUtils;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,42 +29,60 @@ public class JsonDataUserType implements UserType {
 
     @Override
     public void nullSafeSet(PreparedStatement st, Object value, int index, SessionImplementor session) throws HibernateException, SQLException {
+
         if (value == null) {
             st.setNull(index, Types.OTHER);
         } else {
-            st.setObject(index, gson.toJson(value, Map.class), Types.OTHER);
+            if (value instanceof String) {
+                st.setObject(index, value, Types.OTHER);
+            } else
+                st.setObject(index, gson.toJson(value, Map.class), Types.OTHER);
         }
+
     }
 
     @Override
     public Object deepCopy(Object originalValue) throws HibernateException {
+
+
         if (originalValue == null) {
             return null;
         }
 
-        if (!(originalValue instanceof Map)) {
+
+        if (!(originalValue instanceof String)) {
             return null;
         }
 
-        Map<String, String> resultMap = new HashMap<>();
 
-        Map<Object, Object> tempMap = (Map<Object, Object>) originalValue;
+        HashMap result = null;
+        try {
+            result = new ObjectMapper().readValue(originalValue.toString(), HashMap.class);
+            return result;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
 
-        tempMap.forEach(
-                (key, value) -> {
-                    if (value instanceof String) {
-                        resultMap.put((String) key, (String) value);
-                    }
-
-                    if (value instanceof Double) {
-                        resultMap.put((String) key, value.toString());
-                    }
-                }
-
-
-        );
-
-        return resultMap;
+//        Map<String, String> resultMap = new HashMap<>();
+//
+//        Map<Object, Object> tempMap = (Map<Object, Object>) result;
+//
+//        tempMap.forEach(
+//                (key, value) -> {
+//                    if (value instanceof String) {
+//                        resultMap.put((String) key, (String) value);
+//                    }
+//
+//                    if (value instanceof Double) {
+//                        resultMap.put((String) key, value.toString());
+//                    }
+//                }
+//
+//
+//        );
+//
+//        return resultMap;
     }
 
     @Override
