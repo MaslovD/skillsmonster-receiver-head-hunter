@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
@@ -65,7 +66,7 @@ public class HeadHunterReceiverImpl implements Receiver {
 
         logger.info("Head Hunter Receiver started");
 
-        LocalDate dateFrom = LocalDate.now().minusDays(40);
+        LocalDate dateFrom = LocalDate.now().minusDays(38);
         LocalDate dateTo = LocalDate.now().minusDays(1);
         LocalDate publDate = dateFrom;
         List<VacancySearchResultDto> vacancyList;
@@ -240,12 +241,19 @@ public class HeadHunterReceiverImpl implements Receiver {
                     "Exception occurred during processing vacancy. Id: {}, Reason: {}",
                     vacancyId, exception.toString()
             );
-            throw exception;
+            //throw exception;
         } catch (JpaSystemException exception) {
             logger.error(
                     "Exception occurred during processing vacancy. Id: {}, Reason: {}",
                     vacancyId, exception.toString()
             );
+        } catch (DataIntegrityViolationException dataIntegrityViolationException) {
+
+//            logger.error(
+//                    "Exception occurred during processing vacancy. Id: {}, Reason: {}",
+//                    vacancyId, dataIntegrityViolationException.getMessage()
+//            );
+
         }
 
 

@@ -2,10 +2,7 @@ package com.masdmtr.skillsmonster.persistence.repository;
 
 import com.masdmtr.skillsmonster.persistence.model.*;
 import com.masdmtr.skillsmonster.persistence.model.ui.Menu;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -208,13 +205,33 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
     public void addVacancy(Vacancy vacancy) throws ConstraintViolationException, JpaSystemException {
         try (Session session = sessionFactory.openSession()) {
 
-            session.persist(vacancy);
+            if (!exists(vacancy, session)) {
+                session.persist(vacancy);
+                session.flush();
+            }
 
-            session.flush();
 
-            //session.flush();
+        } catch (Exception e) {
 
+            System.out.println("fdf");
         }
 
     }
+
+    public Boolean exists(Vacancy vacancy, Session session) {
+
+        return session.createCriteria(Vacancy.class)
+                .add(Restrictions.eq("vacancyId", vacancy.getVacancyId()))
+                .add(Restrictions.eq("createdAt", vacancy.getCreatedAt()))
+                .add(Restrictions.eq("publishedAt", vacancy.getPublishedAt()))
+                .setProjection(Projections.property("vacancyId"))
+                .uniqueResult() != null;
+
+//        Query query = session.createQuery("select 1 from vacancy2 v where v.vacancy_id = :v_id");
+//        query.setString("v_id", vacancy.getVacancyId());
+//        return (query.uniqueResult() != null);
+
+
+    }
+
 }
