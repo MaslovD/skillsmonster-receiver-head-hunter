@@ -12,6 +12,6 @@ RUN dpkg-reconfigure -f noninteractive tzdata
 
 COPY ./target/receiver-head-hunter-@version@.jar /jars/receiver-head-hunter-@version@.jar
 
-COPY ./target/classes/main/resources/bootstrap.properties /bootstrap.properties
+COPY ./target/classes/main/resources/bootstrap.yml /bootstrap.yml
 
 CMD ["sh", "-c", "java -jar -Dspring.profiles.active=$app_profile_name $java_opts /jars/receiver-head-hunter-@version@.jar"]
