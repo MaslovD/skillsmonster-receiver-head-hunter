@@ -39,7 +39,8 @@ public class SkillsMonsterServiceImpl implements SkillsMonsterService {
     @Autowired
     public SkillsMonsterServiceImpl(SkillsMonsterDao skillsMonsterDao,
                                     Gson gson,
-                                    Producer producer) {
+                                    Producer producer
+    ) {
         this.skillsMonsterDao = skillsMonsterDao;
         this.gson = gson;
         this.producer = producer;
