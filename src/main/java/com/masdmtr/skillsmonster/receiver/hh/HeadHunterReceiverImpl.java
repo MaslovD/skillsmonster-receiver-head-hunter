@@ -50,16 +50,16 @@ public class HeadHunterReceiverImpl implements Receiver {
 
     @Autowired
     public HeadHunterReceiverImpl(
-            SkillsMonsterService skillsMonsterService,
+
             Producer producer,
             RestTemplate restTemplate,
             Gson gson
     ) {
-        this.skillsMonsterService = skillsMonsterService;
         this.producer = producer;
         this.restTemplate = restTemplate;
         this.gson = gson;
     }
+
 
     @Override
     public void searchVacancy() {
@@ -331,5 +331,9 @@ public class HeadHunterReceiverImpl implements Receiver {
         return vacancy;
     }
 
+    @Autowired
+    public void setSkillsMonsterService(SkillsMonsterService skillsMonsterService) {
+        this.skillsMonsterService = skillsMonsterService;
+    }
 }
 
