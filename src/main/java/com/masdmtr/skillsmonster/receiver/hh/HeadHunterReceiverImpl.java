@@ -66,7 +66,7 @@ public class HeadHunterReceiverImpl implements Receiver {
 
         logger.info("Head Hunter Receiver started");
 
-        LocalDate dateFrom = LocalDate.now().minusDays(38);
+        LocalDate dateFrom = LocalDate.now().minusDays(1);
         LocalDate dateTo = LocalDate.now().minusDays(1);
         LocalDate publDate = dateFrom;
         List<VacancySearchResultDto> vacancyList;
