@@ -237,7 +237,7 @@ public class HeadHunterReceiverImpl implements Receiver {
 
 
         } catch (HttpClientErrorException exception) {
-            logger.error(
+            logger.debug(
                     "Exception occurred during processing vacancy. Id: {}, Reason: {}",
                     vacancyId, exception.toString()
             );
