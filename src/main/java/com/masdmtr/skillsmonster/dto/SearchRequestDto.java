@@ -10,6 +10,9 @@ public class SearchRequestDto {
     private String specializationId;
     private String specializationSubId;
 
+    public SearchRequestDto(Long vacancyId) {
+        this.vacancyId = vacancyId.toString();
+    }
 
     public String getVacancyId() {
         return vacancyId;

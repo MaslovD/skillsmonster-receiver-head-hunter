@@ -2,9 +2,9 @@ package com.masdmtr.skillsmonster.service;
 
 import com.google.gson.Gson;
 import com.masdmtr.skillsmonster.dto.SearchRequestDto;
-import com.masdmtr.skillsmonster.persistence.repository.SkillsMonsterDao;
-import com.masdmtr.skillsmonster.persistence.model.ui.Menu;
 import com.masdmtr.skillsmonster.persistence.model.*;
+import com.masdmtr.skillsmonster.persistence.model.ui.Menu;
+import com.masdmtr.skillsmonster.persistence.repository.SkillsMonsterDao;
 import com.masdmtr.skillsmonster.rabbitmq.Producer;
 import com.masdmtr.skillsmonster.receiver.Receiver;
 import org.slf4j.Logger;
@@ -29,8 +29,8 @@ import java.util.stream.LongStream;
 @Transactional
 public class SkillsMonsterServiceImpl implements SkillsMonsterService {
 
-
     private SkillsMonsterDao skillsMonsterDao;
+
     private Gson gson;
     private Receiver receiver;
     private static final Logger logger = LoggerFactory.getLogger(SkillsMonsterServiceImpl.class);
@@ -44,6 +44,11 @@ public class SkillsMonsterServiceImpl implements SkillsMonsterService {
         this.skillsMonsterDao = skillsMonsterDao;
         this.gson = gson;
         this.producer = producer;
+    }
+
+    @Autowired
+    public void setReceiver(Receiver receiver) {
+        this.receiver = receiver;
     }
 
     @Override
@@ -131,21 +136,12 @@ public class SkillsMonsterServiceImpl implements SkillsMonsterService {
 
     @Override
     public void getVacancyDetailes() {
-        skillsMonsterDao.getVacancyDetailes();
+        skillsMonsterDao.getVacancyDetails();
     }
 
     @Override
     public void addCountry(Country country) {
         skillsMonsterDao.addCountry(country);
-    }
-
-    public void getAreaChildren() {
-        //   skillsMonsterDao.getAreaChildren();
-    }
-
-    public ArrayList<Integer> getAreaCountryList() {
-        return skillsMonsterDao.getAreaCountryList();
-
     }
 
     @Override
@@ -159,14 +155,16 @@ public class SkillsMonsterServiceImpl implements SkillsMonsterService {
 
         //long[] range = LongStream.iterate(1L, n -> n + 1L).limit(23471214L).toArray();
 
-        List<Long> vacancyIdList = LongStream.iterate(1, n -> n + 1).limit(23471214)
+        List<Long> vacancyIdList = LongStream
+                .iterate(1, n -> n + 1)
+                .limit(23471214)
                 .boxed().collect(Collectors.toList());
 
         Collections.shuffle(vacancyIdList);
 
-        vacancyIdList.forEach(sds -> {
+        vacancyIdList.forEach(vacancyId -> {
 
-            SearchRequestDto searchRequestDto = new SearchRequestDto();
+            SearchRequestDto searchRequestDto = new SearchRequestDto((vacancyId));
 
             producer.sendMessage(searchRequestDto);
 
@@ -175,8 +173,8 @@ public class SkillsMonsterServiceImpl implements SkillsMonsterService {
 
     }
 
-    @Autowired
-    public void setReceiver(Receiver receiver) {
-        this.receiver = receiver;
+    public ArrayList<Integer> getAreaCountryList() {
+        return skillsMonsterDao.getAreaCountryList();
+
     }
 }

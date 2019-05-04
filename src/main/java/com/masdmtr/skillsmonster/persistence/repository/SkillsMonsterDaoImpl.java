@@ -2,7 +2,10 @@ package com.masdmtr.skillsmonster.persistence.repository;
 
 import com.masdmtr.skillsmonster.persistence.model.*;
 import com.masdmtr.skillsmonster.persistence.model.ui.Menu;
-import org.hibernate.*;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -15,9 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.StoredProcedureQuery;
 import javax.validation.ConstraintViolationException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -80,8 +81,7 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
     }
 
     @Override
-    @Transactional
-    public void getVacancyDetailes() {
+    public void getVacancyDetails() {
         StoredProcedureQuery sp = entityManager.createStoredProcedureQuery("public.add_vacancy_to_queue");
         sp.getResultList();
     }
@@ -134,6 +134,14 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
             return areas;
         }
 
+    }
+
+    @Override
+    public Boolean isVacancyExistInDb() {
+
+        Vacancy vacancy;
+
+        return null;
     }
 
     @Override
@@ -201,7 +209,6 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void addVacancy(Vacancy vacancy) throws ConstraintViolationException, JpaSystemException {
         try (Session session = sessionFactory.openSession()) {
 
@@ -209,13 +216,7 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
                 session.persist(vacancy);
                 session.flush();
             }
-
-
-        } catch (Exception e) {
-
-            System.out.println("fdf");
         }
-
     }
 
     public Boolean exists(Vacancy vacancy, Session session) {
@@ -233,5 +234,4 @@ public class SkillsMonsterDaoImpl implements SkillsMonsterDao {
 
 
     }
-
 }

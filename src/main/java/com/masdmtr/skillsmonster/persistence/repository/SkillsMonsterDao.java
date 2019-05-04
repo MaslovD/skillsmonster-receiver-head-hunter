@@ -2,7 +2,6 @@ package com.masdmtr.skillsmonster.persistence.repository;
 
 import com.masdmtr.skillsmonster.persistence.model.*;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,6 @@ public interface SkillsMonsterDao {
 
     void addCountry(Country country);
 
-
     Area getAreaById(int id);
 
     SourceSite getSourceSiteById(int id);
@@ -33,7 +31,7 @@ public interface SkillsMonsterDao {
 
     ArrayList<Area> getAreaList();
 
-    void getVacancyDetailes();
+    void getVacancyDetails();
 
     void updateProcessingQueueItem(ProcessingQueue processingQueueItem);
 
@@ -42,4 +40,6 @@ public interface SkillsMonsterDao {
     ArrayList<Integer> getAreaCountryList();
 
     ArrayList<Area> getAreaByCountryId(Integer countryId);
+
+    Boolean isVacancyExistInDb();
 }

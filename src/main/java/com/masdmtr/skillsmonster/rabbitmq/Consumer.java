@@ -25,7 +25,7 @@ public class Consumer {
 //        receiver.loadVacancyDetails(processingQueueItem);
 //    }
 
-    @RabbitListener(queues = "${spring.rabbitmq.skillsmonster.queue.loadVacancyDetailsRequest}")
+    //@RabbitListener(queues = "${spring.rabbitmq.skillsmonster.queue.loadVacancyDetailsRequest}")
     public void receiveProcessingQueueSerialItem(final SearchRequestDto searchRequestDto) {
         receiver.loadVacancyDetails(searchRequestDto);
     }
