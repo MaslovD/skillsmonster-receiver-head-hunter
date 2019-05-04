@@ -14,6 +14,10 @@ public class SearchRequestDto {
         this.vacancyId = vacancyId.toString();
     }
 
+    public SearchRequestDto() {
+
+    }
+
     public String getVacancyId() {
         return vacancyId;
     }
