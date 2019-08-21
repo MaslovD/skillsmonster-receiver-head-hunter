@@ -151,13 +151,12 @@ public class SkillsMonsterServiceImpl implements SkillsMonsterService {
     }
 
     @Override
-    public void loadFromHhByVacancyId() {
+    public void loadFromHhByVacancyId(Long startId, Long endId) {
 
         //long[] range = LongStream.iterate(1L, n -> n + 1L).limit(23471214L).toArray();
 
         List<Long> vacancyIdList = LongStream
-                .iterate(1, n -> n + 1)
-                .limit(23471214)
+                .range(startId, endId)
                 .boxed().collect(Collectors.toList());
 
         Collections.shuffle(vacancyIdList);
@@ -169,7 +168,6 @@ public class SkillsMonsterServiceImpl implements SkillsMonsterService {
             producer.sendMessage(searchRequestDto);
 
         });
-
 
     }
 

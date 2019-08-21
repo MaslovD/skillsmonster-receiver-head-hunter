@@ -40,5 +40,5 @@ public interface SkillsMonsterService {
 
     ArrayList<Area> getAreaByCountryId(Integer countryId);
 
-    void loadFromHhByVacancyId();
+    void loadFromHhByVacancyId(Long startId, Long endId);
 }

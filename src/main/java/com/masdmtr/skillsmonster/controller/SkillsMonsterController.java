@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.masdmtr.skillsmonster.persistence.model.Country;
 import com.masdmtr.skillsmonster.persistence.model.SearchResult;
-import com.masdmtr.skillsmonster.persistence.model.VacancyArch;
 import com.masdmtr.skillsmonster.persistence.model.ui.Menu;
 import com.masdmtr.skillsmonster.service.SkillsMonsterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -102,10 +100,11 @@ public class SkillsMonsterController {
 
     }
 
-    @RequestMapping(value = apiVer + "/vacancy/archive/load-by-vacancy-id", method = RequestMethod.GET)
-    public void loadFromHhByVacancyId() {
+    @RequestMapping(value = apiVer + "/vacancy/archive/load-by-vacancy-id-range", method = RequestMethod.GET)
+    public void loadFromHhByVacancyId(@RequestParam("startId") Long startId,
+                                      @RequestParam("endId") Long endId) {
 
-        skillsMonsterService.loadFromHhByVacancyId();
+        skillsMonsterService.loadFromHhByVacancyId(startId, endId);
 
 
     }
