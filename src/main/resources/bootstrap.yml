@@ -4,7 +4,7 @@ spring:
       receiver-head-hunter
   cloud:
     config:
-      uri: http://rumos0151:8888
+      uri: ${CONFIG_SERVER_URI}
 
 #spring.cloud.config.username=**
 #spring.cloud.config.password=**
