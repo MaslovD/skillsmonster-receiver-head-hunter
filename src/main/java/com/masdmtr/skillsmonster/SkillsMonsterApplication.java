@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 //@EnableDiscoveryClient
 //@EnableEurekaClient
-//@EnableScheduling
+@EnableScheduling
 @ComponentScan("com.masdmtr")
 public class SkillsMonsterApplication {
 
